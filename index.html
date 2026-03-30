@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SZM Architecture</title>
+  <meta name="description" content="SZM Architecture — Architectural Design, BIM, process-led design development, documentation, and project support." />
+  <style>
+    :root {
+      --bg: #ececeb;
+      --bg-soft: #f4f4f3;
+      --line: #cfcfcd;
+      --text: #4b4b4a;
+      --text-soft: #8d8d8a;
+      --text-strong: #3c3c3b;
+      --max: 1180px;
+      --space: clamp(20px, 3vw, 40px);
+      --section-gap: clamp(72px, 10vw, 140px);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      letter-spacing: 0.01em;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(236, 236, 235, 0.84);
+      border-bottom: 1px solid rgba(79, 79, 78, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1;
+    }
+
+    .brand-mark {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text-strong);
+      outline: none;
+    }
+
+    .hero {
+      padding: clamp(48px, 6vw, 80px) 0 clamp(80px, 10vw, 140px);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,0.42), transparent 30%),
+        radial-gradient(circle at 84% 14%, rgba(255,255,255,0.3), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-motifs {
+      position: relative;
+      width: 100%;
+      height: clamp(160px, 24vw, 300px);
+      opacity: 0.75;
+    }
+
+    .hero-motifs .motif-line,
+    .hero-motifs .motif-frame,
+    .hero-motifs .motif-arc {
+      position: absolute;
+      border-color: rgba(125, 125, 123, 0.42);
+    }
+
+    .hero-motifs .motif-line {
+      height: 1px;
+      background: rgba(125, 125, 123, 0.34);
+      border: 0;
+    }
+
+    .hero-motifs .motif-frame {
+      border: 1px solid rgba(125, 125, 123, 0.2);
+      background: transparent;
+    }
+
+    .hero-motifs .motif-arc {
+      border-top: 1px solid rgba(125, 125, 123, 0.26);
+      border-left: 1px solid rgba(125, 125, 123, 0.18);
+      border-right: 0;
+      border-bottom: 0;
+      border-radius: 999px 0 0 0;
+      background: transparent;
+    }
+
+    .hero-motifs .m1 { top: 18%; left: 0; width: 62%; }
+    .hero-motifs .m2 { top: 62%; right: 2%; width: 44%; }
+    .hero-motifs .m3 { bottom: 10%; left: 12%; width: 28%; }
+    .hero-motifs .f1 { top: 8%; right: 12%; width: 18%; height: 54%; }
+    .hero-motifs .f2 { top: 28%; left: 8%; width: 22%; height: 44%; }
+    .hero-motifs .f3 { top: 0; left: 36%; width: 14%; height: 100%; }
+    .hero-motifs .a1 { right: 0; bottom: 0; width: 28%; height: 56%; }
+    .hero-motifs .a2 { left: 22%; top: 4%; width: 18%; height: 34%; }
+    .hero-motifs .a3 { left: 52%; bottom: 12%; width: 16%; height: 30%; }
+
+    .hero-kicker {
+      font-size: clamp(1.55rem, 2vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      line-height: 0.92;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      color: var(--text-strong);
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      margin: 14px 0 0;
+      font-size: clamp(1rem, 2vw, 1.7rem);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+    }
+
+    .hero-copy {
+      max-width: 640px;
+      font-size: 1rem;
+      color: var(--text);
+      margin-top: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .button,
+    .button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid var(--text-strong);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      transition: 180ms ease;
+    }
+
+    .button {
+      background: var(--text-strong);
+      color: var(--bg-soft);
+    }
+
+    .button-secondary {
+      background: transparent;
+      color: var(--text-strong);
+      border-color: rgba(60, 60, 59, 0.28);
+    }
+
+    .button:hover,
+    .button-secondary:hover,
+    .button:focus-visible,
+    .button-secondary:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .hero-foot {
+      margin-top: clamp(80px, 12vw, 180px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .hero-foot .site-id {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .hero-foot .site-id strong {
+      display: block;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .section {
+      padding: 0 0 var(--section-gap);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(120px, 180px) 1fr;
+      gap: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 34px;
+    }
+
+    .section-number {
+      font-size: 0.86rem;
+      color: var(--text-soft);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding-top: 4px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      color: var(--text-strong);
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin: 16px 0 0;
+      font-size: 1.04rem;
+      color: var(--text);
+    }
+
+    .services-grid,
+    .process-grid,
+    .packages-grid,
+    .expect-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .services-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(79, 79, 78, 0.1);
+      padding: 26px;
+      min-height: 220px;
+    }
+
+    .card-label {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      margin: 0 0 14px;
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--text-strong);
+    }
+
+    .card p,
+    .card li,
+    .process-card p,
+    .package-card p,
+    .expect-card p {
+      color: var(--text);
+      font-size: 0.98rem;
+    }
+
+    .clean-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .clean-list li {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .clean-list li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #92928f;
+      position: absolute;
+      top: 0.6em;
+      left: 0;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      counter-reset: stage;
+    }
+
+    .process-card {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    .process-number {
+      display: inline-flex;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .process-title {
+      margin: 0 0 10px;
+      font-size: 1.24rem;
+      color: var(--text-strong);
+      font-weight: 500;
+    }
+
+    .packages-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .package-card {
+      border: 1px solid var(--line);
+      padding: 26px;
+      display: grid;
+      gap: 18px;
+      background: transparent;
+    }
+
+    .package-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      border-bottom: 1px solid rgba(79, 79, 78, 0.1);
+      padding-bottom: 16px;
+    }
+
+    .package-id {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .package-name {
+      margin: 4px 0 0;
+      font-size: 1.6rem;
+      letter-spacing: -0.03em;
+      font-weight: 500;
+      color: var(--text-strong);
+    }
+
+    .drawings-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      font-size: 0.98rem;
+    }
+
+    .drawings-table th,
+    .drawings-table td {
+      text-align: left;
+      padding: 16px 10px;
+      border-bottom: 1px solid rgba(79, 79, 78, 0.12);
+      vertical-align: top;
+    }
+
+    .drawings-table th {
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+
+    .muted { color: var(--text-soft); }
+
+    .yes,
+    .no {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .yes::before,
+    .no::before {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
+    .yes::before { content: "✓"; }
+    .no::before { content: "×"; }
+
+    .expect-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .expect-card {
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .expect-card strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      border-top: 1px solid var(--line);
+      padding-top: 34px;
+    }
+
+    .contact-title {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      color: var(--text-strong);
+    }
+
+    .contact-meta {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .contact-item {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(79, 79, 78, 0.12);
+    }
+
+    .contact-item span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    .site-footer {
+      padding: 34px 0 56px;
+      border-top: 1px solid rgba(79, 79, 78, 0.1);
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1040px) {
+      .services-grid,
+      .packages-grid,
+      .expect-grid,
+      .process-grid,
+      .contact-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .process-grid > :last-child {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .hero-foot,
+      .section-head,
+      .services-grid,
+      .packages-grid,
+      .expect-grid,
+      .process-grid,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .process-grid > :last-child {
+        grid-column: auto;
+      }
+
+      .drawings-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .card,
+      .package-card {
+        min-height: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="wrap nav">
+        <a class="brand" href="#top" aria-label="SZM Architecture home">
+          <span class="brand-mark">SZM ARCHITECTURE</span>
+          <span class="brand-sub">Architectural Design & BIM</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#process">Process</a>
+          <a href="#packages">Packages</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div class="hero-motifs" aria-hidden="true">
+            <span class="motif-line m1"></span>
+            <span class="motif-line m2"></span>
+            <span class="motif-line m3"></span>
+            <span class="motif-frame f1"></span>
+            <span class="motif-frame f2"></span>
+            <span class="motif-frame f3"></span>
+            <span class="motif-arc a1"></span>
+            <span class="motif-arc a2"></span>
+            <span class="motif-arc a3"></span>
+          </div>
+
+          <div>
+            <p class="hero-kicker">Architectural Design & BIM</p>
+            <h1 class="hero-title">SZM Architecture</h1>
+            <p class="hero-subtitle">Process • Packages • Deliverables</p>
+            <p class="hero-copy">
+              Thoughtful architectural design, BIM-based documentation, and clear project support for residential,
+              commercial, and small mixed-use work.
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="#contact">Start a Project</a>
+              <a class="button-secondary" href="#packages">View Packages</a>
+            </div>
+          </div>
+
+          <div class="hero-foot">
+            <div class="site-id">
+              <strong>SZM ARCHITECTURE</strong>
+              szmarchitecture.com
+            </div>
+            <div class="site-id">Structured design, coordinated documentation, and a clear process from brief to buildable output.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">01 / About</div>
+            <div>
+              <h2 class="section-title">A clear, restrained, process-led studio presentation.</h2>
+              <p class="section-intro">
+                SZM Architecture provides architectural design and documentation services with an emphasis on clarity,
+                coordination, and measured project development. The site is structured to reflect the same calm, editorial tone
+                as your service guide.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">02 / Services</div>
+            <div>
+              <h2 class="section-title">What we do</h2>
+              <p class="section-intro">
+                Services can begin at early planning and continue through development, documentation, and selected technical support.
+              </p>
+            </div>
+          </div>
+
+          <div class="services-grid">
+            <article class="card">
+              <div class="card-label">Design</div>
+              <h3 class="card-title">Concept & Development</h3>
+              <ul class="clean-list">
+                <li>Consultations and project discussions</li>
+                <li>Concept design and spatial planning</li>
+                <li>Design development and refinement</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-label">Documentation</div>
+              <h3 class="card-title">Construction Drawings & BIM</h3>
+              <ul class="clean-list">
+                <li>BIM-based drawing production</li>
+                <li>Dimensioned plans, sections, elevations</li>
+                <li>Coordinated drawing packages for execution</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-label">Add-ons</div>
+              <h3 class="card-title">Extended Support</h3>
+              <ul class="clean-list">
+                <li>BOQ and quantification support</li>
+                <li>Electrical and plumbing layout packages</li>
+                <li>Additional drafting and BIM assistance</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="process">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">03 / Process</div>
+            <div>
+              <h2 class="section-title">How the process works</h2>
+              <p class="section-intro">
+                Each stage builds on approved work from the previous stage, allowing projects to stop early or continue through full documentation depending on scope.
+              </p>
+            </div>
+          </div>
+
+          <div class="process-grid">
+            <article class="process-card">
+              <div class="process-number">01</div>
+              <h3 class="process-title">Consultation</h3>
+              <p>Brief review, site assessment, priorities, constraints, and project direction.</p>
+            </article>
+            <article class="process-card">
+              <div class="process-number">02</div>
+              <h3 class="process-title">Concept Design</h3>
+              <p>Layout, zoning, circulation, massing, and early facade direction.</p>
+            </article>
+            <article class="process-card">
+              <div class="process-number">03</div>
+              <h3 class="process-title">Development</h3>
+              <p>Refinement, dimensioned drawings, coordination, and design resolution.</p>
+            </article>
+            <article class="process-card">
+              <div class="process-number">04</div>
+              <h3 class="process-title">Documentation</h3>
+              <p>Construction-oriented drawings, schedules, notes, and coordinated outputs.</p>
+            </article>
+            <article class="process-card">
+              <div class="process-number">05</div>
+              <h3 class="process-title">Optional Support</h3>
+              <p>BOQ, take-offs, tender support, and project-specific add-on packages.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="packages">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">04 / Packages</div>
+            <div>
+              <h2 class="section-title">Service packages</h2>
+              <p class="section-intro">
+                Packages are presented as a progressive service ladder, from concept direction to a complete drawing set.
+              </p>
+            </div>
+          </div>
+
+          <div class="packages-grid">
+            <article class="package-card">
+              <div class="package-top">
+                <div>
+                  <div class="package-id">Package A</div>
+                  <h3 class="package-name">Concept Design</h3>
+                </div>
+              </div>
+              <p>Best suited for clients in early planning stages who need design direction before committing to detailed development.</p>
+              <ul class="clean-list">
+                <li>Concept floor plans</li>
+                <li>Basic layouts and visuals</li>
+                <li>Preliminary elevations where applicable</li>
+              </ul>
+            </article>
+
+            <article class="package-card">
+              <div class="package-top">
+                <div>
+                  <div class="package-id">Package B</div>
+                  <h3 class="package-name">Design + Development</h3>
+                </div>
+              </div>
+              <p>For clients who require a coordinated and dimensioned design before technical construction planning begins.</p>
+              <ul class="clean-list">
+                <li>Dimensioned plans</li>
+                <li>Developed elevations and sections</li>
+                <li>Refined and coordinated design set</li>
+              </ul>
+            </article>
+
+            <article class="package-card">
+              <div class="package-top">
+                <div>
+                  <div class="package-id">Package C</div>
+                  <h3 class="package-name">Full Service</h3>
+                </div>
+              </div>
+              <p>Best suited for clients who require a complete, construction-ready drawing package with full documentation.</p>
+              <ul class="clean-list">
+                <li>Detailed plans, sections, elevations</li>
+                <li>Schedules, notes, and basic details</li>
+                <li>Coordinated PDF drawing set</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="deliverables">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">05 / Deliverables</div>
+            <div>
+              <h2 class="section-title">Drawings included</h2>
+              <p class="section-intro">
+                Deliverables vary by package, with each level representing a different degree of project resolution.
+              </p>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="drawings-table" aria-label="Drawings included by package">
+              <thead>
+                <tr>
+                  <th>Drawing</th>
+                  <th>Concept</th>
+                  <th>Development</th>
+                  <th>Full</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Floor Plans</td>
+                  <td><span class="yes">Concept</span></td>
+                  <td><span class="yes">Dimensioned</span></td>
+                  <td><span class="yes">Detailed</span></td>
+                </tr>
+                <tr>
+                  <td>Site Layout</td>
+                  <td><span class="yes">Included</span></td>
+                  <td><span class="yes">Included</span></td>
+                  <td><span class="yes">Included</span></td>
+                </tr>
+                <tr>
+                  <td>Elevations</td>
+                  <td><span class="yes">Basic</span></td>
+                  <td><span class="yes">Included</span></td>
+                  <td><span class="yes">Included</span></td>
+                </tr>
+                <tr>
+                  <td>Sections</td>
+                  <td><span class="no">Not included</span></td>
+                  <td><span class="yes">Included</span></td>
+                  <td><span class="yes">Included</span></td>
+                </tr>
+                <tr>
+                  <td>Dimensions</td>
+                  <td><span class="no">Not included</span></td>
+                  <td><span class="yes">Included</span></td>
+                  <td><span class="yes">Included</span></td>
+                </tr>
+                <tr>
+                  <td>Schedules</td>
+                  <td><span class="no">Not included</span></td>
+                  <td><span class="yes">Basic</span></td>
+                  <td><span class="yes">Included</span></td>
+                </tr>
+                <tr>
+                  <td>Details</td>
+                  <td><span class="no">Not included</span></td>
+                  <td><span class="no">Not included</span></td>
+                  <td><span class="yes">Included</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="expectations">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">06 / Expect</div>
+            <div>
+              <h2 class="section-title">What clients can expect</h2>
+              <p class="section-intro">
+                The site language mirrors a clear studio process: defined deliverables, review points, and controlled progression.
+              </p>
+            </div>
+          </div>
+
+          <div class="expect-grid">
+            <article class="expect-card">
+              <strong>Defined Deliverables</strong>
+              <p>Each stage includes clear outputs so expectations remain tied to scope and level of development.</p>
+            </article>
+            <article class="expect-card">
+              <strong>Review & Communication</strong>
+              <p>Built-in review points help maintain alignment between design intent, client feedback, and project decisions.</p>
+            </article>
+            <article class="expect-card">
+              <strong>Controlled Progression</strong>
+              <p>The process remains efficient and responsive while producing coordinated documentation that develops with clarity.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-number">07 / Contact</div>
+            <div>
+              <h2 class="section-title">Ready to begin?</h2>
+              <p class="section-intro">
+                Use this section as the project enquiry area. Replace the placeholder details with your live contact information and any consultation booking link.
+              </p>
+            </div>
+          </div>
+
+          <div class="contact-panel">
+            <div>
+              <h3 class="contact-title">For project enquiries or to begin a consultation.</h3>
+              <p>
+                Share your project type, location, and basic requirements. From there, the next steps can move from consultation to proposal and confirmed engagement.
+              </p>
+              <div class="hero-actions">
+                <a class="button" href="mailto:shemaiah@szmarchitecture.com">Email SZM</a>
+                <a class="button-secondary" href="#top">Back to Top</a>
+              </div>
+            </div>
+
+            <div class="contact-meta">
+              <div class="contact-item">
+                <span>Email</span>
+                <a href="mailto:shemaiah@szmarchitecture.com">shemaiah@szmarchitecture.com</a>
+              </div>
+              <div class="contact-item">
+                <span>Website</span>
+                <a href="https://szmarchitecture.com">szmarchitecture.com</a>
+              </div>
+              <div class="contact-item">
+                <span>Typical Workflow</span>
+                Initial enquiry → consultation → review → proposal → approval → project start
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-row">
+        <div>© <span id="year"></span> SZM Architecture</div>
+        <div>Architectural Design • BIM • Documentation</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
