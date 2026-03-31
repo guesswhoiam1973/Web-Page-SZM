@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | SZM Architecture</title>
+  <meta name="description" content="About SZM Architecture." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../">
+        <span class="brand-mark">SZM ARCHITECTURE</span>
+        <span class="brand-sub">Architectural Design & BIM</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="../">Home</a>
+        <a class="active" href="../about/">About</a>
+        <a href="../services/">Services</a>
+        <a href="../projects/">Projects</a>
+        <a href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="page-eyebrow">About</p>
+        <h1 class="page-title">A measured studio approach grounded in clarity and coordination.</h1>
+        <p class="page-copy">
+          SZM Architecture provides architectural design and BIM-based documentation services for residential, commercial, and small mixed-use projects, with a focus on structured progression and clearly communicated outputs.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap grid-2">
+        <article class="card">
+          <div class="card-label">Studio</div>
+          <h2 class="card-title">What the practice offers</h2>
+          <p>
+            The studio works across concept development, design refinement, documentation, and project support. The emphasis is on making the process legible to clients before moving into more technical stages.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Approach</div>
+          <h2 class="card-title">How projects are handled</h2>
+          <p>
+            Each project is developed in defined stages so that decisions are made at the right level of detail. This helps reduce confusion, improve coordination, and support more controlled project development.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div>© <span id="year"></span> SZM Architecture</div>
+      <div><a href="../contact/">Start a Project</a></div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
