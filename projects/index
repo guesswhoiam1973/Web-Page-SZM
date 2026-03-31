@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | SZM Architecture</title>
+  <meta name="description" content="Projects by SZM Architecture." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../">
+        <span class="brand-mark">SZM ARCHITECTURE</span>
+        <span class="brand-sub">Architectural Design & BIM</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="../">Home</a>
+        <a href="../about/">About</a>
+        <a href="../services/">Services</a>
+        <a class="active" href="../projects/">Projects</a>
+        <a href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="page-eyebrow">Projects</p>
+        <h1 class="page-title">Selected work and future project features.</h1>
+        <p class="page-copy">
+          Use this page for featured residential and commercial work. For now, it can act as a clean placeholder until final project imagery, drawings, or descriptions are ready.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap grid-3">
+        <article class="card">
+          <div class="card-label">Featured Project</div>
+          <h2 class="card-title">Project title</h2>
+          <p class="muted">Residential</p>
+          <p>Short project summary goes here. Replace this with location, scope, and one concise design description.</p>
+        </article>
+        <article class="card">
+          <div class="card-label">Featured Project</div>
+          <h2 class="card-title">Project title</h2>
+          <p class="muted">Commercial</p>
+          <p>Short project summary goes here. Replace this with location, scope, and one concise design description.</p>
+        </article>
+        <article class="card">
+          <div class="card-label">Featured Project</div>
+          <h2 class="card-title">Project title</h2>
+          <p class="muted">Conceptual</p>
+          <p>Short project summary goes here. Replace this with location, scope, and one concise design description.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div>© <span id="year"></span> SZM Architecture</div>
+      <div><a href="../contact/">Discuss a Project</a></div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
