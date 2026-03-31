@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services | SZM Architecture</title>
+  <meta name="description" content="Services by SZM Architecture." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../">
+        <span class="brand-mark">SZM ARCHITECTURE</span>
+        <span class="brand-sub">Architectural Design & BIM</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="../">Home</a>
+        <a href="../about/">About</a>
+        <a class="active" href="../services/">Services</a>
+        <a href="../projects/">Projects</a>
+        <a href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="page-eyebrow">Services</p>
+        <h1 class="page-title">Process, packages, and technical deliverables.</h1>
+        <p class="page-copy">
+          The service structure below carries over the logic of your original one-page layout, but now gives it room to breathe on a dedicated internal page.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap grid-3">
+        <article class="card">
+          <div class="card-label">Design</div>
+          <h2 class="card-title">Consultation to development</h2>
+          <ul class="clean-list">
+            <li>Consultations</li>
+            <li>Concept design</li>
+            <li>Design development</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Documentation</div>
+          <h2 class="card-title">Drawings & BIM</h2>
+          <ul class="clean-list">
+            <li>Construction drawings</li>
+            <li>BIM production</li>
+            <li>Coordinated drawing outputs</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Add-ons</div>
+          <h2 class="card-title">Extended project support</h2>
+          <ul class="clean-list">
+            <li>BOQ support</li>
+            <li>Electrical layouts</li>
+            <li>Plumbing layouts</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-number">01 / Process</div>
+          <div>
+            <h2 class="section-title">Project workflow</h2>
+            <p class="section-intro">Projects may be engaged partially or as a complete service depending on requirements.</p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article class="card"><div class="card-label">01</div><h3 class="card-title">Consultation</h3><p>Initial brief, site review, scope definition.</p></article>
+          <article class="card"><div class="card-label">02</div><h3 class="card-title">Concept Design</h3><p>Early planning, form, and direction.</p></article>
+          <article class="card"><div class="card-label">03</div><h3 class="card-title">Design Development</h3><p>Refinement, coordination, dimensioning.</p></article>
+          <article class="card"><div class="card-label">04</div><h3 class="card-title">Documentation</h3><p>Technical drawings for execution.</p></article>
+          <article class="card"><div class="card-label">05</div><h3 class="card-title">Optional Services</h3><p>BOQ, tender, or added support.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-number">02 / Packages</div>
+          <div>
+            <h2 class="section-title">Service packages</h2>
+            <p class="section-intro">A cleaner split of the original package structure.</p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-label">Package A</div>
+            <h3 class="card-title">Concept Design</h3>
+            <p>Best suited for clients in early planning stages who require design direction before committing to detailed development.</p>
+          </article>
+          <article class="card">
+            <div class="card-label">Package B</div>
+            <h3 class="card-title">Design + Development</h3>
+            <p>Best suited for clients who require a coordinated and dimensioned design before construction planning.</p>
+          </article>
+          <article class="card">
+            <div class="card-label">Package C</div>
+            <h3 class="card-title">Full Service</h3>
+            <p>Best suited for clients who require a complete, construction-ready drawing set.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-number">03 / Deliverables</div>
+          <div>
+            <h2 class="section-title">Drawings included</h2>
+            <p class="section-intro">Deliverables vary by service package.</p>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="drawings-table">
+            <thead>
+              <tr>
+                <th>Drawing</th>
+                <th>Concept</th>
+                <th>Development</th>
+                <th>Full</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Floor Plans</td><td><span class="yes">Concept</span></td><td><span class="yes">Dimensioned</span></td><td><span class="yes">Detailed</span></td></tr>
+              <tr><td>Site Layout</td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
+              <tr><td>Elevations</td><td><span class="yes">Basic</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
+              <tr><td>Sections</td><td><span class="no">Not included</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
+              <tr><td>Dimensions</td><td><span class="no">Not included</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
+              <tr><td>Schedules</td><td><span class="no">Not included</span></td><td><span class="yes">Basic</span></td><td><span class="yes">Included</span></td></tr>
+              <tr><td>Details</td><td><span class="no">Not included</span></td><td><span class="no">Not included</span></td><td><span class="yes">Included</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div>© <span id="year"></span> SZM Architecture</div>
+      <div><a href="../contact/">Enquire</a></div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
