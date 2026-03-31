@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | SZM Architecture</title>
+  <meta name="description" content="Contact SZM Architecture." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../">
+        <span class="brand-mark">SZM ARCHITECTURE</span>
+        <span class="brand-sub">Architectural Design & BIM</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="../">Home</a>
+        <a href="../about/">About</a>
+        <a href="../services/">Services</a>
+        <a href="../projects/">Projects</a>
+        <a class="active" href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="page-eyebrow">Contact</p>
+        <h1 class="page-title">Begin with a project enquiry.</h1>
+        <p class="page-copy">
+          Share your project type, location, and general requirements. From there, the next steps can move into consultation, review, proposal, and confirmed engagement.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap grid-2">
+        <article class="card">
+          <div class="card-label">Enquiry Form</div>
+          <h2 class="card-title">Send a project enquiry</h2>
+
+         <form action="https://script.google.com/macros/s/AKfycbzk6-7Wc9yNvS6CmzpU_N5Poepa_otZ6uc7tQRvJzh2WS4gOL8GEorXiBoMCg6dwS-pBw/exec" method="POST" style="display:grid; gap:16px; margin-top:18px;">
+  <input type="hidden" name="source" value="website-contact-form">
+  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Full Name</span>
+    <input
+      type="text"
+      name="name"
+      required
+      minlength="2"
+      maxlength="100"
+      autocomplete="name"
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Email</span>
+    <input
+      type="email"
+      name="email"
+      required
+      maxlength="120"
+      autocomplete="email"
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Phone</span>
+    <input
+      type="tel"
+      name="phone"
+      required
+      inputmode="tel"
+      autocomplete="tel"
+      pattern="[\d+\-\s()]{7,20}"
+      title="Use 7 to 20 characters with numbers and optional +, spaces, brackets, or dashes."
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Project Type</span>
+    <select
+      name="project_type"
+      required
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+      <option value="" disabled selected>Select project type</option>
+      <option value="Residential New Build">Residential New Build</option>
+      <option value="Residential Renovation">Residential Renovation</option>
+      <option value="Commercial New Build">Commercial New Build</option>
+      <option value="Commercial Renovation / Fit-Out">Commercial Renovation / Fit-Out</option>
+      <option value="Interior Design / Space Planning">Interior Design / Space Planning</option>
+      <option value="Drafting / Documentation Only">Drafting / Documentation Only</option>
+      <option value="Consultation Only">Consultation Only</option>
+      <option value="Other">Other</option>
+    </select>
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Location</span>
+    <input
+      type="text"
+      name="location"
+      list="location-suggestions"
+      required
+      maxlength="100"
+      autocomplete="address-level2"
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+    <datalist id="location-suggestions">
+      <option value="Georgetown"></option>
+      <option value="New Amsterdam"></option>
+      <option value="East Coast Demerara"></option>
+      <option value="East Bank Demerara"></option>
+      <option value="West Bank Demerara"></option>
+      <option value="West Coast Demerara"></option>
+      <option value="Berbice"></option>
+      <option value="Essequibo"></option>
+      <option value="Linden"></option>
+    </datalist>
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Estimated Budget</span>
+    <select
+      name="budget"
+      required
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+      <option value="" disabled selected>Select budget range</option>
+      <option value="Under GYD 2M">Under GYD 2M</option>
+      <option value="GYD 2M - 10M">GYD 2M - 10M</option>
+      <option value="GYD 10M - 30M">GYD 10M - 30M</option>
+      <option value="GYD 30M - 100M">GYD 30M - 100M</option>
+      <option value="GYD 100M+">GYD 100M+</option>
+      <option value="Prefer not to say">Prefer not to say</option>
+    </select>
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Desired Timeline</span>
+    <select
+      name="timeline"
+      required
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+    >
+      <option value="" disabled selected>Select timeline</option>
+      <option value="Immediate (0–1 month)">Immediate (0–1 month)</option>
+      <option value="Soon (1–3 months)">Soon (1–3 months)</option>
+      <option value="Planning Stage (3–6 months)">Planning Stage (3–6 months)</option>
+      <option value="Later (6+ months)">Later (6+ months)</option>
+      <option value="Just Exploring">Just Exploring</option>
+    </select>
+  </label>
+
+  <label style="display:grid; gap:8px;">
+    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Project Brief</span>
+    <textarea
+      name="message"
+      rows="7"
+      required
+      minlength="20"
+      maxlength="2000"
+      placeholder="Tell us about the project scope, intended use, approximate size, and any priorities or constraints."
+      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit; resize:vertical;"
+    ></textarea>
+  </label>
+
+  <button class="button" type="submit" style="cursor:pointer; width:fit-content;">
+    Send Enquiry
+  </button>
+</form>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Direct Contact</div>
+          <h2 class="card-title">Primary contact</h2>
+          <p><a href="mailto:shemaiah@szmarchitecture.com">shemaiah@szmarchitecture.com</a></p>
+
+          <div style="height:24px;"></div>
+
+          <div class="card-label">Next Steps</div>
+          <h2 class="card-title">Typical workflow</h2>
+          <ul class="clean-list">
+            <li>Initial enquiry</li>
+            <li>Consultation</li>
+            <li>Project review</li>
+            <li>Proposal issued</li>
+            <li>Approval and deposit</li>
+            <li>Project begins</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div>© <span id="year"></span> SZM Architecture</div>
+      <div>szmarchitecture.com</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
