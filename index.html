@@ -221,6 +221,10 @@
     </section>
   </main>
 
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    ↑
+  </button>
+
   <footer class="site-footer">
     <div class="wrap footer-row">
       <div>© <span id="year"></span> SZM Architecture</div>
@@ -236,6 +240,7 @@
 
     const header = document.querySelector('.site-header');
     const revealItems = document.querySelectorAll('.reveal, .reveal-soft');
+    const backToTopBtn = document.querySelector('.back-to-top');
 
     document.body.classList.add('page-enter');
     requestAnimationFrame(() => {
@@ -266,6 +271,15 @@
           item.classList.remove('is-visible');
         }
       });
+    }
+
+    function updateBackToTop() {
+      if (!backToTopBtn) return;
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add('is-visible');
+      } else {
+        backToTopBtn.classList.remove('is-visible');
+      }
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -312,19 +326,31 @@
       }
     });
 
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
     window.addEventListener('scroll', () => {
       updateHeaderState();
       updateRevealStates();
+      updateBackToTop();
     });
 
     window.addEventListener('resize', updateRevealStates);
     window.addEventListener('load', () => {
       updateHeaderState();
       updateRevealStates();
+      updateBackToTop();
     });
 
     updateHeaderState();
     updateRevealStates();
+    updateBackToTop();
   </script>
 </body>
 </html>
