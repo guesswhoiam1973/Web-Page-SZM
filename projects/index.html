@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | SZM Architecture</title>
   <meta name="description" content="Selected work, project types, and current architectural focus at SZM Architecture." />
-  <link rel="icon" type="image/png" href="../Favicon.png" />
+  <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
@@ -15,7 +15,20 @@
         <span class="brand-mark">SZM ARCHITECTURE</span>
         <span class="brand-sub">Architectural Design & BIM</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primaryNav"
+        aria-label="Open navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="primaryNav" class="nav-links" aria-label="Primary navigation">
         <a href="../">Home</a>
         <a href="../about/">About</a>
         <a href="../services/">Services</a>
@@ -26,25 +39,21 @@
   </header>
 
   <main>
-    <section class="section">
+    <section class="page-hero">
       <div class="wrap">
-        <div class="section-head">
-          <div class="section-number">03 / Projects</div>
-          <div>
-            <h1 class="section-title">Selected work is being prepared.</h1>
-            <p class="section-intro">
-              A formal project portfolio is currently in development. In the meantime, this page outlines the types of
-              work SZM Architecture is focused on and the kind of project output clients can expect.
-            </p>
-          </div>
-        </div>
+        <p class="page-eyebrow reveal">Projects</p>
+        <h1 class="page-title reveal">Selected work is being prepared.</h1>
+        <p class="page-copy reveal-soft">
+          A formal project portfolio is currently in development. In the meantime, this page outlines the types of
+          work SZM Architecture is focused on and the kind of project output clients can expect.
+        </p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
         <div class="grid-3">
-          <article class="card">
+          <article class="card reveal">
             <div class="card-label">Residential</div>
             <h2 class="card-title">Homes & small residential work</h2>
             <p>
@@ -53,7 +62,7 @@
             </p>
           </article>
 
-          <article class="card">
+          <article class="card reveal-soft">
             <div class="card-label">Commercial</div>
             <h2 class="card-title">Commercial & small business spaces</h2>
             <p>
@@ -62,7 +71,7 @@
             </p>
           </article>
 
-          <article class="card">
+          <article class="card reveal">
             <div class="card-label">Mixed-Use</div>
             <h2 class="card-title">Small mixed-use projects</h2>
             <p>
@@ -76,8 +85,8 @@
 
     <section class="section">
       <div class="wrap">
-        <div class="section-head">
-          <div class="section-number">What a project may include</div>
+        <div class="section-head reveal">
+          <div class="section-number">01 / Outputs</div>
           <div>
             <h2 class="section-title">Typical project outputs.</h2>
             <p class="section-intro">
@@ -88,19 +97,19 @@
         </div>
 
         <div class="link-grid">
-          <article class="card">
+          <article class="card reveal">
             <div class="card-label">Concept</div>
             <h3 class="card-title">Early-stage design</h3>
             <p>Concept layouts, site response, zoning logic, preliminary plans, elevations, and presentation views.</p>
           </article>
 
-          <article class="card">
+          <article class="card reveal-soft">
             <div class="card-label">Development</div>
             <h3 class="card-title">Design refinement</h3>
             <p>Dimensioned plans, coordinated sections and elevations, and development of the selected design direction.</p>
           </article>
 
-          <article class="card">
+          <article class="card reveal">
             <div class="card-label">Documentation</div>
             <h3 class="card-title">Drawing production</h3>
             <p>Approval-ready and construction-oriented drawing sets developed through a clear, structured process.</p>
@@ -111,18 +120,50 @@
 
     <section class="section">
       <div class="wrap">
-        <div class="card">
-          <div class="card-label">Portfolio Update</div>
-          <h2 class="card-title">Full project case studies coming soon.</h2>
-          <p>
-            As current and completed work is documented, this page will expand to include selected project sheets,
-            drawings, visuals, and process summaries.
-          </p>
-          <p><a href="../contact/"><strong>Discuss a Project →</strong></a></p>
+        <div class="section-head reveal-soft">
+          <div class="section-number">02 / Current direction</div>
+          <div>
+            <h2 class="section-title">Portfolio development in progress.</h2>
+            <p class="section-intro">
+              As current and completed work is documented, this page will expand to include selected project sheets,
+              drawings, visuals, and process summaries.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card reveal-soft">
+            <div class="card-label">Portfolio Update</div>
+            <h3 class="card-title">Full project case studies coming soon.</h3>
+            <p>
+              The project page will grow over time to include selected residential, commercial, and mixed-use work
+              with clearer visual presentation and project summaries.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-label">In the meantime</div>
+            <h3 class="card-title">Discuss a project directly.</h3>
+            <p>
+              If you would like to discuss a current or proposed project, send an enquiry or book a consultation to
+              review scope, stage, and possible deliverables.
+            </p>
+            <div class="hero-actions" style="margin-top: 24px;">
+              <a class="button" href="../contact/">Discuss a Project</a>
+              <a class="button-secondary" href="https://calendar.app.google/FwE3691G6Maa2KWc8" target="_blank" rel="noopener">
+                Book Consultation
+              </a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
   </main>
+
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+    <span class="back-to-top-arrow" aria-hidden="true">↑</span>
+    <span class="back-to-top-text">Back to top</span>
+  </button>
 
   <footer class="site-footer">
     <div class="wrap footer-row">
@@ -132,7 +173,163 @@
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    const header = document.querySelector('.site-header');
+    const revealItems = document.querySelectorAll('.reveal, .reveal-soft');
+    const backToTopBtn = document.getElementById('backToTop');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.getElementById('primaryNav');
+
+    document.body.classList.add('page-enter');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.body.classList.remove('page-enter');
+      });
+    });
+
+    function updateHeaderState() {
+      if (!header) return;
+      if (window.scrollY > 16) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+
+    function updateRevealStates() {
+      revealItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.86 &&
+          rect.bottom > window.innerHeight * 0.14;
+
+        if (inViewportBand) {
+          item.classList.add('is-visible');
+        } else {
+          item.classList.remove('is-visible');
+        }
+      });
+    }
+
+    function updateBackToTop() {
+      if (!backToTopBtn) return;
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add('is-visible');
+      } else {
+        backToTopBtn.classList.remove('is-visible');
+      }
+    }
+
+    function closeNav() {
+      if (!navToggle || !navLinks) return;
+      navToggle.classList.remove('is-open');
+      navLinks.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }
+
+    function toggleNav() {
+      if (!navToggle || !navLinks) return;
+      const isOpen = navLinks.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('nav-open', isOpen);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const rect = entry.boundingClientRect;
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.86 &&
+          rect.bottom > window.innerHeight * 0.14;
+
+        if (entry.isIntersecting && inViewportBand) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: [0, 0.1, 0.25, 0.45, 0.65, 0.85, 1]
+    });
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    document.querySelectorAll('a[href]').forEach((link) => {
+      const href = link.getAttribute('href');
+
+      if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('mailto:') &&
+        !href.startsWith('tel:') &&
+        !link.hasAttribute('target')
+      ) {
+        link.addEventListener('click', (e) => {
+          const url = new URL(link.href, window.location.href);
+
+          if (url.origin === window.location.origin) {
+            closeNav();
+            e.preventDefault();
+            document.body.classList.add('page-leave');
+
+            setTimeout(() => {
+              window.location.href = url.href;
+            }, 320);
+          }
+        });
+      }
+    });
+
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener('click', toggleNav);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!navToggle || !navLinks) return;
+      const clickedInsideNav = navLinks.contains(e.target);
+      const clickedToggle = navToggle.contains(e.target);
+
+      if (!clickedInsideNav && !clickedToggle) {
+        closeNav();
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 720) {
+        closeNav();
+      }
+      updateRevealStates();
+    });
+
+    window.addEventListener('load', () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+    });
+
+    updateHeaderState();
+    updateRevealStates();
+    updateBackToTop();
   </script>
 </body>
 </html>
