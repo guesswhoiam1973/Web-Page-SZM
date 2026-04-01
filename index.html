@@ -1,227 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SZM Architecture</title>
-  <meta name="description" content="SZM Architecture — Architectural Design, BIM, process-led design development, documentation, and project support." />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="site-header">
-    <div class="wrap nav">
-      <a class="brand" href="./">
-        <span class="brand-mark">SZM ARCHITECTURE</span>
-        <span class="brand-sub">Architectural Design & BIM</span>
-      </a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a class="active" href="./">Home</a>
-        <a href="about/">About</a>
-        <a href="services/">Services</a>
-        <a href="projects/">Projects</a>
-        <a href="contact/">Contact</a>
-      </nav>
-    </div>
-  </header>
+<script>
+  const header = document.querySelector('.site-header');
+  const backToTopButton = document.getElementById('backToTop');
 
-  <main>
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-motifs" aria-hidden="true">
-          <span class="motif-line m1"></span>
-          <span class="motif-line m2"></span>
-          <span class="motif-line m3"></span>
-          <span class="motif-frame f1"></span>
-          <span class="motif-frame f2"></span>
-          <span class="motif-frame f3"></span>
-          <span class="motif-arc a1"></span>
-          <span class="motif-arc a2"></span>
-          <span class="motif-arc a3"></span>
-        </div>
-
-        <div>
-          <p class="hero-kicker">Architectural Design & BIM</p>
-          <h1 class="hero-title">SZM Architecture</h1>
-          <p class="hero-subtitle">Process • Packages • Deliverables</p>
-          <p class="hero-copy">
-            Thoughtful architectural design, BIM-based documentation, and clear project support for residential,
-            commercial, and small mixed-use work.
-          </p>
-          <div class="hero-actions">
-            <a class="button" href="contact/">Start a Project</a>
-            <a class="button-secondary" href="services/">Explore Services</a>
-          </div>
-        </div>
-
-        <div class="hero-foot">
-          <div class="site-id">
-            <strong>SZM ARCHITECTURE</strong>
-            szmarchitecture.com
-          </div>
-          <div class="site-id">Structured design, coordinated documentation, and a clear process from brief to buildable output.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="section-number">01 / Overview</div>
-          <div>
-            <h2 class="section-title">Thoughtful design support from concept to documentation.</h2>
-            <p class="section-intro">
-              SZM Architecture provides architectural design, BIM-based documentation, and project support through a clear,
-              structured process tailored to residential, commercial, and small mixed-use work.
-            </p>
-          </div>
-        </div>
-
-        <div class="link-grid">
-          <article class="card">
-            <div class="card-label">About</div>
-            <h3 class="card-title">About the studio</h3>
-            <p>Learn more about the practice, its approach, and the principles that shape how projects are developed.</p>
-            <p><a href="about/"><strong>View About →</strong></a></p>
-          </article>
-
-          <article class="card">
-            <div class="card-label">Services</div>
-            <h3 class="card-title">Services & deliverables</h3>
-            <p>Explore the design process, available service packages, drawing outputs, and optional project support.</p>
-            <p><a href="services/"><strong>View Services →</strong></a></p>
-          </article>
-
-          <article class="card">
-            <div class="card-label">Projects</div>
-            <h3 class="card-title">Selected work</h3>
-            <p>View featured projects and a growing collection of residential, commercial, and conceptual work.</p>
-            <p><a href="projects/"><strong>View Projects →</strong></a></p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="section-number">02 / Snapshot</div>
-          <div>
-            <h2 class="section-title">Core service areas.</h2>
-            <p class="section-intro">
-              The studio’s work spans early design, technical documentation, and selected support services depending on project needs.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid-3">
-          <article class="card">
-            <div class="card-label">Design</div>
-            <h3 class="card-title">Concept & Development</h3>
-            <ul class="clean-list">
-              <li>Consultations and design direction</li>
-              <li>Spatial planning and concept work</li>
-              <li>Design refinement and coordination</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-label">Documentation</div>
-            <h3 class="card-title">Drawings & BIM</h3>
-            <ul class="clean-list">
-              <li>Construction-oriented drawing packages</li>
-              <li>Coordinated BIM-based production</li>
-              <li>Plans, sections, elevations, schedules</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-label">Support</div>
-            <h3 class="card-title">Add-ons</h3>
-            <ul class="clean-list">
-              <li>BOQ and quantity support</li>
-              <li>Electrical and plumbing layouts</li>
-              <li>Additional drafting assistance</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-row">
-      <div>© <span id="year"></span> SZM Architecture</div>
-      <div>Architectural Design • BIM • Documentation</div>
-    </div>
-  </footer>
-
-  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
-    <span class="back-to-top-arrow" aria-hidden="true">↑</span>
-    <span class="back-to-top-text">Back to top</span>
-  </button>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    const header = document.querySelector('.site-header');
-    const backToTopButton = document.getElementById('backToTop');
-
-    function updateHeader() {
-      if (!header) return;
-      if (window.scrollY > 24) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+  function updateHeader() {
+    if (!header) return;
+    if (window.scrollY > 24) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
     }
+  }
 
-    function updateBackToTop() {
-      if (!backToTopButton) return;
-      if (window.scrollY > 500) {
-        backToTopButton.classList.add('is-visible');
-      } else {
-        backToTopButton.classList.remove('is-visible');
-      }
+  function updateBackToTop() {
+    if (!backToTopButton) return;
+    if (window.scrollY > 500) {
+      backToTopButton.classList.add('is-visible');
+    } else {
+      backToTopButton.classList.remove('is-visible');
     }
+  }
 
+  const revealTargets = document.querySelectorAll('.hero, .page-hero, .section, .card');
+
+  revealTargets.forEach((el, index) => {
+    if (el.classList.contains('card')) {
+      el.classList.add('reveal-soft');
+      el.style.transitionDelay = `${Math.min(index * 0.05, 0.2)}s`;
+    } else {
+      el.classList.add('reveal');
+    }
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      } else if (!entry.target.classList.contains('hero') && !entry.target.classList.contains('page-hero')) {
+        entry.target.classList.remove('is-visible');
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealTargets.forEach((el) => observer.observe(el));
+
+  if (backToTopButton) {
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  updateHeader();
+  updateBackToTop();
+
+  window.addEventListener('scroll', () => {
     updateHeader();
     updateBackToTop();
-
-    window.addEventListener('scroll', updateHeader, { passive: true });
-    window.addEventListener('scroll', updateBackToTop, { passive: true });
-
-    if (backToTopButton) {
-      backToTopButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-
-    const revealTargets = document.querySelectorAll(
-      '.hero, .page-hero, .section, .card'
-    );
-
-    revealTargets.forEach((el, index) => {
-      if (el.classList.contains('card')) {
-        el.classList.add('reveal-soft');
-        el.style.transitionDelay = `${Math.min(index * 0.05, 0.2)}s`;
-      } else {
-        el.classList.add('reveal');
-      }
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
-    revealTargets.forEach((el) => observer.observe(el));
-  </script>
-</body>
-</html>
+  }, { passive: true });
+</script>
