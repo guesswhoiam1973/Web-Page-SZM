@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | SZM Architecture</title>
   <meta name="description" content="Contact SZM Architecture." />
+  <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
@@ -14,7 +15,20 @@
         <span class="brand-mark">SZM ARCHITECTURE</span>
         <span class="brand-sub">Architectural Design & BIM</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primaryNav"
+        aria-label="Open navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="primaryNav" class="nav-links" aria-label="Primary navigation">
         <a href="../">Home</a>
         <a href="../about/">About</a>
         <a href="../services/">Services</a>
@@ -27,9 +41,9 @@
   <main>
     <section class="page-hero">
       <div class="wrap">
-        <p class="page-eyebrow">Contact</p>
-        <h1 class="page-title">Begin with a project enquiry.</h1>
-        <p class="page-copy">
+        <p class="page-eyebrow reveal">Contact</p>
+        <h1 class="page-title reveal">Begin with a project enquiry.</h1>
+        <p class="page-copy reveal-soft">
           Share your project type, location, and general requirements. From there, the next steps can move into consultation, review, proposal, and confirmed engagement.
         </p>
       </div>
@@ -37,152 +51,163 @@
 
     <section class="section">
       <div class="wrap grid-2">
-        <article class="card">
+        <article class="card reveal">
           <div class="card-label">Enquiry Form</div>
           <h2 class="card-title">Send a project enquiry</h2>
 
-         <form action="https://script.google.com/macros/s/AKfycbzk6-7Wc9yNvS6CmzpU_N5Poepa_otZ6uc7tQRvJzh2WS4gOL8GEorXiBoMCg6dwS-pBw/exec" method="POST" style="display:grid; gap:16px; margin-top:18px;">
-  <input type="hidden" name="source" value="website-contact-form">
-  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <form action="https://script.google.com/macros/s/AKfycbzk6-7Wc9yNvS6CmzpU_N5Poepa_otZ6uc7tQRvJzh2WS4gOL8GEorXiBoMCg6dwS-pBw/exec" method="POST" style="display:grid; gap:16px; margin-top:18px;">
+            <input type="hidden" name="source" value="website-contact-form">
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Full Name</span>
-    <input
-      type="text"
-      name="name"
-      required
-      minlength="2"
-      maxlength="100"
-      autocomplete="name"
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Full Name</span>
+              <input
+                type="text"
+                name="name"
+                required
+                minlength="2"
+                maxlength="100"
+                autocomplete="name"
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Email</span>
-    <input
-      type="email"
-      name="email"
-      required
-      maxlength="120"
-      autocomplete="email"
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Email</span>
+              <input
+                type="email"
+                name="email"
+                required
+                maxlength="120"
+                autocomplete="email"
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Phone</span>
-    <input
-      type="tel"
-      name="phone"
-      required
-      inputmode="tel"
-      autocomplete="tel"
-      pattern="[\d+\-\s()]{7,20}"
-      title="Use 7 to 20 characters with numbers and optional +, spaces, brackets, or dashes."
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Phone</span>
+              <input
+                type="tel"
+                name="phone"
+                required
+                inputmode="tel"
+                autocomplete="tel"
+                pattern="[\d+\-\s()]{7,20}"
+                title="Use 7 to 20 characters with numbers and optional +, spaces, brackets, or dashes."
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Project Type</span>
-    <select
-      name="project_type"
-      required
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-      <option value="" disabled selected>Select project type</option>
-      <option value="Residential New Build">Residential New Build</option>
-      <option value="Residential Renovation">Residential Renovation</option>
-      <option value="Commercial New Build">Commercial New Build</option>
-      <option value="Commercial Renovation / Fit-Out">Commercial Renovation / Fit-Out</option>
-      <option value="Interior Design / Space Planning">Interior Design / Space Planning</option>
-      <option value="Drafting / Documentation Only">Drafting / Documentation Only</option>
-      <option value="Consultation Only">Consultation Only</option>
-      <option value="Other">Other</option>
-    </select>
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Project Type</span>
+              <select
+                name="project_type"
+                required
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+                <option value="" disabled selected>Select project type</option>
+                <option value="Residential New Build">Residential New Build</option>
+                <option value="Residential Renovation">Residential Renovation</option>
+                <option value="Commercial New Build">Commercial New Build</option>
+                <option value="Commercial Renovation / Fit-Out">Commercial Renovation / Fit-Out</option>
+                <option value="Interior Design / Space Planning">Interior Design / Space Planning</option>
+                <option value="Drafting / Documentation Only">Drafting / Documentation Only</option>
+                <option value="Consultation Only">Consultation Only</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Location</span>
-    <input
-      type="text"
-      name="location"
-      list="location-suggestions"
-      required
-      maxlength="100"
-      autocomplete="address-level2"
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-    <datalist id="location-suggestions">
-      <option value="Georgetown"></option>
-      <option value="New Amsterdam"></option>
-      <option value="East Coast Demerara"></option>
-      <option value="East Bank Demerara"></option>
-      <option value="West Bank Demerara"></option>
-      <option value="West Coast Demerara"></option>
-      <option value="Berbice"></option>
-      <option value="Essequibo"></option>
-      <option value="Linden"></option>
-    </datalist>
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Location</span>
+              <input
+                type="text"
+                name="location"
+                list="location-suggestions"
+                required
+                maxlength="100"
+                autocomplete="address-level2"
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+              <datalist id="location-suggestions">
+                <option value="Georgetown"></option>
+                <option value="New Amsterdam"></option>
+                <option value="East Coast Demerara"></option>
+                <option value="East Bank Demerara"></option>
+                <option value="West Bank Demerara"></option>
+                <option value="West Coast Demerara"></option>
+                <option value="Berbice"></option>
+                <option value="Essequibo"></option>
+                <option value="Linden"></option>
+              </datalist>
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Estimated Budget</span>
-    <select
-      name="budget"
-      required
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-      <option value="" disabled selected>Select budget range</option>
-      <option value="Under GYD 2M">Under GYD 2M</option>
-      <option value="GYD 2M - 10M">GYD 2M - 10M</option>
-      <option value="GYD 10M - 30M">GYD 10M - 30M</option>
-      <option value="GYD 30M - 100M">GYD 30M - 100M</option>
-      <option value="GYD 100M+">GYD 100M+</option>
-      <option value="Prefer not to say">Prefer not to say</option>
-    </select>
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Estimated Budget</span>
+              <select
+                name="budget"
+                required
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+                <option value="" disabled selected>Select budget range</option>
+                <option value="Under GYD 2M">Under GYD 2M</option>
+                <option value="GYD 2M - 10M">GYD 2M - 10M</option>
+                <option value="GYD 10M - 30M">GYD 10M - 30M</option>
+                <option value="GYD 30M - 100M">GYD 30M - 100M</option>
+                <option value="GYD 100M+">GYD 100M+</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Desired Timeline</span>
-    <select
-      name="timeline"
-      required
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
-    >
-      <option value="" disabled selected>Select timeline</option>
-      <option value="Immediate (0–1 month)">Immediate (0–1 month)</option>
-      <option value="Soon (1–3 months)">Soon (1–3 months)</option>
-      <option value="Planning Stage (3–6 months)">Planning Stage (3–6 months)</option>
-      <option value="Later (6+ months)">Later (6+ months)</option>
-      <option value="Just Exploring">Just Exploring</option>
-    </select>
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Desired Timeline</span>
+              <select
+                name="timeline"
+                required
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit;"
+              >
+                <option value="" disabled selected>Select timeline</option>
+                <option value="Immediate (0–1 month)">Immediate (0–1 month)</option>
+                <option value="Soon (1–3 months)">Soon (1–3 months)</option>
+                <option value="Planning Stage (3–6 months)">Planning Stage (3–6 months)</option>
+                <option value="Later (6+ months)">Later (6+ months)</option>
+                <option value="Just Exploring">Just Exploring</option>
+              </select>
+            </label>
 
-  <label style="display:grid; gap:8px;">
-    <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Project Brief</span>
-    <textarea
-      name="message"
-      rows="7"
-      required
-      minlength="20"
-      maxlength="2000"
-      placeholder="Tell us about the project scope, intended use, approximate size, and any priorities or constraints."
-      style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit; resize:vertical;"
-    ></textarea>
-  </label>
+            <label style="display:grid; gap:8px;">
+              <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Project Brief</span>
+              <textarea
+                name="message"
+                rows="7"
+                required
+                minlength="20"
+                maxlength="2000"
+                placeholder="Tell us about the project scope, intended use, approximate size, and any priorities or constraints."
+                style="width:100%; padding:14px 16px; border:1px solid rgba(79,79,78,0.16); background:rgba(255,255,255,0.62); color:#3c3c3b; font:inherit; resize:vertical;"
+              ></textarea>
+            </label>
 
-  <button class="button" type="submit" style="cursor:pointer; width:fit-content;">
-    Send Enquiry
-  </button>
-</form>
+            <button class="button" type="submit" style="cursor:pointer; width:fit-content;">
+              Send Enquiry
+            </button>
+          </form>
         </article>
 
-        <article class="card">
+        <article class="card reveal-soft">
           <div class="card-label">Direct Contact</div>
           <h2 class="card-title">Primary contact</h2>
           <p><a href="mailto:shemaiah@szmarchitecture.com">shemaiah@szmarchitecture.com</a></p>
+
+          <div style="height:24px;"></div>
+
+          <div class="card-label">Book</div>
+          <h2 class="card-title">Schedule a consultation</h2>
+          <p>Use the live booking calendar to reserve a consultation time based on current availability.</p>
+          <div class="hero-actions" style="margin-top: 20px;">
+            <a class="button" href="https://calendar.app.google/FwE3691G6Maa2KWc8" target="_blank" rel="noopener">
+              Book Consultation
+            </a>
+          </div>
 
           <div style="height:24px;"></div>
 
@@ -201,6 +226,11 @@
     </section>
   </main>
 
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+    <span class="back-to-top-arrow" aria-hidden="true">↑</span>
+    <span class="back-to-top-text">Back to top</span>
+  </button>
+
   <footer class="site-footer">
     <div class="wrap footer-row">
       <div>© <span id="year"></span> SZM Architecture</div>
@@ -209,7 +239,163 @@
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    const header = document.querySelector('.site-header');
+    const revealItems = document.querySelectorAll('.reveal, .reveal-soft');
+    const backToTopBtn = document.getElementById('backToTop');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.getElementById('primaryNav');
+
+    document.body.classList.add('page-enter');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.body.classList.remove('page-enter');
+      });
+    });
+
+    function updateHeaderState() {
+      if (!header) return;
+      if (window.scrollY > 16) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+
+    function updateRevealStates() {
+      revealItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.86 &&
+          rect.bottom > window.innerHeight * 0.14;
+
+        if (inViewportBand) {
+          item.classList.add('is-visible');
+        } else {
+          item.classList.remove('is-visible');
+        }
+      });
+    }
+
+    function updateBackToTop() {
+      if (!backToTopBtn) return;
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add('is-visible');
+      } else {
+        backToTopBtn.classList.remove('is-visible');
+      }
+    }
+
+    function closeNav() {
+      if (!navToggle || !navLinks) return;
+      navToggle.classList.remove('is-open');
+      navLinks.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }
+
+    function toggleNav() {
+      if (!navToggle || !navLinks) return;
+      const isOpen = navLinks.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('nav-open', isOpen);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const rect = entry.boundingClientRect;
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.86 &&
+          rect.bottom > window.innerHeight * 0.14;
+
+        if (entry.isIntersecting && inViewportBand) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: [0, 0.1, 0.25, 0.45, 0.65, 0.85, 1]
+    });
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    document.querySelectorAll('a[href]').forEach((link) => {
+      const href = link.getAttribute('href');
+
+      if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('mailto:') &&
+        !href.startsWith('tel:') &&
+        !link.hasAttribute('target')
+      ) {
+        link.addEventListener('click', (e) => {
+          const url = new URL(link.href, window.location.href);
+
+          if (url.origin === window.location.origin) {
+            closeNav();
+            e.preventDefault();
+            document.body.classList.add('page-leave');
+
+            setTimeout(() => {
+              window.location.href = url.href;
+            }, 320);
+          }
+        });
+      }
+    });
+
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener('click', toggleNav);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!navToggle || !navLinks) return;
+      const clickedInsideNav = navLinks.contains(e.target);
+      const clickedToggle = navToggle.contains(e.target);
+
+      if (!clickedInsideNav && !clickedToggle) {
+        closeNav();
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 720) {
+        closeNav();
+      }
+      updateRevealStates();
+    });
+
+    window.addEventListener('load', () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+    });
+
+    updateHeaderState();
+    updateRevealStates();
+    updateBackToTop();
   </script>
 </body>
 </html>
