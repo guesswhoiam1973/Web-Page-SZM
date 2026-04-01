@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SZM Architecture</title>
   <meta name="description" content="SZM Architecture — Architectural Design, BIM, process-led design development, documentation, and project support." />
-  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,7 +15,20 @@
         <span class="brand-mark">SZM ARCHITECTURE</span>
         <span class="brand-sub">Architectural Design & BIM</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primaryNav"
+        aria-label="Open navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="primaryNav" class="nav-links" aria-label="Primary navigation">
         <a class="active" href="./">Home</a>
         <a href="about/">About</a>
         <a href="services/">Services</a>
@@ -242,6 +255,8 @@
     const header = document.querySelector('.site-header');
     const revealItems = document.querySelectorAll('.reveal, .reveal-soft');
     const backToTopBtn = document.getElementById('backToTop');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.getElementById('primaryNav');
 
     document.body.classList.add('page-enter');
     requestAnimationFrame(() => {
@@ -283,6 +298,22 @@
       }
     }
 
+    function closeNav() {
+      if (!navToggle || !navLinks) return;
+      navToggle.classList.remove('is-open');
+      navLinks.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }
+
+    function toggleNav() {
+      if (!navToggle || !navLinks) return;
+      const isOpen = navLinks.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('nav-open', isOpen);
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const rect = entry.boundingClientRect;
@@ -316,6 +347,7 @@
           const url = new URL(link.href, window.location.href);
 
           if (url.origin === window.location.origin) {
+            closeNav();
             e.preventDefault();
             document.body.classList.add('page-leave');
 
@@ -336,13 +368,33 @@
       });
     }
 
+    if (navToggle) {
+      navToggle.addEventListener('click', toggleNav);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!navToggle || !navLinks) return;
+      const clickedInsideNav = navLinks.contains(e.target);
+      const clickedToggle = navToggle.contains(e.target);
+
+      if (!clickedInsideNav && !clickedToggle) {
+        closeNav();
+      }
+    });
+
     window.addEventListener('scroll', () => {
       updateHeaderState();
       updateRevealStates();
       updateBackToTop();
     }, { passive: true });
 
-    window.addEventListener('resize', updateRevealStates);
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 720) {
+        closeNav();
+      }
+      updateRevealStates();
+    });
+
     window.addEventListener('load', () => {
       updateHeaderState();
       updateRevealStates();
