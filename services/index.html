@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services | SZM Architecture</title>
-  <meta name="description" content="Services by SZM Architecture." />
+  <meta name="description" content="Service stages, packages, deliverables, and technical support by SZM Architecture." />
+  <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
@@ -14,7 +15,20 @@
         <span class="brand-mark">SZM ARCHITECTURE</span>
         <span class="brand-sub">Architectural Design & BIM</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primaryNav"
+        aria-label="Open navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="primaryNav" class="nav-links" aria-label="Primary navigation">
         <a href="../">Home</a>
         <a href="../about/">About</a>
         <a class="active" href="../services/">Services</a>
@@ -27,43 +41,44 @@
   <main>
     <section class="page-hero">
       <div class="wrap">
-        <p class="page-eyebrow">Services</p>
-        <h1 class="page-title">Process, packages, and technical deliverables.</h1>
-        <p class="page-copy">
-          The service structure below carries over the logic of your original one-page layout, but now gives it room to breathe on a dedicated internal page.
+        <p class="page-eyebrow reveal">Services</p>
+        <h1 class="page-title reveal">Process, packages, and technical deliverables.</h1>
+        <p class="page-copy reveal-soft">
+          Services are structured so projects can begin at the stage that makes sense, whether that means early design direction,
+          coordinated development, or fuller drawing documentation for approval and construction use.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap grid-3">
-        <article class="card">
+        <article class="card reveal">
           <div class="card-label">Design</div>
           <h2 class="card-title">Consultation to development</h2>
           <ul class="clean-list">
-            <li>Consultations</li>
-            <li>Concept design</li>
-            <li>Design development</li>
+            <li>Initial consultations and project direction</li>
+            <li>Concept design and planning studies</li>
+            <li>Design development and refinement</li>
           </ul>
         </article>
 
-        <article class="card">
+        <article class="card reveal-soft">
           <div class="card-label">Documentation</div>
           <h2 class="card-title">Drawings & BIM</h2>
           <ul class="clean-list">
-            <li>Construction drawings</li>
-            <li>BIM production</li>
-            <li>Coordinated drawing outputs</li>
+            <li>Construction-oriented drawing sets</li>
+            <li>BIM-based drawing production</li>
+            <li>Coordinated technical outputs</li>
           </ul>
         </article>
 
-        <article class="card">
+        <article class="card reveal">
           <div class="card-label">Add-ons</div>
           <h2 class="card-title">Extended project support</h2>
           <ul class="clean-list">
-            <li>BOQ support</li>
-            <li>Electrical layouts</li>
-            <li>Plumbing layouts</li>
+            <li>BOQ and quantity support</li>
+            <li>Electrical layout drafting</li>
+            <li>Plumbing layout drafting</li>
           </ul>
         </article>
       </div>
@@ -71,49 +86,90 @@
 
     <section class="section">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div class="section-number">01 / Process</div>
           <div>
             <h2 class="section-title">Project workflow</h2>
-            <p class="section-intro">Projects may be engaged partially or as a complete service depending on requirements.</p>
+            <p class="section-intro">
+              Projects may be engaged at one stage only or carried through as a complete service, depending on scope,
+              budget, and what information is already in place.
+            </p>
           </div>
         </div>
 
         <div class="grid-3">
-          <article class="card"><div class="card-label">01</div><h3 class="card-title">Consultation</h3><p>Initial brief, site review, scope definition.</p></article>
-          <article class="card"><div class="card-label">02</div><h3 class="card-title">Concept Design</h3><p>Early planning, form, and direction.</p></article>
-          <article class="card"><div class="card-label">03</div><h3 class="card-title">Design Development</h3><p>Refinement, coordination, dimensioning.</p></article>
-          <article class="card"><div class="card-label">04</div><h3 class="card-title">Documentation</h3><p>Technical drawings for execution.</p></article>
-          <article class="card"><div class="card-label">05</div><h3 class="card-title">Optional Services</h3><p>BOQ, tender, or added support.</p></article>
+          <article class="card reveal">
+            <div class="card-label">01</div>
+            <h3 class="card-title">Consultation</h3>
+            <p>Initial brief, site review, expectations, constraints, and scope definition.</p>
+          </article>
+
+          <article class="card reveal-soft">
+            <div class="card-label">02</div>
+            <h3 class="card-title">Concept Design</h3>
+            <p>Early planning, layout direction, massing, and general design intent.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-label">03</div>
+            <h3 class="card-title">Design Development</h3>
+            <p>Refinement, coordination, dimensioning, and a more resolved technical direction.</p>
+          </article>
+
+          <article class="card reveal-soft">
+            <div class="card-label">04</div>
+            <h3 class="card-title">Documentation</h3>
+            <p>Drawing information developed for approval, coordination, and construction-oriented use.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-label">05</div>
+            <h3 class="card-title">Optional Services</h3>
+            <p>Additional drafting and support services added only where they are actually needed.</p>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head reveal-soft">
           <div class="section-number">02 / Packages</div>
           <div>
             <h2 class="section-title">Service packages</h2>
-            <p class="section-intro">A cleaner split of the original package structure.</p>
+            <p class="section-intro">
+              The package structure allows projects to begin with design only, continue through development,
+              or move toward a fuller drawing set.
+            </p>
           </div>
         </div>
 
         <div class="grid-3">
-          <article class="card">
+          <article class="card reveal">
             <div class="card-label">Package A</div>
             <h3 class="card-title">Concept Design</h3>
-            <p>Best suited for clients in early planning stages who require design direction before committing to detailed development.</p>
+            <p>
+              Best suited for clients in early planning stages who need design direction, general layout thinking,
+              and a stronger starting point before moving into technical development.
+            </p>
           </article>
-          <article class="card">
+
+          <article class="card reveal-soft">
             <div class="card-label">Package B</div>
             <h3 class="card-title">Design + Development</h3>
-            <p>Best suited for clients who require a coordinated and dimensioned design before construction planning.</p>
+            <p>
+              Best suited for clients who require a more coordinated, dimensioned, and resolved design before
+              progressing toward construction planning.
+            </p>
           </article>
-          <article class="card">
+
+          <article class="card reveal">
             <div class="card-label">Package C</div>
             <h3 class="card-title">Full Service</h3>
-            <p>Best suited for clients who require a complete, construction-ready drawing set.</p>
+            <p>
+              Best suited for clients who require a fuller, construction-ready drawing package with broader
+              technical coverage and supporting information.
+            </p>
           </article>
         </div>
       </div>
@@ -121,15 +177,17 @@
 
     <section class="section">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div class="section-number">03 / Deliverables</div>
           <div>
             <h2 class="section-title">Drawings included</h2>
-            <p class="section-intro">Deliverables vary by service package.</p>
+            <p class="section-intro">
+              Deliverables vary by package, with earlier stages focused on direction and later stages carrying more technical depth.
+            </p>
           </div>
         </div>
 
-        <div style="overflow-x:auto;">
+        <div style="overflow-x:auto;" class="reveal-soft">
           <table class="drawings-table">
             <thead>
               <tr>
@@ -140,19 +198,81 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>Floor Plans</td><td><span class="yes">Concept</span></td><td><span class="yes">Dimensioned</span></td><td><span class="yes">Detailed</span></td></tr>
-              <tr><td>Site Layout</td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
-              <tr><td>Elevations</td><td><span class="yes">Basic</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
-              <tr><td>Sections</td><td><span class="no">Not included</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
-              <tr><td>Dimensions</td><td><span class="no">Not included</span></td><td><span class="yes">Included</span></td><td><span class="yes">Included</span></td></tr>
-              <tr><td>Schedules</td><td><span class="no">Not included</span></td><td><span class="yes">Basic</span></td><td><span class="yes">Included</span></td></tr>
-              <tr><td>Details</td><td><span class="no">Not included</span></td><td><span class="no">Not included</span></td><td><span class="yes">Included</span></td></tr>
+              <tr>
+                <td>Floor Plans</td>
+                <td><span class="yes">Concept</span></td>
+                <td><span class="yes">Dimensioned</span></td>
+                <td><span class="yes">Detailed</span></td>
+              </tr>
+              <tr>
+                <td>Site Layout</td>
+                <td><span class="yes">Included</span></td>
+                <td><span class="yes">Included</span></td>
+                <td><span class="yes">Included</span></td>
+              </tr>
+              <tr>
+                <td>Elevations</td>
+                <td><span class="yes">Basic</span></td>
+                <td><span class="yes">Included</span></td>
+                <td><span class="yes">Included</span></td>
+              </tr>
+              <tr>
+                <td>Sections</td>
+                <td><span class="no">Not included</span></td>
+                <td><span class="yes">Included</span></td>
+                <td><span class="yes">Included</span></td>
+              </tr>
+              <tr>
+                <td>Dimensions</td>
+                <td><span class="no">Not included</span></td>
+                <td><span class="yes">Included</span></td>
+                <td><span class="yes">Included</span></td>
+              </tr>
+              <tr>
+                <td>Schedules</td>
+                <td><span class="no">Not included</span></td>
+                <td><span class="yes">Basic</span></td>
+                <td><span class="yes">Included</span></td>
+              </tr>
+              <tr>
+                <td>Details</td>
+                <td><span class="no">Not included</span></td>
+                <td><span class="no">Not included</span></td>
+                <td><span class="yes">Included</span></td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal-soft">
+          <div class="section-number">04 / Book</div>
+          <div>
+            <h2 class="section-title">Discuss the right service path.</h2>
+            <p class="section-intro">
+              If you are unsure which package fits the project, book a consultation or send an enquiry and the scope can be reviewed first.
+            </p>
+            <div class="hero-actions" style="margin-top: 28px;">
+              <a class="button" href="https://calendar.app.google/FwE3691G6Maa2KWc8" target="_blank" rel="noopener">
+                Book Consultation
+              </a>
+              <a class="button-secondary" href="../contact/">
+                Send Enquiry
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+    <span class="back-to-top-arrow" aria-hidden="true">↑</span>
+    <span class="back-to-top-text">Back to top</span>
+  </button>
 
   <footer class="site-footer">
     <div class="wrap footer-row">
@@ -162,7 +282,163 @@
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    const header = document.querySelector('.site-header');
+    const revealItems = document.querySelectorAll('.reveal, .reveal-soft');
+    const backToTopBtn = document.getElementById('backToTop');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.getElementById('primaryNav');
+
+    document.body.classList.add('page-enter');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.body.classList.remove('page-enter');
+      });
+    });
+
+    function updateHeaderState() {
+      if (!header) return;
+      if (window.scrollY > 16) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+
+    function updateRevealStates() {
+      revealItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.86 &&
+          rect.bottom > window.innerHeight * 0.14;
+
+        if (inViewportBand) {
+          item.classList.add('is-visible');
+        } else {
+          item.classList.remove('is-visible');
+        }
+      });
+    }
+
+    function updateBackToTop() {
+      if (!backToTopBtn) return;
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add('is-visible');
+      } else {
+        backToTopBtn.classList.remove('is-visible');
+      }
+    }
+
+    function closeNav() {
+      if (!navToggle || !navLinks) return;
+      navToggle.classList.remove('is-open');
+      navLinks.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }
+
+    function toggleNav() {
+      if (!navToggle || !navLinks) return;
+      const isOpen = navLinks.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('nav-open', isOpen);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const rect = entry.boundingClientRect;
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.86 &&
+          rect.bottom > window.innerHeight * 0.14;
+
+        if (entry.isIntersecting && inViewportBand) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: [0, 0.1, 0.25, 0.45, 0.65, 0.85, 1]
+    });
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    document.querySelectorAll('a[href]').forEach((link) => {
+      const href = link.getAttribute('href');
+
+      if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('mailto:') &&
+        !href.startsWith('tel:') &&
+        !link.hasAttribute('target')
+      ) {
+        link.addEventListener('click', (e) => {
+          const url = new URL(link.href, window.location.href);
+
+          if (url.origin === window.location.origin) {
+            closeNav();
+            e.preventDefault();
+            document.body.classList.add('page-leave');
+
+            setTimeout(() => {
+              window.location.href = url.href;
+            }, 320);
+          }
+        });
+      }
+    });
+
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener('click', toggleNav);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!navToggle || !navLinks) return;
+      const clickedInsideNav = navLinks.contains(e.target);
+      const clickedToggle = navToggle.contains(e.target);
+
+      if (!clickedInsideNav && !clickedToggle) {
+        closeNav();
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 720) {
+        closeNav();
+      }
+      updateRevealStates();
+    });
+
+    window.addEventListener('load', () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+    });
+
+    updateHeaderState();
+    updateRevealStates();
+    updateBackToTop();
   </script>
 </body>
 </html>
