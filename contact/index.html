@@ -133,8 +133,16 @@
           <p style="margin-top: 0;">
             Use the form below if you already have the basic project details ready.
           </p>
+          <p
+            id="draftNotice"
+            class="muted"
+            style="margin-top: 8px; font-size: 0.92rem;"
+          >
+            Your draft is saved automatically on this device while you type.
+          </p>
 
           <form
+            id="projectEnquiryForm"
             action="https://script.google.com/macros/s/AKfycbzk6-7Wc9yNvS6CmzpU_N5Poepa_otZ6uc7tQRvJzh2WS4gOL8GEorXiBoMCg6dwS-pBw/exec"
             method="POST"
             style="display:grid; gap:16px; margin-top:18px;"
@@ -270,9 +278,19 @@
               ></textarea>
             </label>
 
-            <button class="button" type="submit" style="cursor:pointer; width:fit-content;">
-              Send Project Enquiry
-            </button>
+            <div class="hero-actions" style="margin-top: 8px;">
+              <button class="button" type="submit" style="cursor:pointer;">
+                Send Project Enquiry
+              </button>
+              <button
+                type="button"
+                id="clearDraftBtn"
+                class="button-secondary"
+                style="cursor:pointer;"
+              >
+                Clear Saved Draft
+              </button>
+            </div>
           </form>
         </article>
 
@@ -347,6 +365,11 @@
     const navLinks = document.querySelector(".nav-links-inline");
     const navOverlay = document.getElementById("navOverlay");
     const overlayLinks = document.querySelectorAll(".nav-overlay-link");
+
+    const enquiryForm = document.getElementById("projectEnquiryForm");
+    const clearDraftBtn = document.getElementById("clearDraftBtn");
+    const draftNotice = document.getElementById("draftNotice");
+    const enquiryDraftKey = "szm_project_enquiry_draft_v1";
 
     let navSettleTimer;
     let scrollTicking = false;
@@ -434,6 +457,62 @@
       }
     }
 
+    function saveEnquiryDraft() {
+      if (!enquiryForm) return;
+
+      const fields = enquiryForm.querySelectorAll("input, select, textarea");
+      const draft = {};
+
+      fields.forEach((field) => {
+        if (!field.name) return;
+        if (field.name === "_gotcha") return;
+        if (field.type === "hidden") return;
+
+        draft[field.name] = field.value;
+      });
+
+      localStorage.setItem(enquiryDraftKey, JSON.stringify(draft));
+
+      if (draftNotice) {
+        draftNotice.textContent = "Your draft is saved automatically on this device while you type.";
+      }
+    }
+
+    function restoreEnquiryDraft() {
+      if (!enquiryForm) return;
+
+      const saved = localStorage.getItem(enquiryDraftKey);
+      if (!saved) return;
+
+      try {
+        const draft = JSON.parse(saved);
+
+        Object.keys(draft).forEach((name) => {
+          const field = enquiryForm.querySelector(`[name="${name}"]`);
+          if (!field) return;
+          field.value = draft[name];
+        });
+
+        if (draftNotice) {
+          draftNotice.textContent = "A saved draft was restored on this device.";
+        }
+      } catch (error) {
+        console.error("Could not restore enquiry draft:", error);
+      }
+    }
+
+    function clearEnquiryDraft() {
+      localStorage.removeItem(enquiryDraftKey);
+
+      if (enquiryForm) {
+        enquiryForm.reset();
+      }
+
+      if (draftNotice) {
+        draftNotice.textContent = "Saved draft cleared.";
+      }
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const rect = entry.boundingClientRect;
@@ -496,6 +575,16 @@
 
     if (navToggle) {
       navToggle.addEventListener("click", toggleNav);
+    }
+
+    if (enquiryForm) {
+      restoreEnquiryDraft();
+      enquiryForm.addEventListener("input", saveEnquiryDraft);
+      enquiryForm.addEventListener("change", saveEnquiryDraft);
+    }
+
+    if (clearDraftBtn) {
+      clearDraftBtn.addEventListener("click", clearEnquiryDraft);
     }
 
     document.addEventListener("click", (e) => {
