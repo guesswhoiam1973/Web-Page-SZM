@@ -278,6 +278,22 @@
               ></textarea>
             </label>
 
+            <label style="display:flex; gap:10px; align-items:flex-start; font-size:0.92rem; line-height:1.5;">
+              <input
+                type="checkbox"
+                name="terms_agreed"
+                value="yes"
+                required
+                style="margin-top:4px;"
+              />
+              <span>
+                I agree to the
+                <a href="../terms/" target="_blank" rel="noopener"><strong>Terms & Conditions</strong></a>
+                and
+                <a href="../privacy/" target="_blank" rel="noopener"><strong>Privacy Policy</strong></a>.
+              </span>
+            </label>
+
             <div class="hero-actions" style="margin-top: 8px;">
               <button class="button" type="submit" style="cursor:pointer;">
                 Send Project Enquiry
@@ -348,7 +364,10 @@
   <footer class="site-footer">
     <div class="wrap footer-row">
       <div>© <span id="year"></span> SZM Architecture</div>
-      <div>szmarchitecture.com</div>
+      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+        <a href="../terms/">Terms & Conditions</a>
+        <a href="../privacy/">Privacy Policy</a>
+      </div>
     </div>
   </footer>
 
@@ -467,6 +486,7 @@
         if (!field.name) return;
         if (field.name === "_gotcha") return;
         if (field.type === "hidden") return;
+        if (field.type === "checkbox") return;
 
         draft[field.name] = field.value;
       });
