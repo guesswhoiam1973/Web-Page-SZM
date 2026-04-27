@@ -1707,46 +1707,34 @@
       maximumFractionDigits: 0
     });
 
-    /*
-      STAGE-FIRST BASELINES
-      These are not full-project multipliers.
-      They are core stage baselines before setup, scale, programme, feature,
-      deliverable, and adjustment logic is applied.
-    */
     const stageBaselines = {
       "Residential New Build": {
-        "Concept Design": 135000,
-        "Design Development": 122000,
-        "Documentation": 116000
+        "Concept Design": 138000,
+        "Design Development": 152000,
+        "Documentation": 170000
       },
       "Residential Renovation": {
-        "Concept Design": 128000,
-        "Design Development": 120000,
-        "Documentation": 124000
+        "Concept Design": 132000,
+        "Design Development": 146000,
+        "Documentation": 166000
       },
       "Extension / Addition": {
-        "Concept Design": 122000,
-        "Design Development": 116000,
-        "Documentation": 118000
+        "Concept Design": 128000,
+        "Design Development": 142000,
+        "Documentation": 160000
       },
       "Mixed Residential": {
-        "Concept Design": 160000,
-        "Design Development": 150000,
-        "Documentation": 156000
+        "Concept Design": 155000,
+        "Design Development": 176000,
+        "Documentation": 205000
       },
       "Commercial Project": {
-        "Concept Design": 185000,
-        "Design Development": 178000,
-        "Documentation": 190000
+        "Concept Design": 170000,
+        "Design Development": 195000,
+        "Documentation": 228000
       }
     };
 
-    /*
-      SETUP / INTAKE ITEMS
-      Concept stage includes project brief + base setup.
-      Later stages include a smaller standalone intake / review allowance
-      because they may be commissioned independently.
-    */
     const stageSetupItems = {
       "Residential New Build": {
         "Concept Design": [
@@ -1757,7 +1745,7 @@
           { label: "Stage Intake / Existing Material Review", value: 12000 }
         ],
         "Documentation": [
-          { label: "Documentation Intake / Existing Material Review", value: 15000 }
+          { label: "Documentation Intake / Existing Material Review", value: 17000 }
         ]
       },
       "Residential Renovation": {
@@ -1769,7 +1757,7 @@
           { label: "Stage Intake / Existing Material Review", value: 14000 }
         ],
         "Documentation": [
-          { label: "Documentation Intake / Existing Material Review", value: 17000 }
+          { label: "Documentation Intake / Existing Material Review", value: 18000 }
         ]
       },
       "Extension / Addition": {
@@ -1781,7 +1769,7 @@
           { label: "Stage Intake / Existing Material Review", value: 13000 }
         ],
         "Documentation": [
-          { label: "Documentation Intake / Existing Material Review", value: 16000 }
+          { label: "Documentation Intake / Existing Material Review", value: 17000 }
         ]
       },
       "Mixed Residential": {
@@ -1793,7 +1781,7 @@
           { label: "Stage Intake / Existing Material Review", value: 15000 }
         ],
         "Documentation": [
-          { label: "Documentation Intake / Existing Material Review", value: 18000 }
+          { label: "Documentation Intake / Existing Material Review", value: 19000 }
         ]
       },
       "Commercial Project": {
@@ -1805,117 +1793,101 @@
           { label: "Stage Intake / Existing Material Review", value: 16000 }
         ],
         "Documentation": [
-          { label: "Documentation Intake / Existing Material Review", value: 19000 }
+          { label: "Documentation Intake / Existing Material Review", value: 20000 }
         ]
       }
     };
 
-    /*
-      SCALE ADDERS
-      Additive, not multiplicative.
-    */
     const sizeAdjustmentsByStage = {
       "Concept Design": {
         "Under 1,500 sq ft": -12000,
         "1,500–2,400 sq ft": 0,
-        "2,400–3,500 sq ft": 18000,
-        "3,500+ sq ft": 36000
+        "2,400–3,500 sq ft": 15000,
+        "3,500+ sq ft": 30000
       },
       "Design Development": {
         "Under 1,500 sq ft": -8000,
         "1,500–2,400 sq ft": 0,
-        "2,400–3,500 sq ft": 15000,
-        "3,500+ sq ft": 30000
+        "2,400–3,500 sq ft": 20000,
+        "3,500+ sq ft": 38000
       },
       "Documentation": {
         "Under 1,500 sq ft": -6000,
         "1,500–2,400 sq ft": 0,
-        "2,400–3,500 sq ft": 12000,
-        "3,500+ sq ft": 24000
+        "2,400–3,500 sq ft": 24000,
+        "3,500+ sq ft": 45000
       }
     };
 
     const storeyAdjustmentsByStage = {
       "Concept Design": {
         "1 Storey": 0,
-        "2 Storeys": 8000,
-        "3 Storeys": 18000,
-        "4+ Storeys": 30000
+        "2 Storeys": 7000,
+        "3 Storeys": 16000,
+        "4+ Storeys": 28000
       },
       "Design Development": {
         "1 Storey": 0,
-        "2 Storeys": 6000,
-        "3 Storeys": 15000,
-        "4+ Storeys": 25000
+        "2 Storeys": 9000,
+        "3 Storeys": 20000,
+        "4+ Storeys": 34000
       },
       "Documentation": {
         "1 Storey": 0,
-        "2 Storeys": 4000,
-        "3 Storeys": 12000,
-        "4+ Storeys": 20000
+        "2 Storeys": 12000,
+        "3 Storeys": 26000,
+        "4+ Storeys": 42000
       }
     };
 
-    /*
-      PROGRAMME ADDERS
-      Only excess programme adds cost.
-    */
     const extraBedroomAdderByStage = {
-      "Concept Design": 9000,
-      "Design Development": 8000,
-      "Documentation": 6000
+      "Concept Design": 7000,
+      "Design Development": 8500,
+      "Documentation": 10000
     };
 
     const extraBathroomAdderByStage = {
-      "Concept Design": 7000,
-      "Design Development": 7000,
-      "Documentation": 6000
+      "Concept Design": 6000,
+      "Design Development": 7500,
+      "Documentation": 9000
     };
 
-    /*
-      FEATURE ADDERS
-      Stage-sensitive and intentionally restrained.
-    */
     const featureAdjustmentsByStage = {
       "Concept Design": {
-        "Garage": 10000,
-        "Home Office": 8000,
-        "Laundry Room": 0,
-        "Outdoor Living": 8000,
-        "Walk-in Closet": 4000,
-        "Secondary Suite": 20000,
-        "Butler’s Pantry": 6000,
-        "Guest Suite": 12000,
-        "Mudroom / Entry Drop Zone": 4000
-      },
-      "Design Development": {
-        "Garage": 8000,
+        "Garage": 7000,
         "Home Office": 6000,
         "Laundry Room": 0,
         "Outdoor Living": 6000,
         "Walk-in Closet": 3000,
-        "Secondary Suite": 15000,
-        "Butler’s Pantry": 5000,
+        "Secondary Suite": 16000,
+        "Butler’s Pantry": 4000,
         "Guest Suite": 10000,
         "Mudroom / Entry Drop Zone": 3000
       },
+      "Design Development": {
+        "Garage": 9000,
+        "Home Office": 7500,
+        "Laundry Room": 1000,
+        "Outdoor Living": 8000,
+        "Walk-in Closet": 4000,
+        "Secondary Suite": 20000,
+        "Butler’s Pantry": 5000,
+        "Guest Suite": 12000,
+        "Mudroom / Entry Drop Zone": 4000
+      },
       "Documentation": {
-        "Garage": 6000,
-        "Home Office": 4000,
-        "Laundry Room": 0,
-        "Outdoor Living": 4000,
-        "Walk-in Closet": 2000,
-        "Secondary Suite": 12000,
-        "Butler’s Pantry": 4000,
-        "Guest Suite": 8000,
-        "Mudroom / Entry Drop Zone": 2000
+        "Garage": 11000,
+        "Home Office": 9000,
+        "Laundry Room": 2000,
+        "Outdoor Living": 10000,
+        "Walk-in Closet": 5000,
+        "Secondary Suite": 24000,
+        "Butler’s Pantry": 6000,
+        "Guest Suite": 14000,
+        "Mudroom / Entry Drop Zone": 5000
       }
     };
 
-    /*
-      COMPLEXITY PERCENTS
-      Applied to the core stage subtotal only, with caps.
-    */
     const complexityPercents = {
       "Custom Façade Treatment": 0.06,
       "Complex Roof Form": 0.08,
@@ -1973,41 +1945,37 @@
       "Expedited": 0.12
     };
 
-    /*
-      DOCUMENTATION PACKAGE PURPOSE
-      Highest selected package governs the intent.
-    */
     const documentationPackageFees = {
       "Approval Set": 0,
-      "Consultant Issue Set": 15000,
-      "Construction-Oriented Set": 30000
+      "Consultant Issue Set": 18000,
+      "Construction-Oriented Set": 42000
     };
 
     const stageDeliverableExtras = {
       "Concept Design": {
-        "Sections": 8000,
-        "Schedules": 6000,
-        "Details": 12000,
+        "Sections": 10000,
+        "Schedules": 8000,
+        "Details": 15000,
         "3D Views": 18000,
         "Rendered Images": 45000,
         "Approval Set": 18000,
-        "Consultant Issue Set": 28000,
-        "Construction-Oriented Set": 45000
+        "Consultant Issue Set": 30000,
+        "Construction-Oriented Set": 48000
       },
       "Design Development": {
-        "Schedules": 8000,
-        "Details": 12000,
-        "3D Views": 18000,
-        "Rendered Images": 45000,
-        "Approval Set": 12000,
-        "Consultant Issue Set": 22000,
-        "Construction-Oriented Set": 38000
+        "Schedules": 10000,
+        "Details": 18000,
+        "3D Views": 20000,
+        "Rendered Images": 48000,
+        "Approval Set": 22000,
+        "Consultant Issue Set": 34000,
+        "Construction-Oriented Set": 52000
       },
       "Documentation": {
-        "3D Views": 18000,
-        "Rendered Images": 45000,
-        "Details": 20000,
-        "Schedules": 10000
+        "3D Views": 22000,
+        "Rendered Images": 50000,
+        "Details": 24000,
+        "Schedules": 12000
       }
     };
 
@@ -2689,7 +2657,7 @@
       }
 
       if (data.complexity.length > 0) {
-        notes.push(`Design complexity is applied to the core stage fee only and is capped within the builder logic.`);
+        notes.push("Design complexity is applied to the core stage fee only and is capped within the builder logic.");
       }
 
       if (appliedTimelinePercent < 0) {
