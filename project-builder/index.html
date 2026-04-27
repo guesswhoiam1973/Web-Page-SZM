@@ -1677,7 +1677,7 @@
     const quoteLineItems = document.getElementById("quoteLineItems");
     const quoteNote = document.getElementById("quoteNote");
 
-    const STORAGE_KEY = "szm_project_builder_pricing_v2";
+    const STORAGE_KEY = "szm_project_builder_pricing_v3";
 
     const EMPTY_STATE = {
       projectType: "",
@@ -1707,122 +1707,254 @@
       maximumFractionDigits: 0
     });
 
+    /*
+      STAGE-FIRST BASELINES
+      These are not full-project multipliers.
+      They are core stage baselines before setup, scale, programme, feature,
+      deliverable, and adjustment logic is applied.
+    */
     const stageBaselines = {
       "Residential New Build": {
-        "Concept Design": 174000,
-        "Design Development": 156400,
-        "Documentation": 151000
+        "Concept Design": 135000,
+        "Design Development": 122000,
+        "Documentation": 116000
       },
       "Residential Renovation": {
-        "Concept Design": 162000,
-        "Design Development": 149000,
-        "Documentation": 145000
+        "Concept Design": 128000,
+        "Design Development": 120000,
+        "Documentation": 124000
       },
       "Extension / Addition": {
-        "Concept Design": 158000,
-        "Design Development": 146000,
-        "Documentation": 141000
+        "Concept Design": 122000,
+        "Design Development": 116000,
+        "Documentation": 118000
       },
       "Mixed Residential": {
-        "Concept Design": 198000,
-        "Design Development": 184000,
-        "Documentation": 180000
+        "Concept Design": 160000,
+        "Design Development": 150000,
+        "Documentation": 156000
       },
       "Commercial Project": {
-        "Concept Design": 214000,
-        "Design Development": 201000,
-        "Documentation": 208000
+        "Concept Design": 185000,
+        "Design Development": 178000,
+        "Documentation": 190000
       }
     };
 
-    const setupItemsByProject = {
+    /*
+      SETUP / INTAKE ITEMS
+      Concept stage includes project brief + base setup.
+      Later stages include a smaller standalone intake / review allowance
+      because they may be commissioned independently.
+    */
+    const stageSetupItems = {
       "Residential New Build": {
-        brief: 20000,
-        setup: 23000
+        "Concept Design": [
+          { label: "Project Brief / Brief Translation", value: 15000 },
+          { label: "Base Drawing Setup", value: 8000 }
+        ],
+        "Design Development": [
+          { label: "Stage Intake / Existing Material Review", value: 12000 }
+        ],
+        "Documentation": [
+          { label: "Documentation Intake / Existing Material Review", value: 15000 }
+        ]
       },
       "Residential Renovation": {
-        brief: 20000,
-        setup: 23000
+        "Concept Design": [
+          { label: "Project Brief / Brief Translation", value: 15000 },
+          { label: "Base Drawing Setup", value: 8000 }
+        ],
+        "Design Development": [
+          { label: "Stage Intake / Existing Material Review", value: 14000 }
+        ],
+        "Documentation": [
+          { label: "Documentation Intake / Existing Material Review", value: 17000 }
+        ]
       },
       "Extension / Addition": {
-        brief: 19000,
-        setup: 22000
+        "Concept Design": [
+          { label: "Project Brief / Brief Translation", value: 14000 },
+          { label: "Base Drawing Setup", value: 8000 }
+        ],
+        "Design Development": [
+          { label: "Stage Intake / Existing Material Review", value: 13000 }
+        ],
+        "Documentation": [
+          { label: "Documentation Intake / Existing Material Review", value: 16000 }
+        ]
       },
       "Mixed Residential": {
-        brief: 22000,
-        setup: 25000
+        "Concept Design": [
+          { label: "Project Brief / Brief Translation", value: 17000 },
+          { label: "Base Drawing Setup", value: 10000 }
+        ],
+        "Design Development": [
+          { label: "Stage Intake / Existing Material Review", value: 15000 }
+        ],
+        "Documentation": [
+          { label: "Documentation Intake / Existing Material Review", value: 18000 }
+        ]
       },
       "Commercial Project": {
-        brief: 25000,
-        setup: 28000
+        "Concept Design": [
+          { label: "Project Brief / Brief Translation", value: 18000 },
+          { label: "Base Drawing Setup", value: 10000 }
+        ],
+        "Design Development": [
+          { label: "Stage Intake / Existing Material Review", value: 16000 }
+        ],
+        "Documentation": [
+          { label: "Documentation Intake / Existing Material Review", value: 19000 }
+        ]
       }
     };
 
-    const storeyAdjustments = {
-      "1 Storey": -10000,
-      "2 Storeys": 0,
-      "3 Storeys": 18000,
-      "4+ Storeys": 35000
+    /*
+      SCALE ADDERS
+      Additive, not multiplicative.
+    */
+    const sizeAdjustmentsByStage = {
+      "Concept Design": {
+        "Under 1,500 sq ft": -12000,
+        "1,500–2,400 sq ft": 0,
+        "2,400–3,500 sq ft": 18000,
+        "3,500+ sq ft": 36000
+      },
+      "Design Development": {
+        "Under 1,500 sq ft": -8000,
+        "1,500–2,400 sq ft": 0,
+        "2,400–3,500 sq ft": 15000,
+        "3,500+ sq ft": 30000
+      },
+      "Documentation": {
+        "Under 1,500 sq ft": -6000,
+        "1,500–2,400 sq ft": 0,
+        "2,400–3,500 sq ft": 12000,
+        "3,500+ sq ft": 24000
+      }
     };
 
-    const sizeAdjustments = {
-      "Under 1,500 sq ft": -15000,
-      "1,500–2,400 sq ft": 0,
-      "2,400–3,500 sq ft": 22000,
-      "3,500+ sq ft": 45000
+    const storeyAdjustmentsByStage = {
+      "Concept Design": {
+        "1 Storey": 0,
+        "2 Storeys": 8000,
+        "3 Storeys": 18000,
+        "4+ Storeys": 30000
+      },
+      "Design Development": {
+        "1 Storey": 0,
+        "2 Storeys": 6000,
+        "3 Storeys": 15000,
+        "4+ Storeys": 25000
+      },
+      "Documentation": {
+        "1 Storey": 0,
+        "2 Storeys": 4000,
+        "3 Storeys": 12000,
+        "4+ Storeys": 20000
+      }
     };
 
-    const featureAdjustments = {
-      "Garage": 10000,
-      "Home Office": 12000,
-      "Laundry Room": 8000,
-      "Outdoor Living": 12000,
-      "Walk-in Closet": 9000,
-      "Secondary Suite": 28000,
-      "Butler’s Pantry": 12000,
-      "Guest Suite": 18000,
-      "Mudroom / Entry Drop Zone": 7000
+    /*
+      PROGRAMME ADDERS
+      Only excess programme adds cost.
+    */
+    const extraBedroomAdderByStage = {
+      "Concept Design": 9000,
+      "Design Development": 8000,
+      "Documentation": 6000
     };
 
+    const extraBathroomAdderByStage = {
+      "Concept Design": 7000,
+      "Design Development": 7000,
+      "Documentation": 6000
+    };
+
+    /*
+      FEATURE ADDERS
+      Stage-sensitive and intentionally restrained.
+    */
+    const featureAdjustmentsByStage = {
+      "Concept Design": {
+        "Garage": 10000,
+        "Home Office": 8000,
+        "Laundry Room": 0,
+        "Outdoor Living": 8000,
+        "Walk-in Closet": 4000,
+        "Secondary Suite": 20000,
+        "Butler’s Pantry": 6000,
+        "Guest Suite": 12000,
+        "Mudroom / Entry Drop Zone": 4000
+      },
+      "Design Development": {
+        "Garage": 8000,
+        "Home Office": 6000,
+        "Laundry Room": 0,
+        "Outdoor Living": 6000,
+        "Walk-in Closet": 3000,
+        "Secondary Suite": 15000,
+        "Butler’s Pantry": 5000,
+        "Guest Suite": 10000,
+        "Mudroom / Entry Drop Zone": 3000
+      },
+      "Documentation": {
+        "Garage": 6000,
+        "Home Office": 4000,
+        "Laundry Room": 0,
+        "Outdoor Living": 4000,
+        "Walk-in Closet": 2000,
+        "Secondary Suite": 12000,
+        "Butler’s Pantry": 4000,
+        "Guest Suite": 8000,
+        "Mudroom / Entry Drop Zone": 2000
+      }
+    };
+
+    /*
+      COMPLEXITY PERCENTS
+      Applied to the core stage subtotal only, with caps.
+    */
     const complexityPercents = {
-      "Custom Façade Treatment": 0.04,
-      "Complex Roof Form": 0.05,
-      "High-End Design Expectation": 0.06,
-      "Split-Level Arrangement": 0.04,
-      "Courtyard Planning": 0.04,
-      "Multi-Unit Planning": 0.08,
-      "Consultant Coordination": 0.04,
-      "Pool / Spa Integration": 0.04,
-      "Sustainability Strategy": 0.03,
-      "Interior Fit-Out Emphasis": 0.04
+      "Custom Façade Treatment": 0.06,
+      "Complex Roof Form": 0.08,
+      "High-End Design Expectation": 0.10,
+      "Split-Level Arrangement": 0.08,
+      "Courtyard Planning": 0.08,
+      "Multi-Unit Planning": 0.12,
+      "Consultant Coordination": 0.08,
+      "Pool / Spa Integration": 0.06,
+      "Sustainability Strategy": 0.04,
+      "Interior Fit-Out Emphasis": 0.06
     };
 
     const siteConditionPercents = {
       "Flat": 0,
-      "Sloped": 0.06,
+      "Sloped": 0.05,
       "Corner Lot": 0.03,
       "Narrow Lot": 0.05,
-      "Coastal": 0.06,
-      "Existing Structure": 0.07
+      "Coastal": 0.04,
+      "Existing Structure": 0.08
     };
 
     const startingConditionPercents = {
       "Vacant Site": 0,
       "Existing House": 0.06,
-      "Partially Built": 0.1,
-      "Redevelopment": 0.08
+      "Partially Built": 0.08,
+      "Redevelopment": 0.10
     };
 
     const planningPercents = {
       "Residential Zone": 0,
-      "Mixed-Use Zone": 0.03,
-      "Commercial Zone": 0.04,
-      "Rural / Open Plot": 0.01
+      "Mixed-Use Zone": 0.04,
+      "Commercial Zone": 0.05,
+      "Rural / Open Plot": 0.02
     };
 
     const accessPercents = {
-      "Vehicle Access, Rear Lane": 0.01,
-      "Vehicle Access Only": 0,
+      "Vehicle Access, Rear Lane": 0.02,
+      "Vehicle Access Only": 0.01,
       "Pedestrian Access Only": 0.03,
       "Corner Access": 0.02
     };
@@ -1831,59 +1963,51 @@
       "Excellent": 0,
       "Moderate": 0,
       "Limited": 0.01,
-      "Shaded": 0.01
+      "Shaded": 0.02
     };
 
     const timelinePercents = {
-      "Flexible": -0.02,
+      "Flexible": -0.03,
       "Standard": 0,
       "Priority": 0.08,
-      "Expedited": 0.14
+      "Expedited": 0.12
     };
 
-    const addOnFees = {
-      "Site Visit": 20000,
-      "Measured Survey / As-Built Verification": 45000,
-      "BOQ / Quantity Support": 65000,
-      "Electrical Layout Drafting": 60000,
-      "Plumbing Layout Drafting": 60000,
-      "Furniture / Interior Layout": 45000,
-      "Additional Revision Round": 30000,
-      "Alternate Design Option": 50000,
-      "Presentation Boards": 25000,
-      "Post-Design Support": 40000
-    };
-
+    /*
+      DOCUMENTATION PACKAGE PURPOSE
+      Highest selected package governs the intent.
+    */
     const documentationPackageFees = {
       "Approval Set": 0,
-      "Consultant Issue Set": 22000,
-      "Construction-Oriented Set": 52000
+      "Consultant Issue Set": 15000,
+      "Construction-Oriented Set": 30000
     };
 
     const stageDeliverableExtras = {
       "Concept Design": {
-        "Sections": 18000,
-        "Schedules": 12000,
-        "Details": 25000,
-        "3D Views": 22000,
-        "Rendered Images": 50000,
-        "Approval Set": 30000,
-        "Consultant Issue Set": 55000,
-        "Construction-Oriented Set": 90000
+        "Sections": 8000,
+        "Schedules": 6000,
+        "Details": 12000,
+        "3D Views": 18000,
+        "Rendered Images": 45000,
+        "Approval Set": 18000,
+        "Consultant Issue Set": 28000,
+        "Construction-Oriented Set": 45000
       },
       "Design Development": {
-        "Schedules": 14000,
-        "Details": 24000,
+        "Schedules": 8000,
+        "Details": 12000,
         "3D Views": 18000,
-        "Rendered Images": 50000,
-        "Approval Set": 24000,
-        "Consultant Issue Set": 42000,
-        "Construction-Oriented Set": 78000
+        "Rendered Images": 45000,
+        "Approval Set": 12000,
+        "Consultant Issue Set": 22000,
+        "Construction-Oriented Set": 38000
       },
       "Documentation": {
         "3D Views": 18000,
-        "Rendered Images": 50000,
-        "Details": 28000
+        "Rendered Images": 45000,
+        "Details": 20000,
+        "Schedules": 10000
       }
     };
 
@@ -2109,11 +2233,79 @@
       return Number(value) || 0;
     }
 
-    function getSetupItems(projectType) {
-      return setupItemsByProject[projectType] || {
-        brief: 20000,
-        setup: 23000
+    function getStageSetupItems(projectType, stage) {
+      const projectItems = stageSetupItems[projectType];
+      if (!projectItems) return [];
+      return cloneData(projectItems[stage] || []);
+    }
+
+    function getSizeAdjustment(stage, sizeRange) {
+      return (sizeAdjustmentsByStage[stage] && sizeAdjustmentsByStage[stage][sizeRange]) || 0;
+    }
+
+    function getStoreyAdjustment(stage, storeys) {
+      return (storeyAdjustmentsByStage[stage] && storeyAdjustmentsByStage[stage][storeys]) || 0;
+    }
+
+    function getProgramAdjustments(data) {
+      let bedroomAdjustment = 0;
+      let bathroomAdjustment = 0;
+
+      const bedroomCount = numberFromValue(data.bedrooms);
+      const bathroomCount = numberFromValue(data.bathrooms);
+
+      if (data.projectType !== "Commercial Project" && bedroomCount > 3) {
+        bedroomAdjustment = (bedroomCount - 3) * (extraBedroomAdderByStage[data.stage] || 0);
+      }
+
+      if (bathroomCount > 2) {
+        bathroomAdjustment = (bathroomCount - 2) * (extraBathroomAdderByStage[data.stage] || 0);
+      }
+
+      return {
+        bedroomAdjustment,
+        bathroomAdjustment,
+        total: bedroomAdjustment + bathroomAdjustment
       };
+    }
+
+    function getFeatureAdjustment(stage, features) {
+      const map = featureAdjustmentsByStage[stage] || {};
+      return features.reduce((sum, item) => {
+        return sum + (map[item] || 0);
+      }, 0);
+    }
+
+    function getAddOnFee(projectType, addon) {
+      if (addon === "Measured Survey / As-Built Verification") {
+        if (projectType === "Commercial Project" || projectType === "Mixed Residential") {
+          return 50000;
+        }
+        return 35000;
+      }
+
+      const baseAddonFees = {
+        "Site Visit": 20000,
+        "BOQ / Quantity Support": 28000,
+        "Electrical Layout Drafting": 35000,
+        "Plumbing Layout Drafting": 35000,
+        "Furniture / Interior Layout": 25000,
+        "Additional Revision Round": 18000,
+        "Alternate Design Option": 35000,
+        "Presentation Boards": 15000,
+        "Post-Design Support": 20000
+      };
+
+      return baseAddonFees[addon] || 0;
+    }
+
+    function getAddOnItems(projectType, addons) {
+      return addons
+        .map((item) => ({
+          label: item,
+          value: getAddOnFee(projectType, item)
+        }))
+        .filter((item) => item.value > 0);
     }
 
     function getDocumentationPackage(deliverables) {
@@ -2173,7 +2365,6 @@
           "Floor Plans",
           "Elevations",
           "Sections",
-          "Schedules",
           "Approval Set"
         ]);
       }
@@ -2181,9 +2372,9 @@
       return new Set();
     }
 
-    function getStageStandardOutputsText(stage, documentationPackage) {
+    function getStandardOutputsText(stage, documentationPackage) {
       if (stage === "Concept Design") {
-        return "Standard concept scope assumes concept plans and basic concept elevations.";
+        return "Standard concept scope assumes concept plans and basic concept frontage / elevation direction.";
       }
 
       if (stage === "Design Development") {
@@ -2192,148 +2383,62 @@
 
       if (stage === "Documentation") {
         if (documentationPackage === "Construction-Oriented Set") {
-          return "Documentation scope is interpreted as a construction-oriented package with detailed drawing intent.";
+          return "Documentation scope is being interpreted as a construction-oriented drawing package.";
         }
 
         if (documentationPackage === "Consultant Issue Set") {
-          return "Documentation scope is interpreted as a consultant issue package for coordinated technical sharing.";
+          return "Documentation scope is being interpreted as a consultant issue package.";
         }
 
-        return "Documentation scope is interpreted as an approval-oriented documentation package.";
+        return "Documentation scope is being interpreted as an approval-oriented documentation package.";
       }
 
       return "";
     }
 
-    function getProgramAdjustments(data) {
-      let bedroomAdjustment = 0;
-      let bathroomAdjustment = 0;
-
-      const bedroomCount = numberFromValue(data.bedrooms);
-      const bathroomCount = numberFromValue(data.bathrooms);
-
-      const bedroomThresholdProjects = [
-        "Residential New Build",
-        "Residential Renovation",
-        "Extension / Addition",
-        "Mixed Residential"
-      ];
-
-      if (bedroomThresholdProjects.includes(data.projectType) && bedroomCount > 3) {
-        bedroomAdjustment = (bedroomCount - 3) * 8000;
-      }
-
-      if (bathroomCount > 2) {
-        bathroomAdjustment = (bathroomCount - 2) * 7000;
-      }
-
-      return {
-        bedroomAdjustment,
-        bathroomAdjustment,
-        total: bedroomAdjustment + bathroomAdjustment
-      };
-    }
-
-    function getFeatureAdjustments(features) {
-      return features.reduce((sum, item) => sum + (featureAdjustments[item] || 0), 0);
-    }
-
-    function getAddOnItems(addons) {
-      return addons.map((item) => {
-        return {
-          label: item,
-          value: addOnFees[item] || 0
-        };
-      }).filter((item) => item.value > 0);
-    }
-
-    function getBudgetTension(data) {
-      if (!data.budget || data.budget === "Prefer not to say") {
-        return false;
-      }
-
-      if (data.budget === "Under GYD 2M") {
-        return (
-          data.projectType !== "Residential Renovation" ||
-          data.sizeRange === "2,400–3,500 sq ft" ||
-          data.sizeRange === "3,500+ sq ft" ||
-          data.stage === "Documentation"
-        );
-      }
-
-      if (data.budget === "GYD 2M - 10M") {
-        return (
-          data.projectType === "Commercial Project" ||
-          data.projectType === "Mixed Residential" ||
-          data.sizeRange === "3,500+ sq ft"
-        );
-      }
-
-      if (data.budget === "GYD 10M - 30M") {
-        return (
-          data.projectType === "Commercial Project" &&
-          data.sizeRange === "3,500+ sq ft"
-        );
-      }
-
-      return false;
-    }
-
     function getDeliverableAdjustments(data, notes, reviewReasons) {
       const selected = data.deliverables || [];
-      const documentationPackage = data.stage === "Documentation"
-        ? getDocumentationPackage(selected)
-        : "";
+      const documentationPackage =
+        data.stage === "Documentation" ? getDocumentationPackage(selected) : "";
 
-      const packageSelectionCount = packageDeliverablePriority.filter((item) => selected.includes(item)).length;
+      const packageSelectionCount = packageDeliverablePriority.filter((item) =>
+        selected.includes(item)
+      ).length;
 
-      if (data.stage === "Documentation") {
-        if (packageSelectionCount === 0) {
-          notes.push("Documentation pricing defaults to an Approval Set unless a higher package is selected.");
-        }
-
-        if (packageSelectionCount > 1) {
-          notes.push("Multiple documentation package boxes were selected; pricing is interpreted at the highest selected package only.");
-        }
+      if (data.stage === "Documentation" && packageSelectionCount > 1) {
+        notes.push("Multiple documentation package boxes were selected. Pricing is consolidated to the highest selected package purpose.");
       }
 
       const included = getStageIncludedDeliverables(data.stage, documentationPackage);
-      let documentationPackageAdjustment = 0;
-      let extraDeliverableAdjustment = 0;
-      const extraDeliverableLabels = [];
+
+      let packageAdjustment = 0;
+      let extraAdjustment = 0;
 
       if (data.stage === "Documentation") {
-        documentationPackageAdjustment = documentationPackageFees[documentationPackage] || 0;
+        packageAdjustment = documentationPackageFees[documentationPackage] || 0;
 
         selected.forEach((item) => {
-          if (packageDeliverablePriority.includes(item)) {
-            return;
-          }
-
+          if (packageDeliverablePriority.includes(item)) return;
           if (!included.has(item)) {
-            const fee = stageDeliverableExtras["Documentation"][item] || 0;
-            if (fee > 0) {
-              extraDeliverableAdjustment += fee;
-              extraDeliverableLabels.push(item);
-            }
+            extraAdjustment += (stageDeliverableExtras.Documentation[item] || 0);
           }
         });
       } else {
         selected.forEach((item) => {
           if (!included.has(item)) {
-            const fee = (stageDeliverableExtras[data.stage] || {})[item] || 0;
-            if (fee > 0) {
-              extraDeliverableAdjustment += fee;
-              extraDeliverableLabels.push(item);
-            }
+            extraAdjustment += ((stageDeliverableExtras[data.stage] || {})[item] || 0);
           }
         });
 
         if (
           data.stage === "Concept Design" &&
-          (selected.includes("Consultant Issue Set") || selected.includes("Construction-Oriented Set"))
+          (
+            selected.includes("Details") ||
+            selected.includes("Consultant Issue Set") ||
+            selected.includes("Construction-Oriented Set")
+          )
         ) {
-          reviewReasons.push("Selected deliverables extend beyond normal concept-stage output.");
+          reviewReasons.push("Selected deliverables extend beyond a normal concept-stage output band.");
         }
 
         if (
@@ -2346,13 +2451,36 @@
 
       return {
         documentationPackage,
-        included,
-        packageSelectionCount,
-        documentationPackageAdjustment,
-        extraDeliverableAdjustment,
-        total: documentationPackageAdjustment + extraDeliverableAdjustment,
-        extraDeliverableLabels
+        packageAdjustment,
+        extraAdjustment,
+        total: packageAdjustment + extraAdjustment
       };
+    }
+
+    function getBudgetUpperLimit(budget) {
+      const map = {
+        "Under GYD 2M": 2000000,
+        "GYD 2M - 10M": 10000000,
+        "GYD 10M - 30M": 30000000,
+        "GYD 30M - 100M": 100000000,
+        "GYD 100M+": Infinity,
+        "Prefer not to say": Infinity
+      };
+
+      return map[budget] ?? Infinity;
+    }
+
+    function getBudgetTension(data, total) {
+      if (!data.budget || data.budget === "Prefer not to say") return false;
+
+      const upperLimit = getBudgetUpperLimit(data.budget);
+      if (!Number.isFinite(upperLimit)) return false;
+
+      let ratioLimit = 0.1;
+      if (data.stage === "Design Development") ratioLimit = 0.09;
+      if (data.stage === "Documentation") ratioLimit = 0.08;
+
+      return total > upperLimit * ratioLimit;
     }
 
     function computePricing(data) {
@@ -2391,54 +2519,73 @@
         };
       }
 
-      const stageCoreFee =
+      const stageBaseline =
         (stageBaselines[data.projectType] && stageBaselines[data.projectType][data.stage]) || 0;
 
-      const setupItems = getSetupItems(data.projectType);
-      const scaleAdjustment =
-        (storeyAdjustments[data.storeys] || 0) +
-        (sizeAdjustments[data.sizeRange] || 0);
+      const setupLineItems = getStageSetupItems(data.projectType, data.stage);
+      const setupTotal = setupLineItems.reduce((sum, item) => sum + item.value, 0);
+
+      const sizeAdjustment = getSizeAdjustment(data.stage, data.sizeRange);
+      const storeyAdjustment = getStoreyAdjustment(data.stage, data.storeys);
 
       const programAdjustments = getProgramAdjustments(data);
-      const featureAdjustment = getFeatureAdjustments(data.features);
+      const featureAdjustment = getFeatureAdjustment(data.stage, data.features);
 
       const deliverableData = getDeliverableAdjustments(data, notes, reviewReasons);
-      const standardOutputsText = getStageStandardOutputsText(data.stage, deliverableData.documentationPackage);
+      const standardOutputsText = getStandardOutputsText(data.stage, deliverableData.documentationPackage);
 
-      const rawComplexityPercent = data.complexity.reduce((sum, item) => {
-        return sum + (complexityPercents[item] || 0);
-      }, 0);
+      const coreStageSubtotal =
+        stageBaseline +
+        sizeAdjustment +
+        storeyAdjustment +
+        programAdjustments.total +
+        featureAdjustment +
+        deliverableData.total;
 
-      const sitePercent =
+      const rawSiteContextPercent =
         (siteConditionPercents[data.siteCondition] || 0) +
         (startingConditionPercents[data.startingCondition] || 0) +
         (planningPercents[data.planningContext] || 0) +
         (accessPercents[data.access] || 0) +
         (sunExposurePercents[data.sunExposure] || 0);
 
+      const rawComplexityPercent = data.complexity.reduce((sum, item) => {
+        return sum + (complexityPercents[item] || 0);
+      }, 0);
+
       const timelinePercent = timelinePercents[data.timeline] || 0;
 
-      if (
-        data.projectType === "Mixed Residential" &&
-        (
-          data.sizeRange === "3,500+ sq ft" ||
-          data.deliverables.length >= 4 ||
-          data.complexity.length >= 3
-        )
-      ) {
-        reviewReasons.push("Mixed residential scope is carrying heavier than standard complexity.");
-      }
+      const hasExistingCondition =
+        data.siteCondition === "Existing Structure" ||
+        data.startingCondition === "Existing House" ||
+        data.startingCondition === "Partially Built" ||
+        data.startingCondition === "Redevelopment";
+
+      const hasFieldVerification =
+        data.addons.includes("Site Visit") ||
+        data.addons.includes("Measured Survey / As-Built Verification");
 
       if (data.projectType === "Commercial Project" && data.stage === "Documentation") {
-        reviewReasons.push("Commercial documentation packages require review before confirmation.");
+        reviewReasons.push("Commercial documentation packages require internal review before confirmation.");
+      }
+
+      if (data.projectType === "Mixed Residential" && (data.complexity.length >= 3 || data.deliverables.length >= 4)) {
+        reviewReasons.push("Mixed residential scope is carrying heavier than the normal auto-quote band.");
       }
 
       if (data.complexity.includes("Multi-Unit Planning")) {
         reviewReasons.push("Multi-unit planning was selected.");
       }
 
-      if (data.startingCondition === "Partially Built" || data.startingCondition === "Redevelopment") {
-        reviewReasons.push("Starting condition suggests non-standard existing works.");
+      if (data.storeys === "4+ Storeys") {
+        reviewReasons.push("4+ storeys selected.");
+      }
+
+      if (
+        (data.startingCondition === "Partially Built" || data.startingCondition === "Redevelopment") &&
+        data.stage !== "Concept Design"
+      ) {
+        reviewReasons.push("Existing partially built or redevelopment conditions increase review needs.");
       }
 
       if (
@@ -2464,117 +2611,150 @@
       }
 
       if (
-        data.sizeRange === "3,500+ sq ft" &&
-        (
-          data.deliverables.length >= 5 ||
-          data.complexity.length >= 3 ||
-          data.projectType === "Commercial Project"
-        )
+        data.stage === "Documentation" &&
+        hasExistingCondition &&
+        !hasFieldVerification
       ) {
-        reviewReasons.push("Large project size combined with expanded scope suggests review.");
+        reviewReasons.push("Existing-condition documentation normally requires site verification or measured survey.");
+      }
+
+      if (
+        data.projectType === "Commercial Project" &&
+        data.deliverables.includes("Rendered Images") &&
+        data.deliverables.includes("Construction-Oriented Set")
+      ) {
+        reviewReasons.push("Commercial documentation plus rendering output should be reviewed as a combined scope.");
       }
 
       const manualReview = reviewReasons.length > 0;
 
-      const complexityCap = manualReview ? 0.25 : 0.22;
-      const complexityPercent = Math.min(rawComplexityPercent, complexityCap);
+      const siteContextPercent = Math.min(rawSiteContextPercent, 0.14);
+      const complexityPercentCap = manualReview ? 0.14 : 0.10;
+      const complexityPercent = Math.min(rawComplexityPercent, complexityPercentCap);
 
-      const siteAdjustment = stageCoreFee * sitePercent;
-      const complexityAdjustment = stageCoreFee * complexityPercent;
-      const timelineAdjustment = stageCoreFee * timelinePercent;
+      const positiveCap = manualReview ? 0.25 : 0.20;
+      const positiveSite = Math.max(0, siteContextPercent);
+      const positiveComplexity = Math.max(0, complexityPercent);
+      const positiveTimeline = Math.max(0, timelinePercent);
 
-      const addOnItems = getAddOnItems(data.addons);
+      const positiveTotal = positiveSite + positiveComplexity + positiveTimeline;
+      const positiveScale = positiveTotal > positiveCap ? (positiveCap / positiveTotal) : 1;
+
+      const appliedSitePercent = positiveSite * positiveScale;
+      const appliedComplexityPercent = positiveComplexity * positiveScale;
+      const appliedTimelinePercent =
+        (positiveTimeline * positiveScale) + Math.min(0, timelinePercent);
+
+      const siteAdjustment = coreStageSubtotal * appliedSitePercent;
+      const complexityAdjustment = coreStageSubtotal * appliedComplexityPercent;
+      const timelineAdjustment = coreStageSubtotal * appliedTimelinePercent;
+
+      const addOnItems = getAddOnItems(data.projectType, data.addons);
       const addOnsTotalValue = addOnItems.reduce((sum, item) => sum + item.value, 0);
 
       const total =
-        stageCoreFee +
-        setupItems.brief +
-        setupItems.setup +
-        scaleAdjustment +
-        programAdjustments.total +
-        featureAdjustment +
-        deliverableData.total +
+        setupTotal +
+        coreStageSubtotal +
         siteAdjustment +
         complexityAdjustment +
         timelineAdjustment +
         addOnsTotalValue;
 
-      let rangePercent = 0.1;
+      let rangePercent = 0.10;
 
       if (
         !manualReview &&
         data.stage === "Concept Design" &&
         data.projectType === "Residential New Build" &&
         data.complexity.length <= 1 &&
-        data.deliverables.length <= 2
+        data.deliverables.length <= 3
       ) {
         rangePercent = 0.08;
-      } else if (!manualReview && data.stage === "Design Development") {
-        rangePercent = 0.1;
       } else if (!manualReview && data.stage === "Documentation") {
         rangePercent = 0.12;
-      }
-
-      if (manualReview) {
-        rangePercent = 0.18;
+      } else if (manualReview) {
+        rangePercent = 0.15;
       }
 
       const lowRange = total * (1 - rangePercent);
       const highRange = total * (1 + rangePercent);
 
-      const budgetTension = getBudgetTension(data);
+      const budgetTension = getBudgetTension(data, total);
 
       notes.push(`Selected stage is priced as a standalone ${data.stage.toLowerCase()} service. Later stages are not included unless separately commissioned.`);
       notes.push(standardOutputsText);
 
-      if (deliverableData.documentationPackage) {
+      if (data.stage === "Documentation") {
         notes.push(`Documentation package intent: ${deliverableData.documentationPackage}.`);
       }
 
       if (data.complexity.length > 0) {
-        notes.push(`Design complexity uplift is capped at ${(complexityCap * 100).toFixed(0)}% of the core stage fee.`);
+        notes.push(`Design complexity is applied to the core stage fee only and is capped within the builder logic.`);
       }
 
-      if (timelinePercent < 0) {
-        notes.push("Flexible timing has been treated conservatively with only a modest reduction.");
+      if (appliedTimelinePercent < 0) {
+        notes.push("Flexible timing is treated conservatively with only a modest fee reduction.");
+      }
+
+      if (hasExistingCondition && !hasFieldVerification) {
+        notes.push("Existing-condition projects are more reliable when a site visit or measured survey is included.");
+      }
+
+      if (data.readiness === "Just Exploring") {
+        notes.push("Readiness suggests this estimate should be treated as an early planning figure.");
+      }
+
+      if (data.readiness === "Need Proposal Quickly") {
+        notes.push("Proposal urgency may affect scheduling even where fee logic stays within the standard range.");
       }
 
       if (budgetTension) {
-        notes.push("The stated budget range may be tight relative to the selected project scope.");
+        notes.push("The stated budget range may be tight relative to the selected scope.");
       }
 
       if (manualReview) {
-        notes.push("This preliminary quote should be reviewed internally before it is relied on commercially.");
+        notes.push("This preliminary estimate should be reviewed internally before it is relied on commercially.");
       }
 
       const quoteLines = [];
 
       quoteLines.push({
         label: `Core ${data.stage} fee`,
-        value: stageCoreFee
+        value: stageBaseline
       });
 
-      quoteLines.push({
-        label: "Project Brief / Brief Translation",
-        value: setupItems.brief
-      });
-
-      quoteLines.push({
-        label: "Base Drawing Setup",
-        value: setupItems.setup
-      });
-
-      if (scaleAdjustment !== 0) {
+      setupLineItems.forEach((item) => {
         quoteLines.push({
-          label: "Scale adjustments",
-          value: scaleAdjustment
+          label: item.label,
+          value: item.value
+        });
+      });
+
+      if (sizeAdjustment !== 0) {
+        quoteLines.push({
+          label: "Size adjustment",
+          value: sizeAdjustment
         });
       }
 
-      if (programAdjustments.total !== 0) {
+      if (storeyAdjustment !== 0) {
         quoteLines.push({
-          label: "Program adjustments",
-          value: programAdjustments.total
+          label: "Storey adjustment",
+          value: storeyAdjustment
+        });
+      }
+
+      if (programAdjustments.bedroomAdjustment !== 0) {
+        quoteLines.push({
+          label: "Bedroom programme adjustment",
+          value: programAdjustments.bedroomAdjustment
+        });
+      }
+
+      if (programAdjustments.bathroomAdjustment !== 0) {
+        quoteLines.push({
+          label: "Bathroom / wet-area adjustment",
+          value: programAdjustments.bathroomAdjustment
         });
       }
 
@@ -2585,10 +2765,17 @@
         });
       }
 
-      if (deliverableData.total !== 0) {
+      if (data.stage === "Documentation" && deliverableData.packageAdjustment !== 0) {
         quoteLines.push({
-          label: "Deliverable adjustments",
-          value: deliverableData.total
+          label: "Documentation package upgrade",
+          value: deliverableData.packageAdjustment
+        });
+      }
+
+      if (deliverableData.extraAdjustment !== 0) {
+        quoteLines.push({
+          label: "Non-standard deliverable adjustments",
+          value: deliverableData.extraAdjustment
         });
       }
 
@@ -2627,13 +2814,8 @@
       const statusClass = manualReview ? "bad" : "good";
 
       const coreSubtotal =
-        stageCoreFee +
-        setupItems.brief +
-        setupItems.setup +
-        scaleAdjustment +
-        programAdjustments.total +
-        featureAdjustment +
-        deliverableData.total +
+        setupTotal +
+        coreStageSubtotal +
         siteAdjustment +
         complexityAdjustment +
         timelineAdjustment;
@@ -2646,7 +2828,7 @@
         total,
         lowRange,
         highRange,
-        stageCoreFee,
+        stageCoreFee: stageBaseline,
         coreSubtotal,
         addOnsTotal: addOnsTotalValue,
         notes,
@@ -2751,8 +2933,13 @@
       lines.push(`Site Condition: ${quote.state.siteCondition || "—"}`);
       lines.push(`Starting Condition: ${quote.state.startingCondition || "—"}`);
       lines.push("");
-      lines.push("Line Items:");
 
+      if (quote.pricing.documentationPackage) {
+        lines.push(`Documentation Package Intent: ${quote.pricing.documentationPackage}`);
+        lines.push("");
+      }
+
+      lines.push("Line Items:");
       quote.pricing.quoteLines.forEach((item) => {
         lines.push(`- ${item.label}: ${formatMoney(item.value)}`);
       });
@@ -2777,7 +2964,8 @@
       });
 
       lines.push("");
-      lines.push("This preliminary quote covers the selected stage only. Later stages are not included unless separately commissioned.");
+      lines.push("This preliminary quote covers the selected stage only.");
+      lines.push("Later stages are not included unless separately commissioned.");
       lines.push("This is not a final binding proposal and remains subject to internal review, scope confirmation, exclusions, and written approval.");
 
       return lines.join("\n");
