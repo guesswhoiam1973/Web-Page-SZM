@@ -1798,7 +1798,21 @@
     const budgetRange = document.getElementById("budgetRange");
     const nextStepText = document.getElementById("nextStepText");
 
-    const STORAGE_KEY = "szm_project_builder_state_v2";
+    const STORAGE_KEY = "szm_project_builder_state_v3";
+
+    const EMPTY_STATE = {
+      projectType: "",
+      storeys: "",
+      sizeRange: "",
+      siteCondition: "",
+      orientation: "",
+      access: "",
+      sunExposure: "",
+      startingCondition: "",
+      planningContext: "",
+      styleDirection: "",
+      features: []
+    };
 
     let navSettleTimer;
     let scrollTicking = false;
@@ -1990,7 +2004,7 @@
 
     function numericPart(text) {
       const match = String(text).match(/\d+(\.\d+)?/);
-      return match ? match[0] : text;
+      return match ? match[0] : "—";
     }
 
     function getProgress(data) {
@@ -1999,7 +2013,7 @@
       if (data.projectType) score += 12;
       if (data.storeys) score += 8;
       if (data.sizeRange) score += 8;
-      if (data.features.length >= 3) score += 14;
+      if (data.features.length >= 1) score += 14;
       if (data.siteCondition) score += 10;
       if (data.orientation) score += 8;
       if (data.access) score += 8;
@@ -2012,6 +2026,10 @@
     }
 
     function getBudgetRange(projectType, sizeRange) {
+      if (!projectType || !sizeRange) {
+        return "Budget range pending";
+      }
+
       if (projectType === "Commercial Project") {
         if (sizeRange === "3,500+ sq ft") return "$1.4M – $2.4M";
         if (sizeRange === "2,400–3,500 sq ft") return "$1.1M – $1.8M";
@@ -2036,7 +2054,18 @@
     }
 
     function buildSummarySentence(data) {
-      return `A ${data.projectType.toLowerCase()} with ${data.storeys.toLowerCase()}, approximately ${data.sizeRange.toLowerCase()}, designed with a ${data.styleDirection.toLowerCase()} direction on a ${data.siteCondition.toLowerCase()} site with ${data.orientation.toLowerCase()} orientation.`;
+      if (!data.projectType && !data.styleDirection && !data.sizeRange) {
+        return "Make selections to build a live project brief preview.";
+      }
+
+      const project = data.projectType ? data.projectType.toLowerCase() : "project";
+      const storeys = data.storeys ? data.storeys.toLowerCase() : "undetermined height";
+      const size = data.sizeRange ? data.sizeRange.toLowerCase() : "undetermined size";
+      const style = data.styleDirection ? data.styleDirection.toLowerCase() : "undetermined style";
+      const site = data.siteCondition ? data.siteCondition.toLowerCase() : "undetermined site";
+      const orientation = data.orientation ? data.orientation.toLowerCase() : "undetermined orientation";
+
+      return `A ${project} with ${storeys}, approximately ${size}, shaped by a ${style} direction on a ${site} site with ${orientation}.`;
     }
 
     function buildFeatureChips(features) {
@@ -2067,21 +2096,30 @@
         summaryPreview.classList.remove(className);
       });
 
-      summaryPreview.classList.add(projectClassMap[projectType] || "project-new");
-      summaryPreview.classList.add(styleClassMap[styleDirection] || "style-modern");
+      if (projectType && projectClassMap[projectType]) {
+        summaryPreview.classList.add(projectClassMap[projectType]);
+      } else {
+        summaryPreview.classList.add("project-new");
+      }
+
+      if (styleDirection && styleClassMap[styleDirection]) {
+        summaryPreview.classList.add(styleClassMap[styleDirection]);
+      } else {
+        summaryPreview.classList.add("style-minimal");
+      }
     }
 
     function getBuilderState() {
       return {
         projectType: getCheckedRadioValue("projectType"),
-        storeys: form.storeys.value,
-        sizeRange: form.sizeRange.value,
+        storeys: form.storeys.selectedIndex >= 0 ? form.storeys.value : "",
+        sizeRange: form.sizeRange.selectedIndex >= 0 ? form.sizeRange.value : "",
         siteCondition: getCheckedRadioValue("siteCondition"),
-        orientation: form.orientation.value,
-        access: form.access.value,
-        sunExposure: form.sunExposure.value,
-        startingCondition: form.startingCondition.value,
-        planningContext: form.planningContext.value,
+        orientation: form.orientation.selectedIndex >= 0 ? form.orientation.value : "",
+        access: form.access.selectedIndex >= 0 ? form.access.value : "",
+        sunExposure: form.sunExposure.selectedIndex >= 0 ? form.sunExposure.value : "",
+        startingCondition: form.startingCondition.selectedIndex >= 0 ? form.startingCondition.value : "",
+        planningContext: form.planningContext.selectedIndex >= 0 ? form.planningContext.value : "",
         styleDirection: getCheckedRadioValue("styleDirection"),
         features: getCheckedCheckboxValues("features")
       };
@@ -2102,41 +2140,61 @@
       }
     }
 
+    function clearBuilderForm() {
+      form.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.checked = false;
+      });
+
+      form.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+        input.checked = false;
+      });
+
+      form.querySelectorAll("select").forEach((select) => {
+        select.selectedIndex = -1;
+      });
+    }
+
+    function applyBuilderState(data) {
+      clearBuilderForm();
+
+      if (data.projectType) {
+        const input = form.querySelector(`input[name="projectType"][value="${CSS.escape(data.projectType)}"]`);
+        if (input) input.checked = true;
+      }
+
+      if (data.siteCondition) {
+        const input = form.querySelector(`input[name="siteCondition"][value="${CSS.escape(data.siteCondition)}"]`);
+        if (input) input.checked = true;
+      }
+
+      if (data.styleDirection) {
+        const input = form.querySelector(`input[name="styleDirection"][value="${CSS.escape(data.styleDirection)}"]`);
+        if (input) input.checked = true;
+      }
+
+      if (data.storeys) form.storeys.value = data.storeys;
+      if (data.sizeRange) form.sizeRange.value = data.sizeRange;
+      if (data.orientation) form.orientation.value = data.orientation;
+      if (data.access) form.access.value = data.access;
+      if (data.sunExposure) form.sunExposure.value = data.sunExposure;
+      if (data.startingCondition) form.startingCondition.value = data.startingCondition;
+      if (data.planningContext) form.planningContext.value = data.planningContext;
+
+      if (Array.isArray(data.features)) {
+        form.querySelectorAll('input[name="features"]').forEach((item) => {
+          item.checked = data.features.includes(item.value);
+        });
+      }
+    }
+
     function restoreBuilderState() {
       const raw = localStorage.getItem(STORAGE_KEY);
+
       if (!raw || !form) return;
 
       try {
         const data = JSON.parse(raw);
-
-        if (data.projectType) {
-          const input = form.querySelector(`input[name="projectType"][value="${CSS.escape(data.projectType)}"]`);
-          if (input) input.checked = true;
-        }
-
-        if (data.siteCondition) {
-          const input = form.querySelector(`input[name="siteCondition"][value="${CSS.escape(data.siteCondition)}"]`);
-          if (input) input.checked = true;
-        }
-
-        if (data.styleDirection) {
-          const input = form.querySelector(`input[name="styleDirection"][value="${CSS.escape(data.styleDirection)}"]`);
-          if (input) input.checked = true;
-        }
-
-        if (data.storeys) form.storeys.value = data.storeys;
-        if (data.sizeRange) form.sizeRange.value = data.sizeRange;
-        if (data.orientation) form.orientation.value = data.orientation;
-        if (data.access) form.access.value = data.access;
-        if (data.sunExposure) form.sunExposure.value = data.sunExposure;
-        if (data.startingCondition) form.startingCondition.value = data.startingCondition;
-        if (data.planningContext) form.planningContext.value = data.planningContext;
-
-        if (Array.isArray(data.features)) {
-          form.querySelectorAll('input[name="features"]').forEach((item) => {
-            item.checked = data.features.includes(item.value);
-          });
-        }
+        applyBuilderState(data);
       } catch (error) {
         console.warn("Could not restore builder state.", error);
       }
@@ -2146,31 +2204,36 @@
       const data = getBuilderState();
 
       const hasGarage = data.features.includes("Garage");
-      const bedroomFeature = data.features.find((item) => item.includes("Bedroom")) || "Not set";
-      const bathroomFeature = data.features.find((item) => item.includes("Bathroom")) || "Not set";
+      const bedroomFeature = data.features.find((item) => item.includes("Bedroom")) || "";
+      const bathroomFeature = data.features.find((item) => item.includes("Bathroom")) || "";
       const progress = getProgress(data);
 
       progressBar.style.width = `${progress}%`;
       progressText.textContent = `${progress}%`;
 
       summarySentence.textContent = buildSummarySentence(data);
-      directionChip.textContent = data.styleDirection;
+      directionChip.textContent = data.styleDirection || "Not selected";
 
-      overviewProjectType.textContent = data.projectType;
-      overviewStoreys.textContent = data.storeys;
-      overviewSize.textContent = data.sizeRange;
-      overviewBedrooms.textContent = numericPart(bedroomFeature);
-      overviewBathrooms.textContent = numericPart(bathroomFeature);
-      overviewGarage.textContent = hasGarage ? "Yes" : "No";
-      overviewSite.textContent = data.siteCondition;
-      overviewOrientation.textContent = data.orientation;
-      overviewAccess.textContent = data.access;
-      overviewSun.textContent = data.sunExposure;
-      overviewStart.textContent = data.startingCondition;
-      overviewPlanning.textContent = data.planningContext;
+      overviewProjectType.textContent = data.projectType || "—";
+      overviewStoreys.textContent = data.storeys || "—";
+      overviewSize.textContent = data.sizeRange || "—";
+      overviewBedrooms.textContent = bedroomFeature ? numericPart(bedroomFeature) : "—";
+      overviewBathrooms.textContent = bathroomFeature ? numericPart(bathroomFeature) : "—";
+      overviewGarage.textContent = data.features.length ? (hasGarage ? "Yes" : "No") : "—";
+      overviewSite.textContent = data.siteCondition || "—";
+      overviewOrientation.textContent = data.orientation || "—";
+      overviewAccess.textContent = data.access || "—";
+      overviewSun.textContent = data.sunExposure || "—";
+      overviewStart.textContent = data.startingCondition || "—";
+      overviewPlanning.textContent = data.planningContext || "—";
 
       budgetRange.textContent = getBudgetRange(data.projectType, data.sizeRange);
-      nextStepText.textContent = `Use the enquiry form when you are ready to submit scope details, or book a consultation if you want to talk through the brief before moving forward.`;
+
+      if (!data.projectType && !data.styleDirection && !data.features.length) {
+        nextStepText.textContent = "Select options on the left to shape the project summary, then proceed to enquiry or consultation.";
+      } else {
+        nextStepText.textContent = "Use the enquiry form when you are ready to submit scope details, or book a consultation if you want to talk through the brief before moving forward.";
+      }
 
       buildFeatureChips(data.features);
       updatePreviewClasses(data.projectType, data.styleDirection);
@@ -2190,47 +2253,15 @@
 
     if (clearSelections && form) {
       clearSelections.addEventListener("click", () => {
-        localStorage.removeItem(STORAGE_KEY);
-        form.reset();
-
-        document.getElementById("projectTypeNew").checked = true;
-        document.getElementById("siteFlat").checked = true;
-        document.getElementById("styleModern").checked = true;
-
-        form.storeys.value = "2 Storeys";
-        form.sizeRange.value = "1,800–2,400 sq ft";
-        form.orientation.value = "North-facing";
-        form.access.value = "Vehicle Access, Rear Lane";
-        form.sunExposure.value = "Excellent";
-        form.startingCondition.value = "Vacant Site";
-        form.planningContext.value = "Mixed-Use Zone";
-
-        [
-          "featureBedrooms",
-          "featureBathrooms",
-          "featureGarage",
-          "featureOffice",
-          "featureLaundry",
-          "featureOutdoor"
-        ].forEach((id) => {
-          const input = document.getElementById(id);
-          if (input) input.checked = true;
-        });
-
-        [
-          "featureCloset",
-          "featureSuite",
-          "featurePantry"
-        ].forEach((id) => {
-          const input = document.getElementById(id);
-          if (input) input.checked = false;
-        });
+        applyBuilderState(EMPTY_STATE);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(EMPTY_STATE));
 
         if (saveStatus) {
           saveStatus.textContent = "Cleared";
-          setTimeout(() => {
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(() => {
             saveStatus.textContent = "Saved locally";
-          }, 500);
+          }, 300);
         }
 
         updateBuilder();
