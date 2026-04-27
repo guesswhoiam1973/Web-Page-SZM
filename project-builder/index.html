@@ -11,59 +11,54 @@
   <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="stylesheet" href="../style.css" />
   <style>
-    .configurator-layout {
+    .builder-layout {
       display: grid;
       gap: 20px;
       align-items: start;
     }
 
-    .configurator-panel,
-    .configurator-summary {
+    .builder-panel,
+    .builder-summary {
       background: rgba(255, 255, 255, 0.24);
       border: 1px solid rgba(79, 79, 78, 0.1);
       padding: 22px;
     }
 
-    .configurator-summary {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .configurator-intro {
-      margin: 0 0 22px;
+    .builder-intro {
+      margin: 0 0 24px;
       color: var(--text-soft);
-      font-size: 0.95rem;
+      font-size: 0.96rem;
     }
 
-    .configurator-steps {
+    .builder-steps {
       display: grid;
-      gap: 18px;
+      gap: 24px;
     }
 
-    .configurator-step {
-      padding-bottom: 18px;
+    .builder-step {
+      padding-bottom: 24px;
       border-bottom: 1px solid rgba(79, 79, 78, 0.1);
     }
 
-    .configurator-step:last-child {
+    .builder-step:last-child {
       border-bottom: 0;
       padding-bottom: 0;
     }
 
-    .configurator-step-title {
+    .builder-step-title {
       margin: 0 0 6px;
-      font-size: 1.2rem;
-      color: var(--text-strong);
+      font-size: 1.16rem;
       letter-spacing: -0.02em;
+      color: var(--text-strong);
     }
 
-    .configurator-step-copy {
-      margin: 0 0 14px;
+    .builder-step-copy {
+      margin: 0 0 16px;
       color: var(--text-soft);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
     }
 
-    .configurator-fieldset {
+    .builder-fieldset {
       margin: 0;
       padding: 0;
       border: 0;
@@ -71,121 +66,48 @@
       gap: 14px;
     }
 
-    .choice-grid {
+    .builder-grid-2 {
       display: grid;
       gap: 12px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .choice-card {
+    .builder-grid-3 {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .visual-choice {
       position: relative;
     }
 
-    .choice-card input {
+    .visual-choice input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    .choice-card label {
-      display: block;
+    .visual-choice label {
+      display: grid;
+      gap: 12px;
       min-height: 100%;
       padding: 12px;
       border: 1px solid rgba(79, 79, 78, 0.12);
       background: rgba(255, 255, 255, 0.42);
       cursor: pointer;
       transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease;
+        transform 0.24s ease,
+        border-color 0.24s ease,
+        background 0.24s ease,
+        box-shadow 0.24s ease;
     }
 
-    .choice-card label strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--text-strong);
-      font-size: 0.98rem;
-    }
-
-    .choice-card label span {
-      display: block;
-      font-size: 0.9rem;
-      color: var(--text-soft);
-    }
-
-    .choice-card input:checked + label {
-      border-color: rgba(60, 60, 59, 0.38);
-      background: rgba(255, 255, 255, 0.88);
-      box-shadow: 0 12px 28px rgba(60, 60, 59, 0.06);
+    .visual-choice input:checked + label {
       transform: translateY(-2px);
-    }
-
-    .visual-card label {
-      display: grid;
-      gap: 12px;
-    }
-
-    .visual-thumb {
-      position: relative;
-      aspect-ratio: 16 / 10;
-      border: 1px solid rgba(79, 79, 78, 0.1);
-      overflow: hidden;
-      background-color: #efefed;
-    }
-
-    .visual-thumb::before,
-    .visual-thumb::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .visual-thumb::before {
-      background-image:
-        linear-gradient(rgba(90, 90, 88, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(90, 90, 88, 0.06) 1px, transparent 1px);
-      background-size: 34px 34px;
-    }
-
-    .visual-thumb::after {
-      opacity: 0.88;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-    }
-
-    .visual-project-new::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='110' y='255' width='570' height='145' fill='%23dbdbd8' stroke='%23555553' stroke-width='6'/><rect x='220' y='205' width='240' height='50' fill='%23e8e8e4' stroke='%23555553' stroke-width='6'/><rect x='150' y='290' width='120' height='110' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='300' y='300' width='80' height='100' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='412' y='300' width='80' height='100' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='540' y='275' width='100' height='125' fill='%23d2d2cf' stroke='%23555553' stroke-width='5'/><line x1='110' y1='255' x2='680' y2='255' stroke='%23555553' stroke-width='6'/><line x1='115' y1='252' x2='223' y2='190' stroke='%23555553' stroke-width='6'/><line x1='680' y1='252' x2='575' y2='190' stroke='%23555553' stroke-width='6'/><line x1='223' y1='190' x2='575' y2='190' stroke='%23555553' stroke-width='6'/><line x1='95' y1='400' x2='705' y2='400' stroke='%23898986' stroke-width='3'/></svg>");
-    }
-
-    .visual-project-renovation::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='115' y='230' width='540' height='170' fill='%23e2e2df' stroke='%23555553' stroke-width='6'/><rect x='160' y='280' width='95' height='120' fill='%23f9f9f7' stroke='%23555553' stroke-width='5'/><rect x='290' y='285' width='85' height='85' fill='%23f9f9f7' stroke='%23555553' stroke-width='5'/><rect x='410' y='285' width='85' height='85' fill='%23f9f9f7' stroke='%23555553' stroke-width='5'/><line x1='115' y1='230' x2='300' y2='155' stroke='%23555553' stroke-width='6'/><line x1='300' y1='155' x2='492' y2='155' stroke='%23555553' stroke-width='6'/><line x1='492' y1='155' x2='655' y2='230' stroke='%23555553' stroke-width='6'/><path d='M560 265 l40 0 l0 -38 l48 48 l-48 48 l0 -38 l-40 0 z' fill='%23787876'/><line x1='95' y1='400' x2='705' y2='400' stroke='%23898986' stroke-width='3'/><line x1='615' y1='195' x2='715' y2='110' stroke='%23666664' stroke-width='6'/><line x1='715' y1='195' x2='615' y2='110' stroke='%23666664' stroke-width='6'/></svg>");
-    }
-
-    .visual-project-extension::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='105' y='240' width='360' height='160' fill='%23e1e1de' stroke='%23555553' stroke-width='6'/><line x1='105' y1='240' x2='200' y2='175' stroke='%23555553' stroke-width='6'/><line x1='200' y1='175' x2='372' y2='175' stroke='%23555553' stroke-width='6'/><line x1='372' y1='175' x2='465' y2='240' stroke='%23555553' stroke-width='6'/><rect x='140' y='290' width='85' height='110' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='260' y='290' width='85' height='85' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='465' y='275' width='220' height='125' fill='%23d6d6d3' stroke='%23555553' stroke-width='6'/><line x1='465' y1='275' x2='545' y2='218' stroke='%23555553' stroke-width='6'/><line x1='545' y1='218' x2='685' y2='218' stroke='%23555553' stroke-width='6'/><line x1='685' y1='218' x2='685' y2='400' stroke='%23555553' stroke-width='6'/><line x1='465' y1='325' x2='685' y2='325' stroke='%2371716f' stroke-width='4' stroke-dasharray='12 10'/><circle cx='487' cy='310' r='8' fill='%2371716f'/><circle cx='663' cy='310' r='8' fill='%2371716f'/><line x1='95' y1='400' x2='705' y2='400' stroke='%23898986' stroke-width='3'/></svg>");
-    }
-
-    .visual-project-mixed::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='120' y='200' width='215' height='200' fill='%23e0e0dd' stroke='%23555553' stroke-width='6'/><rect x='335' y='150' width='330' height='250' fill='%23d9d9d6' stroke='%23555553' stroke-width='6'/><rect x='155' y='240' width='70' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='240' y='240' width='60' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='380' y='195' width='70' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='480' y='195' width='70' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='580' y='195' width='50' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='410' y='300' width='180' height='100' fill='%23f3f3f1' stroke='%23555553' stroke-width='5'/><line x1='120' y1='200' x2='335' y2='200' stroke='%23555553' stroke-width='6'/><line x1='335' y1='150' x2='665' y2='150' stroke='%23555553' stroke-width='6'/><line x1='120' y1='200' x2='185' y2='145' stroke='%23555553' stroke-width='6'/><line x1='185' y1='145' x2='285' y2='145' stroke='%23555553' stroke-width='6'/><line x1='285' y1='145' x2='335' y2='200' stroke='%23555553' stroke-width='6'/><line x1='95' y1='400' x2='705' y2='400' stroke='%23898986' stroke-width='3'/></svg>");
-    }
-
-    .visual-style-modern::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='120' y='260' width='560' height='115' fill='%23dadad7' stroke='%23555553' stroke-width='6'/><rect x='220' y='180' width='220' height='80' fill='%23ededea' stroke='%23555553' stroke-width='6'/><rect x='470' y='210' width='130' height='50' fill='%23ededea' stroke='%23555553' stroke-width='6'/><rect x='155' y='290' width='145' height='85' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='330' y='290' width='90' height='85' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='450' y='290' width='90' height='85' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='570' y='280' width='75' height='95' fill='%232f2f2e' stroke='%23555553' stroke-width='5'/><line x1='95' y1='375' x2='705' y2='375' stroke='%23898986' stroke-width='3'/></svg>");
-    }
-
-    .visual-style-tropical::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='120' y='245' width='520' height='145' fill='%23e2e2df' stroke='%23555553' stroke-width='6'/><line x1='120' y1='245' x2='210' y2='175' stroke='%23555553' stroke-width='6'/><line x1='210' y1='175' x2='545' y2='175' stroke='%23555553' stroke-width='6'/><line x1='545' y1='175' x2='640' y2='245' stroke='%23555553' stroke-width='6'/><rect x='155' y='290' width='110' height='100' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='300' y='290' width='95' height='80' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='430' y='290' width='95' height='80' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><line x1='80' y1='390' x2='705' y2='390' stroke='%23898986' stroke-width='3'/><path d='M670 330 c12 -42 38 -82 72 -90 c-18 28 -22 56 -20 84 c-20 -10 -36 -6 -52 6z' fill='%23787876'/><path d='M140 160 c12 -42 38 -82 72 -90 c-18 28 -22 56 -20 84 c-20 -10 -36 -6 -52 6z' fill='%23787876'/></svg>");
-    }
-
-    .visual-style-minimal::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='170' y='230' width='460' height='135' fill='%23ededea' stroke='%23555553' stroke-width='6'/><rect x='225' y='170' width='210' height='60' fill='%23e5e5e2' stroke='%23555553' stroke-width='6'/><rect x='470' y='190' width='105' height='40' fill='%23e5e5e2' stroke='%23555553' stroke-width='6'/><rect x='220' y='275' width='70' height='90' fill='%23f8f8f6' stroke='%23555553' stroke-width='4'/><rect x='320' y='275' width='90' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='4'/><rect x='440' y='275' width='90' height='70' fill='%23f8f8f6' stroke='%23555553' stroke-width='4'/><rect x='560' y='255' width='45' height='110' fill='%232f2f2e' stroke='%23555553' stroke-width='4'/><line x1='150' y1='365' x2='650' y2='365' stroke='%23898986' stroke-width='3'/></svg>");
-    }
-
-    .visual-style-unsure::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23efefed'/><rect x='135' y='245' width='210' height='130' fill='%23e4e4e1' stroke='%23555553' stroke-width='6'/><rect x='455' y='245' width='210' height='130' fill='%23dcdcd9' stroke='%23555553' stroke-width='6'/><line x1='135' y1='245' x2='220' y2='185' stroke='%23555553' stroke-width='6'/><line x1='220' y1='185' x2='315' y2='185' stroke='%23555553' stroke-width='6'/><line x1='315' y1='185' x2='345' y2='245' stroke='%23555553' stroke-width='6'/><rect x='200' y='285' width='80' height='90' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='510' y='275' width='100' height='100' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><path d='M400 145 c50 0 82 28 82 72 c0 33 -18 54 -48 75 c-22 16 -32 26 -32 45 l-44 0 c0 -31 13 -48 41 -68 c27 -19 39 -31 39 -53 c0 -21 -15 -34 -40 -34 c-24 0 -41 12 -61 33 l-29 -28 c24 -28 52 -42 92 -42z' fill='%23656563'/><circle cx='400' cy='382' r='18' fill='%23656563'/></svg>");
+      border-color: rgba(60, 60, 59, 0.32);
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 14px 28px rgba(60, 60, 59, 0.05);
     }
 
     .visual-copy {
@@ -193,28 +115,259 @@
       gap: 4px;
     }
 
-    .check-grid {
+    .visual-copy strong {
+      color: var(--text-strong);
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .visual-copy span {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .massing-card {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0)),
+        rgba(240, 240, 238, 0.9);
+      border: 1px solid rgba(79, 79, 78, 0.08);
+    }
+
+    .massing-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(90, 90, 88, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90, 90, 88, 0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.7;
+    }
+
+    .massing-shape {
+      position: absolute;
+      background: rgba(62, 62, 61, 0.78);
+    }
+
+    .massing-line {
+      position: absolute;
+      background: rgba(62, 62, 61, 0.34);
+    }
+
+    .massing-new .shape-a {
+      left: 11%;
+      bottom: 18%;
+      width: 58%;
+      height: 24%;
+    }
+
+    .massing-new .shape-b {
+      left: 36%;
+      bottom: 42%;
+      width: 31%;
+      height: 14%;
+    }
+
+    .massing-new .shape-c {
+      right: 10%;
+      bottom: 18%;
+      width: 15%;
+      height: 38%;
+    }
+
+    .massing-new .line-a {
+      left: 8%;
+      right: 8%;
+      bottom: 15%;
+      height: 1px;
+    }
+
+    .massing-renovation .shape-a {
+      left: 14%;
+      bottom: 18%;
+      width: 46%;
+      height: 28%;
+    }
+
+    .massing-renovation .shape-b {
+      left: 60%;
+      bottom: 23%;
+      width: 18%;
+      height: 23%;
+      opacity: 0.45;
+    }
+
+    .massing-renovation .shape-c {
+      right: 11%;
+      bottom: 23%;
+      width: 12%;
+      height: 23%;
+      opacity: 0.28;
+    }
+
+    .massing-renovation .line-a {
+      left: 14%;
+      right: 14%;
+      top: 28%;
+      height: 2px;
+      transform: rotate(-10deg);
+      transform-origin: left center;
+    }
+
+    .massing-renovation .line-b {
+      left: 8%;
+      right: 8%;
+      bottom: 15%;
+      height: 1px;
+    }
+
+    .massing-extension .shape-a {
+      left: 11%;
+      bottom: 18%;
+      width: 38%;
+      height: 28%;
+    }
+
+    .massing-extension .shape-b {
+      left: 49%;
+      bottom: 18%;
+      width: 30%;
+      height: 19%;
+      opacity: 0.55;
+    }
+
+    .massing-extension .shape-c {
+      left: 58%;
+      bottom: 40%;
+      width: 21%;
+      height: 10%;
+      opacity: 0.8;
+    }
+
+    .massing-extension .line-a {
+      left: 45%;
+      bottom: 30%;
+      width: 38%;
+      height: 2px;
+      transform: rotate(-10deg);
+      transform-origin: left center;
+    }
+
+    .massing-extension .line-b {
+      left: 8%;
+      right: 8%;
+      bottom: 15%;
+      height: 1px;
+    }
+
+    .massing-mixed .shape-a {
+      left: 10%;
+      bottom: 18%;
+      width: 22%;
+      height: 22%;
+    }
+
+    .massing-mixed .shape-b {
+      left: 34%;
+      bottom: 18%;
+      width: 22%;
+      height: 38%;
+    }
+
+    .massing-mixed .shape-c {
+      left: 58%;
+      bottom: 18%;
+      width: 21%;
+      height: 29%;
+    }
+
+    .massing-mixed .shape-d {
+      right: 10%;
+      bottom: 18%;
+      width: 11%;
+      height: 18%;
+      opacity: 0.55;
+    }
+
+    .massing-mixed .line-a {
+      left: 8%;
+      right: 8%;
+      bottom: 15%;
+      height: 1px;
+    }
+
+    .massing-mixed .line-b {
+      left: 40%;
+      top: 18%;
+      width: 26%;
+      height: 1px;
+    }
+
+    .tone-card {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border: 1px solid rgba(79, 79, 78, 0.08);
+    }
+
+    .tone-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.16), rgba(255,255,255,0)),
+        linear-gradient(rgba(90, 90, 88, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90, 90, 88, 0.04) 1px, transparent 1px);
+      background-size: auto, 24px 24px, 24px 24px;
+    }
+
+    .tone-modern {
+      background:
+        linear-gradient(90deg, #dbdbd6 0 33%, #cfcfca 33% 66%, #50504f 66% 100%);
+    }
+
+    .tone-tropical {
+      background:
+        linear-gradient(90deg, #d7d1c3 0 33%, #9eab95 33% 66%, #6d6f61 66% 100%);
+    }
+
+    .tone-minimal {
+      background:
+        linear-gradient(90deg, #ecece8 0 34%, #d9d9d5 34% 67%, #7c7c78 67% 100%);
+    }
+
+    .tone-unsure {
+      background:
+        linear-gradient(90deg, #d9d9d5 0 25%, #c5ccc8 25% 50%, #d1cbc1 50% 75%, #7d7d78 75% 100%);
+    }
+
+    .tone-bars {
+      position: absolute;
+      inset: auto 10% 12% 10%;
       display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
     }
 
-    .check-item {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 12px 12px;
-      border: 1px solid rgba(79, 79, 78, 0.12);
-      background: rgba(255, 255, 255, 0.38);
+    .tone-bars span {
+      display: block;
+      height: 7px;
+      background: rgba(255,255,255,0.38);
     }
 
-    .check-item input {
-      margin-top: 3px;
+    .tone-bars span:nth-child(1) {
+      width: 72%;
     }
 
-    .check-item span {
-      font-size: 0.94rem;
-      color: var(--text);
+    .tone-bars span:nth-child(2) {
+      width: 56%;
+    }
+
+    .tone-bars span:nth-child(3) {
+      width: 84%;
     }
 
     .select-grid {
@@ -244,12 +397,54 @@
       font: inherit;
     }
 
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip-option {
+      position: relative;
+    }
+
+    .chip-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .chip-option label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid rgba(79, 79, 78, 0.12);
+      background: rgba(255, 255, 255, 0.42);
+      cursor: pointer;
+      transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .chip-option input:checked + label {
+      transform: translateY(-1px);
+      border-color: rgba(60, 60, 59, 0.28);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .chip-option .icon {
+      font-size: 0.96rem;
+      line-height: 1;
+    }
+
     .summary-top {
       display: grid;
       gap: 10px;
       margin-bottom: 18px;
-      position: relative;
-      z-index: 1;
     }
 
     .summary-eyebrow {
@@ -262,7 +457,7 @@
 
     .summary-title {
       margin: 0;
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       color: var(--text-strong);
       letter-spacing: -0.03em;
     }
@@ -304,106 +499,284 @@
     .summary-stack {
       display: grid;
       gap: 16px;
-      position: relative;
-      z-index: 1;
     }
 
-    .summary-preview {
-      display: grid;
-      gap: 12px;
-    }
-
-    .summary-preview-hero {
+    .summary-board {
       position: relative;
-      aspect-ratio: 16 / 10;
-      border: 1px solid rgba(79, 79, 78, 0.1);
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.56);
+      min-height: 280px;
+      border: 1px solid rgba(79, 79, 78, 0.1);
+      background: rgba(255, 255, 255, 0.5);
+      padding: 18px;
+      display: grid;
+      align-content: space-between;
+      gap: 18px;
     }
 
-    .summary-preview-hero::before,
-    .summary-preview-hero::after {
+    .summary-board::before {
       content: "";
       position: absolute;
       inset: 0;
+      background-image:
+        linear-gradient(rgba(90, 90, 88, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90, 90, 88, 0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
       pointer-events: none;
     }
 
-    .summary-preview-hero::before {
-      background-image:
-        linear-gradient(rgba(90, 90, 88, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(90, 90, 88, 0.05) 1px, transparent 1px);
-      background-size: 34px 34px;
+    .summary-board::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.52;
+      pointer-events: none;
+      transition: background 0.25s ease;
     }
 
-    .summary-preview-hero::after {
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      opacity: 0.94;
+    .summary-board.project-new::after {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
+        linear-gradient(90deg, #d9d9d4 0 34%, #cfcfca 34% 68%, #7d7d79 68% 100%);
     }
 
-    .summary-preview-hero.project-new::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 520'><rect width='900' height='520' fill='%23efefed'/><rect x='120' y='270' width='650' height='150' fill='%23d9d9d6' stroke='%23555553' stroke-width='7'/><rect x='270' y='210' width='260' height='60' fill='%23ecece8' stroke='%23555553' stroke-width='7'/><rect x='160' y='305' width='140' height='115' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='340' y='310' width='95' height='110' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='470' y='310' width='95' height='110' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='610' y='290' width='120' height='130' fill='%23d2d2cf' stroke='%23555553' stroke-width='5'/><line x1='120' y1='270' x2='770' y2='270' stroke='%23555553' stroke-width='7'/><line x1='126' y1='267' x2='270' y2='185' stroke='%23555553' stroke-width='7'/><line x1='770' y1='267' x2='630' y2='185' stroke='%23555553' stroke-width='7'/><line x1='270' y1='185' x2='630' y2='185' stroke='%23555553' stroke-width='7'/><line x1='100' y1='420' x2='800' y2='420' stroke='%23898986' stroke-width='3'/></svg>");
+    .summary-board.project-renovation::after {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
+        linear-gradient(90deg, #dad6cc 0 35%, #bfc2ba 35% 67%, #72726e 67% 100%);
     }
 
-    .summary-preview-hero.project-renovation::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 520'><rect width='900' height='520' fill='%23efefed'/><rect x='125' y='245' width='610' height='175' fill='%23e2e2df' stroke='%23555553' stroke-width='7'/><rect x='175' y='305' width='110' height='115' fill='%23f9f9f7' stroke='%23555553' stroke-width='5'/><rect x='320' y='310' width='95' height='90' fill='%23f9f9f7' stroke='%23555553' stroke-width='5'/><rect x='455' y='310' width='95' height='90' fill='%23f9f9f7' stroke='%23555553' stroke-width='5'/><line x1='125' y1='245' x2='335' y2='160' stroke='%23555553' stroke-width='7'/><line x1='335' y1='160' x2='553' y2='160' stroke='%23555553' stroke-width='7'/><line x1='553' y1='160' x2='735' y2='245' stroke='%23555553' stroke-width='7'/><path d='M615 284 l48 0 l0 -44 l56 56 l-56 56 l0 -44 l-48 0 z' fill='%23787876'/><line x1='105' y1='420' x2='795' y2='420' stroke='%23898986' stroke-width='3'/><line x1='680' y1='205' x2='795' y2='108' stroke='%23666664' stroke-width='7'/><line x1='795' y1='205' x2='680' y2='108' stroke='%23666664' stroke-width='7'/></svg>");
+    .summary-board.project-extension::after {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
+        linear-gradient(90deg, #dad9d4 0 40%, #c8c8c1 40% 72%, #777773 72% 100%);
     }
 
-    .summary-preview-hero.project-extension::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 520'><rect width='900' height='520' fill='%23efefed'/><rect x='110' y='250' width='410' height='170' fill='%23e1e1de' stroke='%23555553' stroke-width='7'/><line x1='110' y1='250' x2='220' y2='175' stroke='%23555553' stroke-width='7'/><line x1='220' y1='175' x2='420' y2='175' stroke='%23555553' stroke-width='7'/><line x1='420' y1='175' x2='520' y2='250' stroke='%23555553' stroke-width='7'/><rect x='150' y='305' width='95' height='115' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='285' y='305' width='95' height='90' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='520' y='285' width='250' height='135' fill='%23d6d6d3' stroke='%23555553' stroke-width='7'/><line x1='520' y1='285' x2='610' y2='220' stroke='%23555553' stroke-width='7'/><line x1='610' y1='220' x2='770' y2='220' stroke='%23555553' stroke-width='7'/><line x1='520' y1='340' x2='770' y2='340' stroke='%2371716f' stroke-width='4' stroke-dasharray='14 10'/><circle cx='545' cy='322' r='8' fill='%2371716f'/><circle cx='745' cy='322' r='8' fill='%2371716f'/><line x1='95' y1='420' x2='805' y2='420' stroke='%23898986' stroke-width='3'/></svg>");
+    .summary-board.project-mixed::after {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
+        linear-gradient(90deg, #d6d5cf 0 26%, #c4cbc7 26% 52%, #cec7bc 52% 78%, #7c7b77 78% 100%);
     }
 
-    .summary-preview-hero.project-mixed::after {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 520'><rect width='900' height='520' fill='%23efefed'/><rect x='145' y='215' width='245' height='205' fill='%23e0e0dd' stroke='%23555553' stroke-width='7'/><rect x='390' y='155' width='370' height='265' fill='%23d9d9d6' stroke='%23555553' stroke-width='7'/><rect x='185' y='255' width='75' height='75' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='275' y='255' width='75' height='75' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='440' y='205' width='78' height='78' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='545' y='205' width='78' height='78' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='650' y='205' width='70' height='78' fill='%23f8f8f6' stroke='%23555553' stroke-width='5'/><rect x='470' y='312' width='205' height='108' fill='%23f3f3f1' stroke='%23555553' stroke-width='5'/><line x1='145' y1='215' x2='390' y2='215' stroke='%23555553' stroke-width='7'/><line x1='390' y1='155' x2='760' y2='155' stroke='%23555553' stroke-width='7'/><line x1='145' y1='215' x2='220' y2='150' stroke='%23555553' stroke-width='7'/><line x1='220' y1='150' x2='330' y2='150' stroke='%23555553' stroke-width='7'/><line x1='330' y1='150' x2='390' y2='215' stroke='%23555553' stroke-width='7'/><line x1='105' y1='420' x2='810' y2='420' stroke='%23898986' stroke-width='3'/></svg>");
+    .summary-board-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+      height: 100%;
     }
 
-    .summary-preview-subgrid {
+    .summary-board-top {
       display: grid;
       gap: 12px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .summary-preview-small {
-      border: 1px solid rgba(79, 79, 78, 0.1);
-      background: rgba(255, 255, 255, 0.48);
-      padding: 10px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .summary-preview-small .visual-thumb {
-      aspect-ratio: 4 / 3;
-    }
-
-    .summary-preview-meta {
-      display: grid;
-      gap: 2px;
-    }
-
-    .summary-preview-meta span {
+    .summary-board-top span {
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: var(--text-soft);
+      color: rgba(60, 60, 59, 0.72);
     }
 
-    .summary-preview-meta strong {
+    .summary-board-top h3 {
+      margin: 0;
+      font-size: 1.8rem;
+      line-height: 0.96;
+      letter-spacing: -0.04em;
       color: var(--text-strong);
-      font-size: 0.96rem;
-      font-weight: 600;
+      max-width: 9ch;
+    }
+
+    .summary-board-massing {
+      position: relative;
+      min-height: 120px;
+    }
+
+    .summary-board-massing .shape,
+    .summary-board-massing .line {
+      position: absolute;
+      background: rgba(60, 60, 59, 0.78);
+      transition: all 0.25s ease;
+    }
+
+    .summary-board-massing .line {
+      background: rgba(60, 60, 59, 0.3);
+    }
+
+    .summary-board.project-new .shape-a {
+      left: 8%;
+      bottom: 10%;
+      width: 46%;
+      height: 24%;
+    }
+
+    .summary-board.project-new .shape-b {
+      left: 34%;
+      bottom: 34%;
+      width: 25%;
+      height: 14%;
+    }
+
+    .summary-board.project-new .shape-c {
+      right: 8%;
+      bottom: 10%;
+      width: 14%;
+      height: 40%;
+    }
+
+    .summary-board.project-new .line-a {
+      left: 6%;
+      right: 6%;
+      bottom: 7%;
+      height: 1px;
+    }
+
+    .summary-board.project-renovation .shape-a {
+      left: 10%;
+      bottom: 10%;
+      width: 36%;
+      height: 28%;
+    }
+
+    .summary-board.project-renovation .shape-b {
+      left: 48%;
+      bottom: 17%;
+      width: 18%;
+      height: 21%;
+      opacity: 0.5;
+    }
+
+    .summary-board.project-renovation .shape-c {
+      right: 10%;
+      bottom: 17%;
+      width: 11%;
+      height: 21%;
+      opacity: 0.28;
+    }
+
+    .summary-board.project-renovation .line-a {
+      left: 8%;
+      right: 24%;
+      top: 16%;
+      height: 2px;
+      transform: rotate(-8deg);
+      transform-origin: left center;
+    }
+
+    .summary-board.project-renovation .line-b {
+      left: 6%;
+      right: 6%;
+      bottom: 7%;
+      height: 1px;
+    }
+
+    .summary-board.project-extension .shape-a {
+      left: 8%;
+      bottom: 10%;
+      width: 30%;
+      height: 28%;
+    }
+
+    .summary-board.project-extension .shape-b {
+      left: 40%;
+      bottom: 10%;
+      width: 27%;
+      height: 18%;
+      opacity: 0.55;
+    }
+
+    .summary-board.project-extension .shape-c {
+      left: 49%;
+      bottom: 32%;
+      width: 18%;
+      height: 10%;
+      opacity: 0.8;
+    }
+
+    .summary-board.project-extension .line-a {
+      left: 36%;
+      bottom: 22%;
+      width: 34%;
+      height: 2px;
+      transform: rotate(-10deg);
+      transform-origin: left center;
+    }
+
+    .summary-board.project-extension .line-b {
+      left: 6%;
+      right: 6%;
+      bottom: 7%;
+      height: 1px;
+    }
+
+    .summary-board.project-mixed .shape-a {
+      left: 8%;
+      bottom: 10%;
+      width: 18%;
+      height: 20%;
+    }
+
+    .summary-board.project-mixed .shape-b {
+      left: 30%;
+      bottom: 10%;
+      width: 19%;
+      height: 36%;
+    }
+
+    .summary-board.project-mixed .shape-c {
+      left: 53%;
+      bottom: 10%;
+      width: 18%;
+      height: 28%;
+    }
+
+    .summary-board.project-mixed .shape-d {
+      right: 10%;
+      bottom: 10%;
+      width: 10%;
+      height: 16%;
+      opacity: 0.55;
+    }
+
+    .summary-board.project-mixed .line-a {
+      left: 6%;
+      right: 6%;
+      bottom: 7%;
+      height: 1px;
+    }
+
+    .summary-board.project-mixed .line-b {
+      left: 34%;
+      top: 10%;
+      width: 22%;
+      height: 1px;
+    }
+
+    .summary-board-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .summary-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(79, 79, 78, 0.12);
+      font-size: 0.82rem;
+      color: var(--text);
     }
 
     .summary-card {
-      padding: 14px 14px;
+      padding: 14px;
       border: 1px solid rgba(79, 79, 78, 0.1);
       background: rgba(255, 255, 255, 0.4);
     }
 
     .summary-card-title {
       margin: 0 0 10px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
       color: var(--text-soft);
@@ -411,7 +784,7 @@
 
     .summary-big {
       margin: 0;
-      font-size: 1.28rem;
+      font-size: 1.26rem;
       color: var(--text-strong);
       letter-spacing: -0.02em;
     }
@@ -420,6 +793,7 @@
       margin: 6px 0 0;
       color: var(--text);
       font-size: 0.94rem;
+      line-height: 1.55;
     }
 
     .summary-list {
@@ -433,9 +807,9 @@
     .summary-list li {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
-      border-bottom: 1px solid rgba(79, 79, 78, 0.08);
+      gap: 14px;
       padding-bottom: 8px;
+      border-bottom: 1px solid rgba(79, 79, 78, 0.08);
       font-size: 0.94rem;
     }
 
@@ -463,23 +837,17 @@
       color: var(--text);
     }
 
-    .summary-chip-icon {
-      font-size: 0.95rem;
-      line-height: 1;
-    }
-
     .summary-brief {
       margin: 0;
       font-size: 0.96rem;
       color: var(--text);
-      line-height: 1.65;
+      line-height: 1.68;
     }
 
     .summary-actions {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-top: 4px;
     }
 
     .preview-disclaimer {
@@ -493,21 +861,20 @@
     }
 
     @media (min-width: 980px) {
-      .configurator-layout {
-        grid-template-columns: minmax(0, 1.35fr) minmax(340px, 0.85fr);
+      .builder-layout {
+        grid-template-columns: minmax(0, 1.28fr) minmax(340px, 0.88fr);
       }
 
-      .configurator-summary {
+      .builder-summary {
         position: sticky;
         top: 100px;
       }
     }
 
     @media (max-width: 719px) {
-      .choice-grid,
-      .check-grid,
-      .select-grid,
-      .summary-preview-subgrid {
+      .builder-grid-2,
+      .builder-grid-3,
+      .select-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -569,30 +936,36 @@
         <p class="page-eyebrow reveal">Project Builder</p>
         <h1 class="page-title reveal">Build a structured house project brief.</h1>
         <p class="page-copy reveal-soft">
-          This is a live prototype. It helps define scope, priorities, and likely next steps
-          before moving into enquiry or consultation.
+          This is a prototype. It is meant to define scope and direction more clearly before
+          moving into enquiry or consultation.
         </p>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap configurator-layout">
-        <article class="configurator-panel reveal">
-          <p class="configurator-intro">
-            Make selections across the categories below. The project summary updates live as you build.
+      <div class="wrap builder-layout">
+        <article class="builder-panel reveal">
+          <p class="builder-intro">
+            The selections below update a live summary board. This version focuses on a cleaner,
+            more architectural interface rather than a literal house preview.
           </p>
 
-          <form id="projectBuilderForm" class="configurator-steps">
-            <section class="configurator-step">
-              <h2 class="configurator-step-title">01 / Base project</h2>
-              <p class="configurator-step-copy">Choose the project type that best fits the brief.</p>
+          <form id="projectBuilderForm" class="builder-steps">
+            <section class="builder-step">
+              <h2 class="builder-step-title">01 / Base project</h2>
+              <p class="builder-step-copy">Choose the closest project category.</p>
 
-              <fieldset class="configurator-fieldset">
-                <div class="choice-grid">
-                  <div class="choice-card visual-card">
+              <fieldset class="builder-fieldset">
+                <div class="builder-grid-2">
+                  <div class="visual-choice">
                     <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
                     <label for="projectTypeNew">
-                      <div class="visual-thumb visual-project-new"></div>
+                      <div class="massing-card massing-new">
+                        <span class="massing-shape shape-a"></span>
+                        <span class="massing-shape shape-b"></span>
+                        <span class="massing-shape shape-c"></span>
+                        <span class="massing-line line-a"></span>
+                      </div>
                       <div class="visual-copy">
                         <strong>Residential New Build</strong>
                         <span>New house planned from the ground up.</span>
@@ -600,10 +973,16 @@
                     </label>
                   </div>
 
-                  <div class="choice-card visual-card">
+                  <div class="visual-choice">
                     <input type="radio" name="projectType" id="projectTypeRenovation" value="Residential Renovation" />
                     <label for="projectTypeRenovation">
-                      <div class="visual-thumb visual-project-renovation"></div>
+                      <div class="massing-card massing-renovation">
+                        <span class="massing-shape shape-a"></span>
+                        <span class="massing-shape shape-b"></span>
+                        <span class="massing-shape shape-c"></span>
+                        <span class="massing-line line-a"></span>
+                        <span class="massing-line line-b"></span>
+                      </div>
                       <div class="visual-copy">
                         <strong>Renovation</strong>
                         <span>Rework, upgrade, or reconfigure an existing house.</span>
@@ -611,10 +990,16 @@
                     </label>
                   </div>
 
-                  <div class="choice-card visual-card">
+                  <div class="visual-choice">
                     <input type="radio" name="projectType" id="projectTypeExtension" value="Extension / Addition" />
                     <label for="projectTypeExtension">
-                      <div class="visual-thumb visual-project-extension"></div>
+                      <div class="massing-card massing-extension">
+                        <span class="massing-shape shape-a"></span>
+                        <span class="massing-shape shape-b"></span>
+                        <span class="massing-shape shape-c"></span>
+                        <span class="massing-line line-a"></span>
+                        <span class="massing-line line-b"></span>
+                      </div>
                       <div class="visual-copy">
                         <strong>Extension / Addition</strong>
                         <span>Add rooms or expand an existing structure.</span>
@@ -622,10 +1007,17 @@
                     </label>
                   </div>
 
-                  <div class="choice-card visual-card">
+                  <div class="visual-choice">
                     <input type="radio" name="projectType" id="projectTypeMixed" value="Small Mixed Residential Project" />
                     <label for="projectTypeMixed">
-                      <div class="visual-thumb visual-project-mixed"></div>
+                      <div class="massing-card massing-mixed">
+                        <span class="massing-shape shape-a"></span>
+                        <span class="massing-shape shape-b"></span>
+                        <span class="massing-shape shape-c"></span>
+                        <span class="massing-shape shape-d"></span>
+                        <span class="massing-line line-a"></span>
+                        <span class="massing-line line-b"></span>
+                      </div>
                       <div class="visual-copy">
                         <strong>Mixed Residential</strong>
                         <span>Compact combination of living and supporting uses.</span>
@@ -636,9 +1028,9 @@
               </fieldset>
             </section>
 
-            <section class="configurator-step">
-              <h2 class="configurator-step-title">02 / Scale</h2>
-              <p class="configurator-step-copy">Set the approximate project scale and general size.</p>
+            <section class="builder-step">
+              <h2 class="builder-step-title">02 / Scale</h2>
+              <p class="builder-step-copy">Set the general project size and height.</p>
 
               <div class="select-grid">
                 <label class="input-block">
@@ -662,11 +1054,11 @@
               </div>
             </section>
 
-            <section class="configurator-step">
-              <h2 class="configurator-step-title">03 / Space needs</h2>
-              <p class="configurator-step-copy">Define the basic spatial program.</p>
+            <section class="builder-step">
+              <h2 class="builder-step-title">03 / Space needs</h2>
+              <p class="builder-step-copy">Define the main domestic program.</p>
 
-              <div class="select-grid">
+              <div class="select-grid" style="margin-bottom: 14px;">
                 <label class="input-block">
                   <span>Bedrooms</span>
                   <select name="bedrooms">
@@ -689,44 +1081,44 @@
                 </label>
               </div>
 
-              <fieldset class="configurator-fieldset">
-                <div class="check-grid">
-                  <label class="check-item">
-                    <input type="checkbox" name="features" value="Garage" checked />
-                    <span>Garage</span>
-                  </label>
+              <fieldset class="builder-fieldset">
+                <div class="chip-grid">
+                  <div class="chip-option">
+                    <input type="checkbox" name="features" id="featureGarage" value="Garage" checked />
+                    <label for="featureGarage"><span class="icon">🚗</span><span>Garage</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="features" value="Home Office" />
-                    <span>Home Office</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="features" id="featureOffice" value="Home Office" />
+                    <label for="featureOffice"><span class="icon">💼</span><span>Home Office</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="features" value="Laundry Room" checked />
-                    <span>Laundry Room</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="features" id="featureLaundry" value="Laundry Room" checked />
+                    <label for="featureLaundry"><span class="icon">🧺</span><span>Laundry Room</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="features" value="Outdoor Living Area" checked />
-                    <span>Outdoor Living Area</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="features" id="featureOutdoor" value="Outdoor Living Area" checked />
+                    <label for="featureOutdoor"><span class="icon">🌿</span><span>Outdoor Living</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="features" value="Walk-in Closet" />
-                    <span>Walk-in Closet</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="features" id="featureCloset" value="Walk-in Closet" />
+                    <label for="featureCloset"><span class="icon">👕</span><span>Walk-in Closet</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="features" value="Secondary Suite" />
-                    <span>Secondary Suite</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="features" id="featureSuite" value="Secondary Suite" />
+                    <label for="featureSuite"><span class="icon">🛏️</span><span>Secondary Suite</span></label>
+                  </div>
                 </div>
               </fieldset>
             </section>
 
-            <section class="configurator-step">
-              <h2 class="configurator-step-title">04 / Site conditions</h2>
-              <p class="configurator-step-copy">Describe the context and physical conditions.</p>
+            <section class="builder-step">
+              <h2 class="builder-step-title">04 / Site conditions</h2>
+              <p class="builder-step-copy">Describe the project context and starting condition.</p>
 
               <div class="select-grid">
                 <label class="input-block">
@@ -768,138 +1160,166 @@
               </div>
             </section>
 
-            <section class="configurator-step">
-              <h2 class="configurator-step-title">05 / Design direction</h2>
-              <p class="configurator-step-copy">Select the general design language and starting service stage.</p>
+            <section class="builder-step">
+              <h2 class="builder-step-title">05 / Design direction</h2>
+              <p class="builder-step-copy">Choose the overall tone and likely starting stage.</p>
 
-              <div class="choice-grid" style="margin-bottom: 14px;">
-                <div class="choice-card visual-card">
-                  <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
-                  <label for="styleModern">
-                    <div class="visual-thumb visual-style-modern"></div>
-                    <div class="visual-copy">
-                      <strong>Modern</strong>
-                      <span>Clean lines, controlled forms, contemporary expression.</span>
-                    </div>
-                  </label>
-                </div>
+              <fieldset class="builder-fieldset" style="margin-bottom: 14px;">
+                <div class="builder-grid-2">
+                  <div class="visual-choice">
+                    <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
+                    <label for="styleModern">
+                      <div class="tone-card tone-modern">
+                        <div class="tone-bars">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="visual-copy">
+                        <strong>Modern</strong>
+                        <span>Controlled form, cleaner geometry, sharper contrast.</span>
+                      </div>
+                    </label>
+                  </div>
 
-                <div class="choice-card visual-card">
-                  <input type="radio" name="styleDirection" id="styleTropical" value="Tropical" />
-                  <label for="styleTropical">
-                    <div class="visual-thumb visual-style-tropical"></div>
-                    <div class="visual-copy">
-                      <strong>Tropical</strong>
-                      <span>Climate-responsive, shaded, airy, relaxed.</span>
-                    </div>
-                  </label>
-                </div>
+                  <div class="visual-choice">
+                    <input type="radio" name="styleDirection" id="styleTropical" value="Tropical" />
+                    <label for="styleTropical">
+                      <div class="tone-card tone-tropical">
+                        <div class="tone-bars">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="visual-copy">
+                        <strong>Tropical</strong>
+                        <span>Shaded, airy, climate-responsive, more relaxed.</span>
+                      </div>
+                    </label>
+                  </div>
 
-                <div class="choice-card visual-card">
-                  <input type="radio" name="styleDirection" id="styleMinimal" value="Minimal" />
-                  <label for="styleMinimal">
-                    <div class="visual-thumb visual-style-minimal"></div>
-                    <div class="visual-copy">
-                      <strong>Minimal</strong>
-                      <span>Restrained material palette and simplified form.</span>
-                    </div>
-                  </label>
-                </div>
+                  <div class="visual-choice">
+                    <input type="radio" name="styleDirection" id="styleMinimal" value="Minimal" />
+                    <label for="styleMinimal">
+                      <div class="tone-card tone-minimal">
+                        <div class="tone-bars">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="visual-copy">
+                        <strong>Minimal</strong>
+                        <span>Reduced palette, quieter composition, restraint.</span>
+                      </div>
+                    </label>
+                  </div>
 
-                <div class="choice-card visual-card">
-                  <input type="radio" name="styleDirection" id="styleUnsure" value="Unsure" />
-                  <label for="styleUnsure">
-                    <div class="visual-thumb visual-style-unsure"></div>
-                    <div class="visual-copy">
-                      <strong>Unsure</strong>
-                      <span>Need direction before settling the design approach.</span>
-                    </div>
-                  </label>
+                  <div class="visual-choice">
+                    <input type="radio" name="styleDirection" id="styleUnsure" value="Unsure" />
+                    <label for="styleUnsure">
+                      <div class="tone-card tone-unsure">
+                        <div class="tone-bars">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="visual-copy">
+                        <strong>Unsure</strong>
+                        <span>Need help defining the right architectural direction.</span>
+                      </div>
+                    </label>
+                  </div>
                 </div>
-              </div>
+              </fieldset>
 
-              <div class="choice-grid">
-                <div class="choice-card">
-                  <input type="radio" name="serviceStage" id="stageConcept" value="Concept Design" checked />
-                  <label for="stageConcept">
-                    <strong>Concept Design</strong>
-                    <span>Early planning, direction, and layout development.</span>
-                  </label>
-                </div>
+              <fieldset class="builder-fieldset">
+                <div class="builder-grid-2">
+                  <div class="visual-choice">
+                    <input type="radio" name="serviceStage" id="stageConcept" value="Concept Design" checked />
+                    <label for="stageConcept">
+                      <div class="visual-copy">
+                        <strong>Concept Design</strong>
+                        <span>Early planning, direction, spatial thinking, and layout development.</span>
+                      </div>
+                    </label>
+                  </div>
 
-                <div class="choice-card">
-                  <input type="radio" name="serviceStage" id="stageDevelopment" value="Design Development" />
-                  <label for="stageDevelopment">
-                    <strong>Design Development</strong>
-                    <span>More resolved coordination and refinement.</span>
-                  </label>
-                </div>
+                  <div class="visual-choice">
+                    <input type="radio" name="serviceStage" id="stageDevelopment" value="Design Development" />
+                    <label for="stageDevelopment">
+                      <div class="visual-copy">
+                        <strong>Design Development</strong>
+                        <span>Further refinement, coordination, and clearer technical direction.</span>
+                      </div>
+                    </label>
+                  </div>
 
-                <div class="choice-card">
-                  <input type="radio" name="serviceStage" id="stageDocumentation" value="Documentation" />
-                  <label for="stageDocumentation">
-                    <strong>Documentation</strong>
-                    <span>Drawing information for approval or construction use.</span>
-                  </label>
-                </div>
+                  <div class="visual-choice">
+                    <input type="radio" name="serviceStage" id="stageDocumentation" value="Documentation" />
+                    <label for="stageDocumentation">
+                      <div class="visual-copy">
+                        <strong>Documentation</strong>
+                        <span>Drawing information for approval or construction-oriented use.</span>
+                      </div>
+                    </label>
+                  </div>
 
-                <div class="choice-card">
-                  <input type="radio" name="serviceStage" id="stageUnsure" value="Not Sure" />
-                  <label for="stageUnsure">
-                    <strong>Not Sure</strong>
-                    <span>Need help identifying the correct starting stage.</span>
-                  </label>
+                  <div class="visual-choice">
+                    <input type="radio" name="serviceStage" id="stageUnsure" value="Not Sure" />
+                    <label for="stageUnsure">
+                      <div class="visual-copy">
+                        <strong>Not Sure</strong>
+                        <span>Need help identifying the correct stage to begin from.</span>
+                      </div>
+                    </label>
+                  </div>
                 </div>
-              </div>
+              </fieldset>
             </section>
 
-            <section class="configurator-step">
-              <h2 class="configurator-step-title">06 / Add-ons</h2>
-              <p class="configurator-step-copy">Choose optional support items to test scope direction.</p>
+            <section class="builder-step">
+              <h2 class="builder-step-title">06 / Add-ons</h2>
+              <p class="builder-step-copy">Select optional support items to test possible scope.</p>
 
-              <fieldset class="configurator-fieldset">
-                <div class="check-grid">
-                  <label class="check-item">
-                    <input type="checkbox" name="addons" value="3D Views" />
-                    <span>3D Views</span>
-                  </label>
+              <fieldset class="builder-fieldset">
+                <div class="chip-grid">
+                  <div class="chip-option">
+                    <input type="checkbox" name="addons" id="addon3d" value="3D Views" />
+                    <label for="addon3d"><span class="icon">🧊</span><span>3D Views</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="addons" value="BOQ Support" />
-                    <span>BOQ Support</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="addons" id="addonBoq" value="BOQ Support" />
+                    <label for="addonBoq"><span class="icon">📋</span><span>BOQ Support</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="addons" value="Electrical Layouts" />
-                    <span>Electrical Layouts</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="addons" id="addonElectrical" value="Electrical Layouts" />
+                    <label for="addonElectrical"><span class="icon">⚡</span><span>Electrical Layouts</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="addons" value="Plumbing Layouts" />
-                    <span>Plumbing Layouts</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="addons" id="addonPlumbing" value="Plumbing Layouts" />
+                    <label for="addonPlumbing"><span class="icon">💧</span><span>Plumbing Layouts</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="addons" value="Consultation First" />
-                    <span>Consultation First</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="addons" id="addonConsult" value="Consultation First" />
+                    <label for="addonConsult"><span class="icon">🗣️</span><span>Consultation First</span></label>
+                  </div>
 
-                  <label class="check-item">
-                    <input type="checkbox" name="addons" value="Phased Delivery" />
-                    <span>Phased Delivery</span>
-                  </label>
+                  <div class="chip-option">
+                    <input type="checkbox" name="addons" id="addonPhased" value="Phased Delivery" />
+                    <label for="addonPhased"><span class="icon">📐</span><span>Phased Delivery</span></label>
+                  </div>
                 </div>
               </fieldset>
             </section>
           </form>
         </article>
 
-        <aside class="configurator-summary reveal-soft">
+        <aside class="builder-summary reveal-soft">
           <div class="summary-top">
             <p class="summary-eyebrow">Live Summary</p>
             <h2 class="summary-title">Project Brief Preview</h2>
             <p class="summary-note">
-              Preview only. This version is for testing the interaction and structure.
+              This is a structured prototype. It is helping define scope, not replacing the design process.
             </p>
           </div>
 
@@ -914,24 +1334,27 @@
           </div>
 
           <div class="summary-stack">
-            <div class="summary-preview">
-              <div id="summaryProjectPreview" class="summary-preview-hero project-new"></div>
-
-              <div class="summary-preview-subgrid">
-                <div class="summary-preview-small">
-                  <div id="summaryStylePreview" class="visual-thumb visual-style-modern"></div>
-                  <div class="summary-preview-meta">
-                    <span>Style Direction</span>
-                    <strong id="summaryStyleLabel">Modern</strong>
-                  </div>
+            <div id="summaryBoard" class="summary-board project-new">
+              <div class="summary-board-inner">
+                <div class="summary-board-top">
+                  <span>Configured Direction</span>
+                  <h3 id="summaryBoardTitle">Residential New Build</h3>
                 </div>
 
-                <div class="summary-preview-small">
-                  <div class="visual-thumb visual-project-new" id="summaryTypePreviewSmall"></div>
-                  <div class="summary-preview-meta">
-                    <span>Project Type</span>
-                    <strong id="summaryTypeLabel">Residential New Build</strong>
-                  </div>
+                <div class="summary-board-massing">
+                  <span class="shape shape-a"></span>
+                  <span class="shape shape-b"></span>
+                  <span class="shape shape-c"></span>
+                  <span class="shape shape-d"></span>
+                  <span class="line line-a"></span>
+                  <span class="line line-b"></span>
+                </div>
+
+                <div class="summary-board-bottom">
+                  <span id="boardStyleTag" class="summary-tag">Modern</span>
+                  <span id="boardStageTag" class="summary-tag">Concept Design</span>
+                  <span id="boardScaleTag" class="summary-tag">2 Storeys</span>
+                  <span id="boardSizeTag" class="summary-tag">1,500–3,000 sq ft</span>
                 </div>
               </div>
             </div>
@@ -996,8 +1419,7 @@
             </div>
 
             <p class="preview-disclaimer">
-              This prototype is intentionally structured. It is meant to guide scope definition,
-              not replace the design process.
+              This version is intentionally abstract. The goal is to make choices feel guided and visual without turning the tool into a fake design generator.
             </p>
           </div>
         </aside>
@@ -1039,6 +1461,13 @@
     const progressText = document.getElementById("progressText");
     const resetBuilderBtn = document.getElementById("resetBuilder");
 
+    const summaryBoard = document.getElementById("summaryBoard");
+    const summaryBoardTitle = document.getElementById("summaryBoardTitle");
+    const boardStyleTag = document.getElementById("boardStyleTag");
+    const boardStageTag = document.getElementById("boardStageTag");
+    const boardScaleTag = document.getElementById("boardScaleTag");
+    const boardSizeTag = document.getElementById("boardSizeTag");
+
     const summaryProjectType = document.getElementById("summaryProjectType");
     const summaryScale = document.getElementById("summaryScale");
     const summarySpaces = document.getElementById("summarySpaces");
@@ -1054,12 +1483,6 @@
     const recommendedReason = document.getElementById("recommendedReason");
     const complexityLabel = document.getElementById("complexityLabel");
     const complexityReason = document.getElementById("complexityReason");
-
-    const summaryProjectPreview = document.getElementById("summaryProjectPreview");
-    const summaryStylePreview = document.getElementById("summaryStylePreview");
-    const summaryTypePreviewSmall = document.getElementById("summaryTypePreviewSmall");
-    const summaryStyleLabel = document.getElementById("summaryStyleLabel");
-    const summaryTypeLabel = document.getElementById("summaryTypeLabel");
 
     const featureIcons = {
       "Garage": "🚗",
@@ -1079,25 +1502,18 @@
       "Phased Delivery": "📐"
     };
 
-    const projectPreviewClasses = {
+    const boardProjectClasses = [
+      "project-new",
+      "project-renovation",
+      "project-extension",
+      "project-mixed"
+    ];
+
+    const projectClassMap = {
       "Residential New Build": "project-new",
       "Residential Renovation": "project-renovation",
       "Extension / Addition": "project-extension",
       "Small Mixed Residential Project": "project-mixed"
-    };
-
-    const projectThumbClasses = {
-      "Residential New Build": "visual-project-new",
-      "Residential Renovation": "visual-project-renovation",
-      "Extension / Addition": "visual-project-extension",
-      "Small Mixed Residential Project": "visual-project-mixed"
-    };
-
-    const styleThumbClasses = {
-      "Modern": "visual-style-modern",
-      "Tropical": "visual-style-tropical",
-      "Minimal": "visual-style-minimal",
-      "Unsure": "visual-style-unsure"
     };
 
     let navSettleTimer;
@@ -1112,7 +1528,6 @@
 
     function updateHeaderState() {
       if (!header) return;
-
       if (window.scrollY > 16) {
         header.classList.add("scrolled");
       } else {
@@ -1137,7 +1552,6 @@
 
     function updateBackToTop() {
       if (!backToTopBtn) return;
-
       if (window.scrollY > 500) {
         backToTopBtn.classList.add("is-visible");
       } else {
@@ -1192,7 +1606,9 @@
     }
 
     function getCheckedValues(name) {
-      return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((item) => item.value);
+      return Array.from(
+        form.querySelectorAll(`input[name="${name}"]:checked`)
+      ).map((item) => item.value);
     }
 
     function buildChips(container, items, iconMap, fallbackText) {
@@ -1209,26 +1625,9 @@
       items.forEach((item) => {
         const chip = document.createElement("span");
         chip.className = "summary-chip";
-
-        const icon = document.createElement("span");
-        icon.className = "summary-chip-icon";
-        icon.textContent = iconMap[item] || "•";
-
-        const text = document.createElement("span");
-        text.textContent = item;
-
-        chip.appendChild(icon);
-        chip.appendChild(text);
+        chip.innerHTML = `<span>${iconMap[item] || "•"}</span><span>${item}</span>`;
         container.appendChild(chip);
       });
-    }
-
-    function setSingleClass(el, allowedClasses, newClass) {
-      if (!el) return;
-      allowedClasses.forEach((cls) => el.classList.remove(cls));
-      if (newClass) {
-        el.classList.add(newClass);
-      }
     }
 
     function calculateComplexity(data) {
@@ -1260,7 +1659,7 @@
       if (score >= 9) {
         return {
           label: "High",
-          reason: "The project has multiple complexity drivers across scale, conditions, and support requirements."
+          reason: "The project has several complexity drivers across scale, conditions, and support needs."
         };
       }
 
@@ -1273,12 +1672,16 @@
 
       return {
         label: "Low",
-        reason: "The project appears more contained in scale and coordination needs."
+        reason: "The project appears relatively contained in scale and coordination demands."
       };
     }
 
     function getRecommendedAction(data, complexity) {
-      if (data.serviceStage === "Not Sure" || data.styleDirection === "Unsure" || data.addons.includes("Consultation First")) {
+      if (
+        data.serviceStage === "Not Sure" ||
+        data.styleDirection === "Unsure" ||
+        data.addons.includes("Consultation First")
+      ) {
         return {
           action: "Book Consultation",
           reason: "The selections suggest the project would benefit from discussion before confirming scope."
@@ -1288,13 +1691,13 @@
       if (complexity.label === "High" || data.serviceStage === "Documentation") {
         return {
           action: "Send Enquiry + Expect Consultation",
-          reason: "The project appears structured enough for review, but likely needs clarification and coordination discussion."
+          reason: "The project appears structured enough for review, but will likely need clarification and coordination discussion."
         };
       }
 
       return {
         action: "Send Project Enquiry",
-        reason: "The current selections suggest a project brief is already structured enough to review."
+        reason: "The current selections suggest the project brief is already structured enough to review."
       };
     }
 
@@ -1315,6 +1718,11 @@
 
       const filled = checks.filter(Boolean).length;
       return Math.round((filled / checks.length) * 100);
+    }
+
+    function updateBoardClass(projectType) {
+      boardProjectClasses.forEach((cls) => summaryBoard.classList.remove(cls));
+      summaryBoard.classList.add(projectClassMap[projectType] || "project-new");
     }
 
     function updateBuilderSummary() {
@@ -1340,6 +1748,12 @@
       const recommendation = getRecommendedAction(data, complexity);
       const progress = getCompletionPercent(data);
 
+      summaryBoardTitle.textContent = data.projectType;
+      boardStyleTag.textContent = data.styleDirection;
+      boardStageTag.textContent = data.serviceStage;
+      boardScaleTag.textContent = data.storeys;
+      boardSizeTag.textContent = data.sizeRange;
+
       summaryProjectType.textContent = data.projectType;
       summaryScale.textContent = `${data.storeys} · ${data.sizeRange}`;
       summarySpaces.textContent = `${data.bedrooms} · ${data.bathrooms}`;
@@ -1347,9 +1761,6 @@
       summaryStyle.textContent = data.styleDirection;
       summaryStage.textContent = data.serviceStage;
       summaryTimeline.textContent = data.timeline;
-
-      summaryStyleLabel.textContent = data.styleDirection;
-      summaryTypeLabel.textContent = data.projectType;
 
       progressBar.style.width = `${progress}%`;
       progressText.textContent = `${progress}%`;
@@ -1365,37 +1776,21 @@
 
       const featureText = data.features.length
         ? `Key features currently selected include ${data.features.join(", ")}.`
-        : "No additional feature preferences have been selected yet.";
+        : `No additional feature preferences have been selected yet.`;
 
       const addonText = data.addons.length
-        ? `Optional support being considered includes ${data.addons.join(", ")}.`
-        : "No additional support add-ons have been selected at this stage.";
+        ? `Optional support currently being considered includes ${data.addons.join(", ")}.`
+        : `No additional support add-ons have been selected at this stage.`;
 
       generatedBrief.textContent =
         `This ${data.projectType.toLowerCase()} is currently being framed as a ${data.storeys.toLowerCase()} project in a ` +
         `${data.siteContext.toLowerCase()} setting, with an approximate size of ${data.sizeRange.toLowerCase()}. ` +
         `The working program is ${data.bedrooms.toLowerCase()} and ${data.bathrooms.toLowerCase()}, on a ` +
         `${data.siteSlope.toLowerCase()} ${data.startingCondition.toLowerCase()}. ` +
-        `The preferred direction is ${data.styleDirection.toLowerCase()}, with ${data.serviceStage.toLowerCase()} identified as the current service path. ` +
+        `The preferred design direction is ${data.styleDirection.toLowerCase()}, with ${data.serviceStage.toLowerCase()} identified as the current service path. ` +
         `${featureText} ${addonText} The present timeline is ${data.timeline.toLowerCase()}.`;
 
-      setSingleClass(
-        summaryProjectPreview,
-        Object.values(projectPreviewClasses),
-        projectPreviewClasses[data.projectType]
-      );
-
-      setSingleClass(
-        summaryTypePreviewSmall,
-        Object.values(projectThumbClasses),
-        projectThumbClasses[data.projectType]
-      );
-
-      setSingleClass(
-        summaryStylePreview,
-        Object.values(styleThumbClasses),
-        styleThumbClasses[data.styleDirection]
-      );
+      updateBoardClass(data.projectType);
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -1458,16 +1853,9 @@
       resetBuilderBtn.addEventListener("click", () => {
         form.reset();
 
-        const defaults = [
-          "projectTypeNew",
-          "styleModern",
-          "stageConcept"
-        ];
-
-        defaults.forEach((id) => {
-          const input = document.getElementById(id);
-          if (input) input.checked = true;
-        });
+        document.getElementById("projectTypeNew").checked = true;
+        document.getElementById("styleModern").checked = true;
+        document.getElementById("stageConcept").checked = true;
 
         form.storeys.value = "2 Storeys";
         form.sizeRange.value = "1,500–3,000 sq ft";
@@ -1478,14 +1866,11 @@
         form.startingCondition.value = "Vacant Site";
         form.timeline.value = "Planning Stage (3–6 months)";
 
-        const featureInputs = form.querySelectorAll('input[name="features"]');
-        const addonInputs = form.querySelectorAll('input[name="addons"]');
-
-        featureInputs.forEach((input) => {
+        form.querySelectorAll('input[name="features"]').forEach((input) => {
           input.checked = ["Garage", "Laundry Room", "Outdoor Living Area"].includes(input.value);
         });
 
-        addonInputs.forEach((input) => {
+        form.querySelectorAll('input[name="addons"]').forEach((input) => {
           input.checked = false;
         });
 
@@ -1508,7 +1893,6 @@
 
     document.addEventListener("click", (e) => {
       if (!navToggle || !navOverlay) return;
-
       const clickedInsideOverlay = navOverlay.contains(e.target);
       const clickedToggle = navToggle.contains(e.target);
 
@@ -1541,7 +1925,6 @@
       if (window.innerWidth >= 720) {
         closeNav();
       }
-
       updateRevealStates();
     });
 
