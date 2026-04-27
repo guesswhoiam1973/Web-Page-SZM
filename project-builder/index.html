@@ -1358,13 +1358,13 @@
               </div>
 
               <div class="builder-chip">
-                <input type="checkbox" name="deliverables" id="delConstruction" value="Construction-Oriented Set" />
-                <label for="delConstruction">Construction-Oriented Set</label>
+                <input type="checkbox" name="deliverables" id="delConsultant" value="Consultant Issue Set" />
+                <label for="delConsultant">Consultant Issue Set</label>
               </div>
 
               <div class="builder-chip">
-                <input type="checkbox" name="deliverables" id="delConsultant" value="Consultant Issue Set" />
-                <label for="delConsultant">Consultant Issue Set</label>
+                <input type="checkbox" name="deliverables" id="delConstruction" value="Construction-Oriented Set" />
+                <label for="delConstruction">Construction-Oriented Set</label>
               </div>
             </div>
           </section>
@@ -1677,7 +1677,7 @@
     const quoteLineItems = document.getElementById("quoteLineItems");
     const quoteNote = document.getElementById("quoteNote");
 
-    const STORAGE_KEY = "szm_project_builder_pricing_v1";
+    const STORAGE_KEY = "szm_project_builder_pricing_v2";
 
     const EMPTY_STATE = {
       projectType: "",
@@ -1707,133 +1707,196 @@
       maximumFractionDigits: 0
     });
 
+    const stageBaselines = {
+      "Residential New Build": {
+        "Concept Design": 174000,
+        "Design Development": 156400,
+        "Documentation": 151000
+      },
+      "Residential Renovation": {
+        "Concept Design": 162000,
+        "Design Development": 149000,
+        "Documentation": 145000
+      },
+      "Extension / Addition": {
+        "Concept Design": 158000,
+        "Design Development": 146000,
+        "Documentation": 141000
+      },
+      "Mixed Residential": {
+        "Concept Design": 198000,
+        "Design Development": 184000,
+        "Documentation": 180000
+      },
+      "Commercial Project": {
+        "Concept Design": 214000,
+        "Design Development": 201000,
+        "Documentation": 208000
+      }
+    };
+
+    const setupItemsByProject = {
+      "Residential New Build": {
+        brief: 20000,
+        setup: 23000
+      },
+      "Residential Renovation": {
+        brief: 20000,
+        setup: 23000
+      },
+      "Extension / Addition": {
+        brief: 19000,
+        setup: 22000
+      },
+      "Mixed Residential": {
+        brief: 22000,
+        setup: 25000
+      },
+      "Commercial Project": {
+        brief: 25000,
+        setup: 28000
+      }
+    };
+
+    const storeyAdjustments = {
+      "1 Storey": -10000,
+      "2 Storeys": 0,
+      "3 Storeys": 18000,
+      "4+ Storeys": 35000
+    };
+
+    const sizeAdjustments = {
+      "Under 1,500 sq ft": -15000,
+      "1,500–2,400 sq ft": 0,
+      "2,400–3,500 sq ft": 22000,
+      "3,500+ sq ft": 45000
+    };
+
+    const featureAdjustments = {
+      "Garage": 10000,
+      "Home Office": 12000,
+      "Laundry Room": 8000,
+      "Outdoor Living": 12000,
+      "Walk-in Closet": 9000,
+      "Secondary Suite": 28000,
+      "Butler’s Pantry": 12000,
+      "Guest Suite": 18000,
+      "Mudroom / Entry Drop Zone": 7000
+    };
+
+    const complexityPercents = {
+      "Custom Façade Treatment": 0.04,
+      "Complex Roof Form": 0.05,
+      "High-End Design Expectation": 0.06,
+      "Split-Level Arrangement": 0.04,
+      "Courtyard Planning": 0.04,
+      "Multi-Unit Planning": 0.08,
+      "Consultant Coordination": 0.04,
+      "Pool / Spa Integration": 0.04,
+      "Sustainability Strategy": 0.03,
+      "Interior Fit-Out Emphasis": 0.04
+    };
+
+    const siteConditionPercents = {
+      "Flat": 0,
+      "Sloped": 0.06,
+      "Corner Lot": 0.03,
+      "Narrow Lot": 0.05,
+      "Coastal": 0.06,
+      "Existing Structure": 0.07
+    };
+
+    const startingConditionPercents = {
+      "Vacant Site": 0,
+      "Existing House": 0.06,
+      "Partially Built": 0.1,
+      "Redevelopment": 0.08
+    };
+
+    const planningPercents = {
+      "Residential Zone": 0,
+      "Mixed-Use Zone": 0.03,
+      "Commercial Zone": 0.04,
+      "Rural / Open Plot": 0.01
+    };
+
+    const accessPercents = {
+      "Vehicle Access, Rear Lane": 0.01,
+      "Vehicle Access Only": 0,
+      "Pedestrian Access Only": 0.03,
+      "Corner Access": 0.02
+    };
+
+    const sunExposurePercents = {
+      "Excellent": 0,
+      "Moderate": 0,
+      "Limited": 0.01,
+      "Shaded": 0.01
+    };
+
+    const timelinePercents = {
+      "Flexible": -0.02,
+      "Standard": 0,
+      "Priority": 0.08,
+      "Expedited": 0.14
+    };
+
+    const addOnFees = {
+      "Site Visit": 20000,
+      "Measured Survey / As-Built Verification": 45000,
+      "BOQ / Quantity Support": 65000,
+      "Electrical Layout Drafting": 60000,
+      "Plumbing Layout Drafting": 60000,
+      "Furniture / Interior Layout": 45000,
+      "Additional Revision Round": 30000,
+      "Alternate Design Option": 50000,
+      "Presentation Boards": 25000,
+      "Post-Design Support": 40000
+    };
+
+    const documentationPackageFees = {
+      "Approval Set": 0,
+      "Consultant Issue Set": 22000,
+      "Construction-Oriented Set": 52000
+    };
+
+    const stageDeliverableExtras = {
+      "Concept Design": {
+        "Sections": 18000,
+        "Schedules": 12000,
+        "Details": 25000,
+        "3D Views": 22000,
+        "Rendered Images": 50000,
+        "Approval Set": 30000,
+        "Consultant Issue Set": 55000,
+        "Construction-Oriented Set": 90000
+      },
+      "Design Development": {
+        "Schedules": 14000,
+        "Details": 24000,
+        "3D Views": 18000,
+        "Rendered Images": 50000,
+        "Approval Set": 24000,
+        "Consultant Issue Set": 42000,
+        "Construction-Oriented Set": 78000
+      },
+      "Documentation": {
+        "3D Views": 18000,
+        "Rendered Images": 50000,
+        "Details": 28000
+      }
+    };
+
+    const packageDeliverablePriority = [
+      "Approval Set",
+      "Consultant Issue Set",
+      "Construction-Oriented Set"
+    ];
+
     let navSettleTimer;
     let scrollTicking = false;
     let saveTimer;
     let generatedQuote = null;
-
-    const projectBaseFees = {
-      "Residential New Build": 800000,
-      "Residential Renovation": 720000,
-      "Extension / Addition": 680000,
-      "Mixed Residential": 930000,
-      "Commercial Project": 1100000
-    };
-
-    const stageMultipliers = {
-      "Concept Design": 1.0,
-      "Design Development": 1.45,
-      "Documentation": 2.05
-    };
-
-    const sizeMultipliers = {
-      "Under 1,500 sq ft": 0.85,
-      "1,500–2,400 sq ft": 1.0,
-      "2,400–3,500 sq ft": 1.22,
-      "3,500+ sq ft": 1.55
-    };
-
-    const storeyMultipliers = {
-      "1 Storey": 1.0,
-      "2 Storeys": 1.08,
-      "3 Storeys": 1.15,
-      "4+ Storeys": 1.22
-    };
-
-    const siteUplifts = {
-      "Flat": 0,
-      "Sloped": 0.1,
-      "Corner Lot": 0.06,
-      "Narrow Lot": 0.08,
-      "Coastal": 0.1,
-      "Existing Structure": 0.12
-    };
-
-    const startingConditionUplifts = {
-      "Vacant Site": 0,
-      "Existing House": 0.12,
-      "Partially Built": 0.15,
-      "Redevelopment": 0.18
-    };
-
-    const planningUplifts = {
-      "Residential Zone": 0,
-      "Mixed-Use Zone": 0.06,
-      "Commercial Zone": 0.08,
-      "Rural / Open Plot": 0.03
-    };
-
-    const accessUplifts = {
-      "Vehicle Access, Rear Lane": 0.03,
-      "Vehicle Access Only": 0.02,
-      "Pedestrian Access Only": 0.04,
-      "Corner Access": 0.04
-    };
-
-    const sunUplifts = {
-      "Excellent": 0,
-      "Moderate": 0.01,
-      "Limited": 0.02,
-      "Shaded": 0.03
-    };
-
-    const timelineUplifts = {
-      "Flexible": -0.05,
-      "Standard": 0,
-      "Priority": 0.12,
-      "Expedited": 0.2
-    };
-
-    const featureCosts = {
-      "Garage": 40000,
-      "Home Office": 30000,
-      "Laundry Room": 20000,
-      "Outdoor Living": 35000,
-      "Walk-in Closet": 25000,
-      "Secondary Suite": 95000,
-      "Butler’s Pantry": 30000,
-      "Guest Suite": 60000,
-      "Mudroom / Entry Drop Zone": 18000
-    };
-
-    const complexityUplifts = {
-      "Custom Façade Treatment": 0.08,
-      "Complex Roof Form": 0.1,
-      "High-End Design Expectation": 0.12,
-      "Split-Level Arrangement": 0.08,
-      "Courtyard Planning": 0.07,
-      "Multi-Unit Planning": 0.14,
-      "Consultant Coordination": 0.1,
-      "Pool / Spa Integration": 0.06,
-      "Sustainability Strategy": 0.05,
-      "Interior Fit-Out Emphasis": 0.07
-    };
-
-    const deliverableCosts = {
-      "Floor Plans": 0,
-      "Elevations": 90000,
-      "Sections": 120000,
-      "Schedules": 75000,
-      "Details": 140000,
-      "3D Views": 95000,
-      "Rendered Images": 220000,
-      "Approval Set": 180000,
-      "Construction-Oriented Set": 260000,
-      "Consultant Issue Set": 130000
-    };
-
-    const addonCosts = {
-      "Site Visit": 45000,
-      "Measured Survey / As-Built Verification": 85000,
-      "BOQ / Quantity Support": 120000,
-      "Electrical Layout Drafting": 110000,
-      "Plumbing Layout Drafting": 110000,
-      "Furniture / Interior Layout": 90000,
-      "Additional Revision Round": 65000,
-      "Alternate Design Option": 140000,
-      "Presentation Boards": 60000,
-      "Post-Design Support": 90000
-    };
 
     document.body.classList.add("page-enter");
     requestAnimationFrame(() => {
@@ -1842,6 +1905,13 @@
       });
     });
 
+    function cloneData(data) {
+      if (window.structuredClone) {
+        return window.structuredClone(data);
+      }
+      return JSON.parse(JSON.stringify(data));
+    }
+
     function formatMoney(value) {
       if (typeof value !== "number" || Number.isNaN(value)) return "—";
       return currency.format(Math.round(value));
@@ -1849,6 +1919,7 @@
 
     function updateHeaderState() {
       if (!header) return;
+
       if (window.scrollY > 16) {
         header.classList.add("scrolled");
       } else {
@@ -1873,6 +1944,7 @@
 
     function updateBackToTop() {
       if (!backToTopBtn) return;
+
       if (window.scrollY > 500) {
         backToTopBtn.classList.add("is-visible");
       } else {
@@ -2029,27 +2101,264 @@
       }
     }
 
-    function numericValue(text) {
-      if (!text) return 0;
-      if (text.includes("+")) {
-        return Number(text.replace("+", "")) || 0;
+    function numberFromValue(value) {
+      if (!value) return 0;
+      if (String(value).includes("+")) {
+        return Number(String(value).replace("+", "")) || 0;
       }
-      return Number(text) || 0;
+      return Number(value) || 0;
     }
 
-    function getBudgetUpperLimit(budget) {
-      const map = {
-        "Under GYD 2M": 2000000,
-        "GYD 2M - 10M": 10000000,
-        "GYD 10M - 30M": 30000000,
-        "GYD 30M - 100M": 100000000,
-        "GYD 100M+": Infinity,
-        "Prefer not to say": Infinity
+    function getSetupItems(projectType) {
+      return setupItemsByProject[projectType] || {
+        brief: 20000,
+        setup: 23000
       };
-      return map[budget] ?? Infinity;
+    }
+
+    function getDocumentationPackage(deliverables) {
+      if (deliverables.includes("Construction-Oriented Set")) {
+        return "Construction-Oriented Set";
+      }
+
+      if (deliverables.includes("Consultant Issue Set")) {
+        return "Consultant Issue Set";
+      }
+
+      return "Approval Set";
+    }
+
+    function getStageIncludedDeliverables(stage, documentationPackage) {
+      if (stage === "Concept Design") {
+        return new Set([
+          "Floor Plans",
+          "Elevations"
+        ]);
+      }
+
+      if (stage === "Design Development") {
+        return new Set([
+          "Floor Plans",
+          "Elevations",
+          "Sections"
+        ]);
+      }
+
+      if (stage === "Documentation") {
+        if (documentationPackage === "Construction-Oriented Set") {
+          return new Set([
+            "Floor Plans",
+            "Elevations",
+            "Sections",
+            "Schedules",
+            "Details",
+            "Approval Set",
+            "Consultant Issue Set",
+            "Construction-Oriented Set"
+          ]);
+        }
+
+        if (documentationPackage === "Consultant Issue Set") {
+          return new Set([
+            "Floor Plans",
+            "Elevations",
+            "Sections",
+            "Schedules",
+            "Approval Set",
+            "Consultant Issue Set"
+          ]);
+        }
+
+        return new Set([
+          "Floor Plans",
+          "Elevations",
+          "Sections",
+          "Schedules",
+          "Approval Set"
+        ]);
+      }
+
+      return new Set();
+    }
+
+    function getStageStandardOutputsText(stage, documentationPackage) {
+      if (stage === "Concept Design") {
+        return "Standard concept scope assumes concept plans and basic concept elevations.";
+      }
+
+      if (stage === "Design Development") {
+        return "Standard design development scope assumes refined plans, elevations, and sections.";
+      }
+
+      if (stage === "Documentation") {
+        if (documentationPackage === "Construction-Oriented Set") {
+          return "Documentation scope is interpreted as a construction-oriented package with detailed drawing intent.";
+        }
+
+        if (documentationPackage === "Consultant Issue Set") {
+          return "Documentation scope is interpreted as a consultant issue package for coordinated technical sharing.";
+        }
+
+        return "Documentation scope is interpreted as an approval-oriented documentation package.";
+      }
+
+      return "";
+    }
+
+    function getProgramAdjustments(data) {
+      let bedroomAdjustment = 0;
+      let bathroomAdjustment = 0;
+
+      const bedroomCount = numberFromValue(data.bedrooms);
+      const bathroomCount = numberFromValue(data.bathrooms);
+
+      const bedroomThresholdProjects = [
+        "Residential New Build",
+        "Residential Renovation",
+        "Extension / Addition",
+        "Mixed Residential"
+      ];
+
+      if (bedroomThresholdProjects.includes(data.projectType) && bedroomCount > 3) {
+        bedroomAdjustment = (bedroomCount - 3) * 8000;
+      }
+
+      if (bathroomCount > 2) {
+        bathroomAdjustment = (bathroomCount - 2) * 7000;
+      }
+
+      return {
+        bedroomAdjustment,
+        bathroomAdjustment,
+        total: bedroomAdjustment + bathroomAdjustment
+      };
+    }
+
+    function getFeatureAdjustments(features) {
+      return features.reduce((sum, item) => sum + (featureAdjustments[item] || 0), 0);
+    }
+
+    function getAddOnItems(addons) {
+      return addons.map((item) => {
+        return {
+          label: item,
+          value: addOnFees[item] || 0
+        };
+      }).filter((item) => item.value > 0);
+    }
+
+    function getBudgetTension(data) {
+      if (!data.budget || data.budget === "Prefer not to say") {
+        return false;
+      }
+
+      if (data.budget === "Under GYD 2M") {
+        return (
+          data.projectType !== "Residential Renovation" ||
+          data.sizeRange === "2,400–3,500 sq ft" ||
+          data.sizeRange === "3,500+ sq ft" ||
+          data.stage === "Documentation"
+        );
+      }
+
+      if (data.budget === "GYD 2M - 10M") {
+        return (
+          data.projectType === "Commercial Project" ||
+          data.projectType === "Mixed Residential" ||
+          data.sizeRange === "3,500+ sq ft"
+        );
+      }
+
+      if (data.budget === "GYD 10M - 30M") {
+        return (
+          data.projectType === "Commercial Project" &&
+          data.sizeRange === "3,500+ sq ft"
+        );
+      }
+
+      return false;
+    }
+
+    function getDeliverableAdjustments(data, notes, reviewReasons) {
+      const selected = data.deliverables || [];
+      const documentationPackage = data.stage === "Documentation"
+        ? getDocumentationPackage(selected)
+        : "";
+
+      const packageSelectionCount = packageDeliverablePriority.filter((item) => selected.includes(item)).length;
+
+      if (data.stage === "Documentation") {
+        if (packageSelectionCount === 0) {
+          notes.push("Documentation pricing defaults to an Approval Set unless a higher package is selected.");
+        }
+
+        if (packageSelectionCount > 1) {
+          notes.push("Multiple documentation package boxes were selected; pricing is interpreted at the highest selected package only.");
+        }
+      }
+
+      const included = getStageIncludedDeliverables(data.stage, documentationPackage);
+      let documentationPackageAdjustment = 0;
+      let extraDeliverableAdjustment = 0;
+      const extraDeliverableLabels = [];
+
+      if (data.stage === "Documentation") {
+        documentationPackageAdjustment = documentationPackageFees[documentationPackage] || 0;
+
+        selected.forEach((item) => {
+          if (packageDeliverablePriority.includes(item)) {
+            return;
+          }
+
+          if (!included.has(item)) {
+            const fee = stageDeliverableExtras["Documentation"][item] || 0;
+            if (fee > 0) {
+              extraDeliverableAdjustment += fee;
+              extraDeliverableLabels.push(item);
+            }
+          }
+        });
+      } else {
+        selected.forEach((item) => {
+          if (!included.has(item)) {
+            const fee = (stageDeliverableExtras[data.stage] || {})[item] || 0;
+            if (fee > 0) {
+              extraDeliverableAdjustment += fee;
+              extraDeliverableLabels.push(item);
+            }
+          }
+        });
+
+        if (
+          data.stage === "Concept Design" &&
+          (selected.includes("Consultant Issue Set") || selected.includes("Construction-Oriented Set"))
+        ) {
+          reviewReasons.push("Selected deliverables extend beyond normal concept-stage output.");
+        }
+
+        if (
+          data.stage === "Design Development" &&
+          selected.includes("Construction-Oriented Set")
+        ) {
+          reviewReasons.push("Construction-oriented documentation was selected against a design development stage.");
+        }
+      }
+
+      return {
+        documentationPackage,
+        included,
+        packageSelectionCount,
+        documentationPackageAdjustment,
+        extraDeliverableAdjustment,
+        total: documentationPackageAdjustment + extraDeliverableAdjustment,
+        extraDeliverableLabels
+      };
     }
 
     function computePricing(data) {
+      const reviewReasons = [];
+      const notes = [];
+
       const essentialComplete = Boolean(
         data.projectType &&
         data.stage &&
@@ -2067,159 +2376,285 @@
           status: "incomplete",
           statusLabel: "Incomplete",
           statusClass: "warn",
-          summary: "Complete the essential project fields to begin pricing.",
-          coreSubtotal: 0,
-          addOnsTotal: 0,
           total: 0,
           lowRange: 0,
           highRange: 0,
-          notes: ["Essential fields are still missing."],
-          lineItems: [],
-          manualReview: false,
-          budgetMismatch: false
+          stageCoreFee: 0,
+          coreSubtotal: 0,
+          addOnsTotal: 0,
+          notes: ["Complete the essential project inputs to begin pricing."],
+          quoteLines: [],
+          reviewReasons: [],
+          documentationPackage: "",
+          standardOutputsText: "",
+          budgetTension: false
         };
       }
 
-      const projectBase = projectBaseFees[data.projectType] || 0;
-      const stageMultiplier = stageMultipliers[data.stage] || 1;
-      const sizeMultiplier = sizeMultipliers[data.sizeRange] || 1;
-      const storeyMultiplier = storeyMultipliers[data.storeys] || 1;
+      const stageCoreFee =
+        (stageBaselines[data.projectType] && stageBaselines[data.projectType][data.stage]) || 0;
 
-      const baseFee = projectBase * stageMultiplier * sizeMultiplier * storeyMultiplier;
+      const setupItems = getSetupItems(data.projectType);
+      const scaleAdjustment =
+        (storeyAdjustments[data.storeys] || 0) +
+        (sizeAdjustments[data.sizeRange] || 0);
 
-      const bedroomsValue = numericValue(data.bedrooms);
-      const bathroomsValue = numericValue(data.bathrooms);
+      const programAdjustments = getProgramAdjustments(data);
+      const featureAdjustment = getFeatureAdjustments(data.features);
 
-      const bedroomAdjustment = bedroomsValue > 3 ? (bedroomsValue - 3) * 35000 : 0;
-      const bathroomAdjustment = bathroomsValue > 2 ? (bathroomsValue - 2) * 25000 : 0;
+      const deliverableData = getDeliverableAdjustments(data, notes, reviewReasons);
+      const standardOutputsText = getStageStandardOutputsText(data.stage, deliverableData.documentationPackage);
 
-      const featureTotal = data.features.reduce((sum, item) => sum + (featureCosts[item] || 0), 0);
-      const deliverableTotal = data.deliverables.reduce((sum, item) => sum + (deliverableCosts[item] || 0), 0);
+      const rawComplexityPercent = data.complexity.reduce((sum, item) => {
+        return sum + (complexityPercents[item] || 0);
+      }, 0);
 
       const sitePercent =
-        (siteUplifts[data.siteCondition] || 0) +
-        (startingConditionUplifts[data.startingCondition] || 0) +
-        (planningUplifts[data.planningContext] || 0) +
-        (accessUplifts[data.access] || 0) +
-        (sunUplifts[data.sunExposure] || 0);
+        (siteConditionPercents[data.siteCondition] || 0) +
+        (startingConditionPercents[data.startingCondition] || 0) +
+        (planningPercents[data.planningContext] || 0) +
+        (accessPercents[data.access] || 0) +
+        (sunExposurePercents[data.sunExposure] || 0);
 
-      const complexityPercent = data.complexity.reduce((sum, item) => sum + (complexityUplifts[item] || 0), 0);
-      const timelinePercent = timelineUplifts[data.timeline] || 0;
+      const timelinePercent = timelinePercents[data.timeline] || 0;
 
-      const coreBeforePercent =
-        baseFee +
-        bedroomAdjustment +
-        bathroomAdjustment +
-        featureTotal +
-        deliverableTotal;
-
-      const percentageTotal = sitePercent + complexityPercent + timelinePercent;
-      const complexityUpliftValue = coreBeforePercent * percentageTotal;
-
-      const addOnsTotal = data.addons.reduce((sum, item) => sum + (addonCosts[item] || 0), 0);
-      const total = coreBeforePercent + complexityUpliftValue + addOnsTotal;
-      const lowRange = total * 0.92;
-      const highRange = total * 1.08;
-
-      let complexityScore = 0;
-
-      if (data.projectType === "Commercial Project") complexityScore += 2;
-      if (data.projectType === "Mixed Residential") complexityScore += 2;
-      if (data.stage === "Documentation") complexityScore += 1;
-      if (data.storeys === "3 Storeys") complexityScore += 1;
-      if (data.storeys === "4+ Storeys") complexityScore += 2;
-      if (data.sizeRange === "3,500+ sq ft") complexityScore += 1;
-      if (data.siteCondition && data.siteCondition !== "Flat") complexityScore += 1;
-      if (data.startingCondition === "Existing House") complexityScore += 1;
-      if (data.startingCondition === "Partially Built") complexityScore += 2;
-      if (data.startingCondition === "Redevelopment") complexityScore += 2;
-      if (data.timeline === "Priority") complexityScore += 1;
-      if (data.timeline === "Expedited") complexityScore += 2;
-      complexityScore += data.complexity.length;
-      if (data.deliverables.includes("Construction-Oriented Set")) complexityScore += 1;
-      if (data.deliverables.includes("Consultant Issue Set")) complexityScore += 1;
-      if (data.deliverables.includes("Rendered Images")) complexityScore += 1;
-
-      const budgetMismatch = total > getBudgetUpperLimit(data.budget) * 0.2 && data.budget && data.budget !== "Prefer not to say";
-      const manualReview =
-        complexityScore >= 7 ||
-        data.complexity.includes("Multi-Unit Planning") ||
-        (data.projectType === "Commercial Project" && data.stage === "Documentation") ||
-        (data.timeline === "Expedited" && data.deliverables.includes("Construction-Oriented Set"));
-
-      const status = manualReview ? "manual-review" : "quote-ready";
-      const statusLabel = manualReview ? "Manual Review Required" : "Preliminary Quote Ready";
-      const statusClass = manualReview ? "bad" : "good";
-
-      const notes = [];
-      notes.push(`Base fee driven by ${data.projectType}, ${data.stage}, ${data.sizeRange}, and ${data.storeys}.`);
-
-      if (percentageTotal > 0) {
-        notes.push(`Complexity and site adjustments applied at ${(percentageTotal * 100).toFixed(0)}%.`);
+      if (
+        data.projectType === "Mixed Residential" &&
+        (
+          data.sizeRange === "3,500+ sq ft" ||
+          data.deliverables.length >= 4 ||
+          data.complexity.length >= 3
+        )
+      ) {
+        reviewReasons.push("Mixed residential scope is carrying heavier than standard complexity.");
       }
 
-      if (timelinePercent < 0) {
-        notes.push("Flexible timing applied a small fee reduction.");
+      if (data.projectType === "Commercial Project" && data.stage === "Documentation") {
+        reviewReasons.push("Commercial documentation packages require review before confirmation.");
       }
 
-      if (data.addons.length) {
-        notes.push(`${data.addons.length} add-on service${data.addons.length > 1 ? "s" : ""} included.`);
+      if (data.complexity.includes("Multi-Unit Planning")) {
+        reviewReasons.push("Multi-unit planning was selected.");
       }
 
-      if (budgetMismatch) {
-        notes.push("Selected budget range may not align with the current scope.");
+      if (data.startingCondition === "Partially Built" || data.startingCondition === "Redevelopment") {
+        reviewReasons.push("Starting condition suggests non-standard existing works.");
+      }
+
+      if (
+        data.timeline === "Expedited" &&
+        data.stage === "Documentation" &&
+        (
+          deliverableData.documentationPackage === "Construction-Oriented Set" ||
+          data.deliverables.length >= 4
+        )
+      ) {
+        reviewReasons.push("Expedited documentation with heavier output needs review.");
+      }
+
+      if (data.complexity.length >= 4) {
+        reviewReasons.push("Several design complexity conditions were selected together.");
+      }
+
+      if (
+        data.stage === "Documentation" &&
+        deliverableData.documentationPackage === "Construction-Oriented Set"
+      ) {
+        reviewReasons.push("Construction-oriented documentation packages are controlled and reviewed internally.");
+      }
+
+      if (
+        data.sizeRange === "3,500+ sq ft" &&
+        (
+          data.deliverables.length >= 5 ||
+          data.complexity.length >= 3 ||
+          data.projectType === "Commercial Project"
+        )
+      ) {
+        reviewReasons.push("Large project size combined with expanded scope suggests review.");
+      }
+
+      const manualReview = reviewReasons.length > 0;
+
+      const complexityCap = manualReview ? 0.25 : 0.22;
+      const complexityPercent = Math.min(rawComplexityPercent, complexityCap);
+
+      const siteAdjustment = stageCoreFee * sitePercent;
+      const complexityAdjustment = stageCoreFee * complexityPercent;
+      const timelineAdjustment = stageCoreFee * timelinePercent;
+
+      const addOnItems = getAddOnItems(data.addons);
+      const addOnsTotalValue = addOnItems.reduce((sum, item) => sum + item.value, 0);
+
+      const total =
+        stageCoreFee +
+        setupItems.brief +
+        setupItems.setup +
+        scaleAdjustment +
+        programAdjustments.total +
+        featureAdjustment +
+        deliverableData.total +
+        siteAdjustment +
+        complexityAdjustment +
+        timelineAdjustment +
+        addOnsTotalValue;
+
+      let rangePercent = 0.1;
+
+      if (
+        !manualReview &&
+        data.stage === "Concept Design" &&
+        data.projectType === "Residential New Build" &&
+        data.complexity.length <= 1 &&
+        data.deliverables.length <= 2
+      ) {
+        rangePercent = 0.08;
+      } else if (!manualReview && data.stage === "Design Development") {
+        rangePercent = 0.1;
+      } else if (!manualReview && data.stage === "Documentation") {
+        rangePercent = 0.12;
       }
 
       if (manualReview) {
-        notes.push("Project falls outside the standard auto-quote band and should be reviewed manually.");
+        rangePercent = 0.18;
       }
 
-      const lineItems = [
-        { label: "Base fee", value: baseFee }
-      ];
+      const lowRange = total * (1 - rangePercent);
+      const highRange = total * (1 + rangePercent);
 
-      if (bedroomAdjustment > 0) {
-        lineItems.push({ label: "Bedroom program uplift", value: bedroomAdjustment });
+      const budgetTension = getBudgetTension(data);
+
+      notes.push(`Selected stage is priced as a standalone ${data.stage.toLowerCase()} service. Later stages are not included unless separately commissioned.`);
+      notes.push(standardOutputsText);
+
+      if (deliverableData.documentationPackage) {
+        notes.push(`Documentation package intent: ${deliverableData.documentationPackage}.`);
       }
 
-      if (bathroomAdjustment > 0) {
-        lineItems.push({ label: "Bathroom / wet-area uplift", value: bathroomAdjustment });
+      if (data.complexity.length > 0) {
+        notes.push(`Design complexity uplift is capped at ${(complexityCap * 100).toFixed(0)}% of the core stage fee.`);
       }
 
-      if (featureTotal > 0) {
-        lineItems.push({ label: "Spatial feature additions", value: featureTotal });
+      if (timelinePercent < 0) {
+        notes.push("Flexible timing has been treated conservatively with only a modest reduction.");
       }
 
-      if (deliverableTotal > 0) {
-        lineItems.push({ label: "Deliverable scope additions", value: deliverableTotal });
+      if (budgetTension) {
+        notes.push("The stated budget range may be tight relative to the selected project scope.");
       }
 
-      if (complexityUpliftValue !== 0) {
-        lineItems.push({
-          label: percentageTotal >= 0 ? "Complexity / site / timing adjustments" : "Timing adjustment",
-          value: complexityUpliftValue
+      if (manualReview) {
+        notes.push("This preliminary quote should be reviewed internally before it is relied on commercially.");
+      }
+
+      const quoteLines = [];
+
+      quoteLines.push({
+        label: `Core ${data.stage} fee`,
+        value: stageCoreFee
+      });
+
+      quoteLines.push({
+        label: "Project Brief / Brief Translation",
+        value: setupItems.brief
+      });
+
+      quoteLines.push({
+        label: "Base Drawing Setup",
+        value: setupItems.setup
+      });
+
+      if (scaleAdjustment !== 0) {
+        quoteLines.push({
+          label: "Scale adjustments",
+          value: scaleAdjustment
         });
       }
 
-      if (addOnsTotal > 0) {
-        lineItems.push({ label: "Add-ons", value: addOnsTotal });
+      if (programAdjustments.total !== 0) {
+        quoteLines.push({
+          label: "Program adjustments",
+          value: programAdjustments.total
+        });
       }
+
+      if (featureAdjustment !== 0) {
+        quoteLines.push({
+          label: "Feature adjustments",
+          value: featureAdjustment
+        });
+      }
+
+      if (deliverableData.total !== 0) {
+        quoteLines.push({
+          label: "Deliverable adjustments",
+          value: deliverableData.total
+        });
+      }
+
+      if (siteAdjustment !== 0) {
+        quoteLines.push({
+          label: "Site / condition adjustment",
+          value: siteAdjustment
+        });
+      }
+
+      if (complexityAdjustment !== 0) {
+        quoteLines.push({
+          label: "Design complexity adjustment",
+          value: complexityAdjustment
+        });
+      }
+
+      if (timelineAdjustment !== 0) {
+        quoteLines.push({
+          label: "Timeline adjustment",
+          value: timelineAdjustment
+        });
+      }
+
+      addOnItems.forEach((item) => {
+        quoteLines.push({
+          label: item.label,
+          value: item.value
+        });
+      });
+
+      const statusLabel = manualReview
+        ? "Preliminary Estimate — Review Required"
+        : "Preliminary Quote Ready";
+
+      const statusClass = manualReview ? "bad" : "good";
+
+      const coreSubtotal =
+        stageCoreFee +
+        setupItems.brief +
+        setupItems.setup +
+        scaleAdjustment +
+        programAdjustments.total +
+        featureAdjustment +
+        deliverableData.total +
+        siteAdjustment +
+        complexityAdjustment +
+        timelineAdjustment;
 
       return {
         isComplete: true,
-        status,
+        status: manualReview ? "manual-review" : "quote-ready",
         statusLabel,
         statusClass,
-        summary: `${data.projectType} priced at ${data.stage} level with ${data.sizeRange} scope and ${data.timeline.toLowerCase()} timing.`,
-        coreSubtotal: coreBeforePercent + complexityUpliftValue,
-        addOnsTotal,
         total,
         lowRange,
         highRange,
+        stageCoreFee,
+        coreSubtotal,
+        addOnsTotal: addOnsTotalValue,
         notes,
-        lineItems,
-        manualReview,
-        budgetMismatch
+        quoteLines,
+        reviewReasons,
+        documentationPackage: deliverableData.documentationPackage,
+        standardOutputsText,
+        budgetTension
       };
     }
 
@@ -2228,19 +2663,18 @@
         return "Make selections on the left to build a live scope summary and preliminary quote.";
       }
 
-      const parts = [
-        `A ${data.projectType.toLowerCase()}`,
-        `${data.stage.toLowerCase()} package`,
-        `${data.storeys.toLowerCase()}`,
-        `${data.sizeRange.toLowerCase()}`
-      ];
+      const parts = [];
+      parts.push(`${data.projectType}`);
+      parts.push(`${data.stage}`);
+      parts.push(`${data.storeys}`);
+      parts.push(`${data.sizeRange}`);
 
       if (data.siteCondition) {
-        parts.push(`${data.siteCondition.toLowerCase()} site`);
+        parts.push(`${data.siteCondition} site`);
       }
 
       if (data.timeline) {
-        parts.push(`${data.timeline.toLowerCase()} timeline`);
+        parts.push(`${data.timeline} timeline`);
       }
 
       return `${parts.join(" • ")}.`;
@@ -2289,6 +2723,8 @@
           <strong>—</strong>
         </div>
       `;
+      quoteNote.textContent =
+        "This estimate is subject to review, scope confirmation, exclusions, and final written proposal approval.";
     }
 
     function getQuoteNumber() {
@@ -2303,35 +2739,46 @@
 
     function buildQuoteText(quote) {
       const lines = [];
-      lines.push(`SZM Architecture`);
-      lines.push(`Preliminary Quote`);
+      lines.push("SZM Architecture");
+      lines.push("Preliminary Quote");
       lines.push(`Quote No: ${quote.quoteNumber}`);
       lines.push(`Date: ${quote.dateText}`);
-      lines.push(``);
+      lines.push("");
       lines.push(`Project Type: ${quote.state.projectType || "—"}`);
       lines.push(`Service Stage: ${quote.state.stage || "—"}`);
       lines.push(`Storeys: ${quote.state.storeys || "—"}`);
       lines.push(`Approx. Size: ${quote.state.sizeRange || "—"}`);
-      lines.push(``);
-      lines.push(`Line Items:`);
+      lines.push(`Site Condition: ${quote.state.siteCondition || "—"}`);
+      lines.push(`Starting Condition: ${quote.state.startingCondition || "—"}`);
+      lines.push("");
+      lines.push("Line Items:");
 
-      quote.pricing.lineItems.forEach((item) => {
+      quote.pricing.quoteLines.forEach((item) => {
         lines.push(`- ${item.label}: ${formatMoney(item.value)}`);
       });
 
-      lines.push(``);
+      lines.push("");
       lines.push(`Estimated Total: ${formatMoney(quote.pricing.total)}`);
       lines.push(`Estimated Range: ${formatMoney(quote.pricing.lowRange)} to ${formatMoney(quote.pricing.highRange)}`);
       lines.push(`Status: ${quote.pricing.statusLabel}`);
-      lines.push(``);
-      lines.push(`Notes:`);
+      lines.push("");
 
+      if (quote.pricing.reviewReasons.length) {
+        lines.push("Review Reasons:");
+        quote.pricing.reviewReasons.forEach((reason) => {
+          lines.push(`- ${reason}`);
+        });
+        lines.push("");
+      }
+
+      lines.push("Notes:");
       quote.pricing.notes.forEach((note) => {
         lines.push(`- ${note}`);
       });
 
-      lines.push(``);
-      lines.push(`This is a preliminary quote only and is subject to review, scope confirmation, and final proposal approval.`);
+      lines.push("");
+      lines.push("This preliminary quote covers the selected stage only. Later stages are not included unless separately commissioned.");
+      lines.push("This is not a final binding proposal and remains subject to internal review, scope confirmation, exclusions, and written approval.");
 
       return lines.join("\n");
     }
@@ -2345,7 +2792,7 @@
       quoteMeta.textContent = `${generatedQuote.quoteNumber} • ${generatedQuote.dateText}`;
       quoteHeadingNote.textContent = generatedQuote.pricing.statusLabel;
 
-      quoteLineItems.innerHTML = generatedQuote.pricing.lineItems
+      quoteLineItems.innerHTML = generatedQuote.pricing.quoteLines
         .map((item) => {
           return `
             <div class="builder-line-item">
@@ -2356,8 +2803,13 @@
         })
         .join("");
 
-      quoteNote.textContent =
-        "This preliminary quote is based on the inputs currently selected in the builder. Final fee, scope, exclusions, timelines, and deliverables remain subject to review and written proposal confirmation.";
+      if (generatedQuote.pricing.reviewReasons.length) {
+        quoteNote.textContent =
+          `Review required: ${generatedQuote.pricing.reviewReasons.join(" ")}`;
+      } else {
+        quoteNote.textContent =
+          "This preliminary quote covers the selected stage only. Later stages are not included unless separately commissioned. Final confirmation remains subject to written proposal approval.";
+      }
     }
 
     function updateBuilder() {
@@ -2366,7 +2818,7 @@
 
       let progress = 0;
       if (data.projectType) progress += 10;
-      if (data.stage) progress += 10;
+      if (data.stage) progress += 12;
       if (data.storeys) progress += 8;
       if (data.sizeRange) progress += 8;
       if (data.siteCondition) progress += 8;
@@ -2375,7 +2827,7 @@
       if (data.timeline) progress += 8;
       if (data.deliverables.length) progress += 12;
       if (data.features.length) progress += 8;
-      if (data.complexity.length) progress += 10;
+      if (data.complexity.length) progress += 8;
       if (data.addons.length) progress += 10;
 
       progress = Math.min(progress, 100);
@@ -2391,6 +2843,7 @@
       estimateRange.textContent = pricing.isComplete
         ? `${formatMoney(pricing.lowRange)} – ${formatMoney(pricing.highRange)}`
         : "—";
+
       coreFee.textContent = pricing.isComplete ? formatMoney(pricing.coreSubtotal) : "—";
       addonsTotal.textContent = pricing.isComplete ? formatMoney(pricing.addOnsTotal) : "—";
 
@@ -2415,15 +2868,15 @@
 
       fillChips(featureChipsSummary, data.features, "No feature selections");
 
-      const groupedScope = [
+      const scopeItems = [
         ...data.complexity,
         ...data.deliverables,
         ...data.addons
       ];
-      fillChips(scopeChipsSummary, groupedScope, "No added scope yet");
+      fillChips(scopeChipsSummary, scopeItems, "No added scope yet");
 
       if (generatedQuote) {
-        generatedQuote.state = structuredClone ? structuredClone(data) : JSON.parse(JSON.stringify(data));
+        generatedQuote.state = cloneData(data);
         generatedQuote.pricing = pricing;
         renderGeneratedQuote();
       } else {
@@ -2460,7 +2913,7 @@
             month: "short",
             day: "numeric"
           }),
-          state: structuredClone ? structuredClone(state) : JSON.parse(JSON.stringify(state)),
+          state: cloneData(state),
           pricing
         };
 
@@ -2470,9 +2923,7 @@
 
     if (copyQuoteBtn) {
       copyQuoteBtn.addEventListener("click", async () => {
-        if (!generatedQuote) {
-          return;
-        }
+        if (!generatedQuote) return;
 
         try {
           await navigator.clipboard.writeText(buildQuoteText(generatedQuote));
