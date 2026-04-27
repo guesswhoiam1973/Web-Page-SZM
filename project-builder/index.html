@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Builder | SZM Architecture</title>
+  <meta
+    name="description"
+    content="Build a structured project brief for a house or small building project with SZM Architecture."
+  />
+  <link rel="icon" type="image/png" href="../favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .configurator-layout {
+      display: grid;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .configurator-panel,
+    .configurator-summary {
+      background: rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(79, 79, 78, 0.1);
+      padding: 22px;
+    }
+
+    .configurator-summary {
+      position: relative;
+    }
+
+    .configurator-intro {
+      margin: 0 0 22px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .configurator-steps {
+      display: grid;
+      gap: 18px;
+    }
+
+    .configurator-step {
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(79, 79, 78, 0.1);
+    }
+
+    .configurator-step:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .configurator-step-title {
+      margin: 0 0 6px;
+      font-size: 1.2rem;
+      color: var(--text-strong);
+      letter-spacing: -0.02em;
+    }
+
+    .configurator-step-copy {
+      margin: 0 0 14px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .configurator-fieldset {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .choice-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .choice-card {
+      position: relative;
+    }
+
+    .choice-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice-card label {
+      display: block;
+      min-height: 100%;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(79, 79, 78, 0.12);
+      background: rgba(255, 255, 255, 0.42);
+      cursor: pointer;
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    .choice-card label strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text-strong);
+      font-size: 0.98rem;
+    }
+
+    .choice-card label span {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .choice-card input:checked + label {
+      border-color: rgba(60, 60, 59, 0.38);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 12px 28px rgba(60, 60, 59, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .check-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 12px;
+      border: 1px solid rgba(79, 79, 78, 0.12);
+      background: rgba(255, 255, 255, 0.38);
+    }
+
+    .check-item input {
+      margin-top: 3px;
+    }
+
+    .check-item span {
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    .select-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .input-block {
+      display: grid;
+      gap: 8px;
+    }
+
+    .input-block span {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+    }
+
+    .input-block select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(79, 79, 78, 0.16);
+      background: rgba(255, 255, 255, 0.62);
+      color: var(--text-strong);
+      font: inherit;
+    }
+
+    .summary-top {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .summary-eyebrow {
+      margin: 0;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+    }
+
+    .summary-title {
+      margin: 0;
+      font-size: 1.55rem;
+      color: var(--text-strong);
+      letter-spacing: -0.03em;
+    }
+
+    .summary-note {
+      margin: 0;
+      font-size: 0.94rem;
+      color: var(--text-soft);
+    }
+
+    .progress-block {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(79, 79, 78, 0.08);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--text-strong);
+      transition: width 0.25s ease;
+    }
+
+    .summary-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .summary-card {
+      padding: 14px 14px;
+      border: 1px solid rgba(79, 79, 78, 0.1);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .summary-card-title {
+      margin: 0 0 10px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+    }
+
+    .summary-big {
+      margin: 0;
+      font-size: 1.28rem;
+      color: var(--text-strong);
+      letter-spacing: -0.02em;
+    }
+
+    .summary-small {
+      margin: 6px 0 0;
+      color: var(--text);
+      font-size: 0.94rem;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid rgba(79, 79, 78, 0.08);
+      padding-bottom: 8px;
+      font-size: 0.94rem;
+    }
+
+    .summary-list li strong {
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+
+    .summary-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .summary-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border: 1px solid rgba(79, 79, 78, 0.12);
+      background: rgba(255, 255, 255, 0.62);
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .summary-brief {
+      margin: 0;
+      font-size: 0.96rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .summary-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .preview-disclaimer {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 0.88rem;
+    }
+
+    .reset-button {
+      width: 100%;
+    }
+
+    @media (min-width: 980px) {
+      .configurator-layout {
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+      }
+
+      .configurator-summary {
+        position: sticky;
+        top: 100px;
+      }
+    }
+
+    @media (max-width: 719px) {
+      .choice-grid,
+      .check-grid,
+      .select-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../">
+        <span class="brand-mark">SZM ARCHITECTURE</span>
+        <span class="brand-sub">Architectural Design & BIM</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="navOverlay"
+        aria-label="Open navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav-links nav-links-inline" aria-label="Primary navigation">
+        <a href="../">Home</a>
+        <a href="../about/">About</a>
+        <a href="../services/">Services</a>
+        <a href="../projects/">Projects</a>
+        <a href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="navOverlay" class="nav-overlay" aria-hidden="true">
+    <div class="nav-overlay-brand" aria-hidden="true">
+      <span class="nav-overlay-mark">SZM</span>
+      <span class="nav-overlay-sub">Architecture</span>
+    </div>
+
+    <nav class="nav-overlay-menu" aria-label="Mobile navigation">
+      <a class="nav-overlay-link" href="../">Home</a>
+      <a class="nav-overlay-link" href="../about/">About</a>
+      <a class="nav-overlay-link" href="../services/">Services</a>
+      <a class="nav-overlay-link" href="../projects/">Projects</a>
+      <a class="nav-overlay-link" href="../contact/">Contact</a>
+    </nav>
+
+    <div class="nav-overlay-meta">
+      <span>Berbice, Guyana</span>
+      <span>Architectural Design & BIM</span>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="page-eyebrow reveal">Project Builder</p>
+        <h1 class="page-title reveal">Build a structured house project brief.</h1>
+        <p class="page-copy reveal-soft">
+          This is a live prototype. It helps define scope, priorities, and likely next steps
+          before moving into enquiry or consultation.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap configurator-layout">
+        <article class="configurator-panel reveal">
+          <p class="configurator-intro">
+            Make selections across the categories below. The project summary updates live as you build.
+          </p>
+
+          <form id="projectBuilderForm" class="configurator-steps">
+            <section class="configurator-step">
+              <h2 class="configurator-step-title">01 / Base project</h2>
+              <p class="configurator-step-copy">Choose the project type that best fits the brief.</p>
+
+              <fieldset class="configurator-fieldset">
+                <div class="choice-grid">
+                  <div class="choice-card">
+                    <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
+                    <label for="projectTypeNew">
+                      <strong>Residential New Build</strong>
+                      <span>New house planned from the ground up.</span>
+                    </label>
+                  </div>
+
+                  <div class="choice-card">
+                    <input type="radio" name="projectType" id="projectTypeRenovation" value="Residential Renovation" />
+                    <label for="projectTypeRenovation">
+                      <strong>Renovation</strong>
+                      <span>Rework, upgrade, or reconfigure an existing house.</span>
+                    </label>
+                  </div>
+
+                  <div class="choice-card">
+                    <input type="radio" name="projectType" id="projectTypeExtension" value="Extension / Addition" />
+                    <label for="projectTypeExtension">
+                      <strong>Extension / Addition</strong>
+                      <span>Add rooms or expand an existing structure.</span>
+                    </label>
+                  </div>
+
+                  <div class="choice-card">
+                    <input type="radio" name="projectType" id="projectTypeMixed" value="Small Mixed Residential Project" />
+                    <label for="projectTypeMixed">
+                      <strong>Mixed Residential</strong>
+                      <span>Compact combination of living and supporting uses.</span>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </section>
+
+            <section class="configurator-step">
+              <h2 class="configurator-step-title">02 / Scale</h2>
+              <p class="configurator-step-copy">Set the approximate project scale and general size.</p>
+
+              <div class="select-grid">
+                <label class="input-block">
+                  <span>Storeys</span>
+                  <select name="storeys">
+                    <option value="1 Storey">1 Storey</option>
+                    <option value="2 Storeys" selected>2 Storeys</option>
+                    <option value="3+ Storeys">3+ Storeys</option>
+                  </select>
+                </label>
+
+                <label class="input-block">
+                  <span>Approximate Size</span>
+                  <select name="sizeRange">
+                    <option value="Under 1,500 sq ft">Under 1,500 sq ft</option>
+                    <option value="1,500–3,000 sq ft" selected>1,500–3,000 sq ft</option>
+                    <option value="3,000–5,000 sq ft">3,000–5,000 sq ft</option>
+                    <option value="Over 5,000 sq ft">Over 5,000 sq ft</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            <section class="configurator-step">
+              <h2 class="configurator-step-title">03 / Space needs</h2>
+              <p class="configurator-step-copy">Define the basic spatial program.</p>
+
+              <div class="select-grid">
+                <label class="input-block">
+                  <span>Bedrooms</span>
+                  <select name="bedrooms">
+                    <option value="1 Bedroom">1 Bedroom</option>
+                    <option value="2 Bedrooms">2 Bedrooms</option>
+                    <option value="3 Bedrooms" selected>3 Bedrooms</option>
+                    <option value="4 Bedrooms">4 Bedrooms</option>
+                    <option value="5+ Bedrooms">5+ Bedrooms</option>
+                  </select>
+                </label>
+
+                <label class="input-block">
+                  <span>Bathrooms</span>
+                  <select name="bathrooms">
+                    <option value="1 Bathroom">1 Bathroom</option>
+                    <option value="2 Bathrooms" selected>2 Bathrooms</option>
+                    <option value="3 Bathrooms">3 Bathrooms</option>
+                    <option value="4+ Bathrooms">4+ Bathrooms</option>
+                  </select>
+                </label>
+              </div>
+
+              <fieldset class="configurator-fieldset">
+                <div class="check-grid">
+                  <label class="check-item">
+                    <input type="checkbox" name="features" value="Garage" checked />
+                    <span>Garage</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="features" value="Home Office" />
+                    <span>Home Office</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="features" value="Laundry Room" checked />
+                    <span>Laundry Room</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="features" value="Outdoor Living Area" checked />
+                    <span>Outdoor Living Area</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="features" value="Walk-in Closet" />
+                    <span>Walk-in Closet</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="features" value="Secondary Suite" />
+                    <span>Secondary Suite</span>
+                  </label>
+                </div>
+              </fieldset>
+            </section>
+
+            <section class="configurator-step">
+              <h2 class="configurator-step-title">04 / Site conditions</h2>
+              <p class="configurator-step-copy">Describe the context and physical conditions.</p>
+
+              <div class="select-grid">
+                <label class="input-block">
+                  <span>Setting</span>
+                  <select name="siteContext">
+                    <option value="Urban">Urban</option>
+                    <option value="Suburban" selected>Suburban</option>
+                    <option value="Rural">Rural</option>
+                  </select>
+                </label>
+
+                <label class="input-block">
+                  <span>Site Slope</span>
+                  <select name="siteSlope">
+                    <option value="Flat" selected>Flat</option>
+                    <option value="Gently Sloped">Gently Sloped</option>
+                    <option value="Sloped">Sloped</option>
+                  </select>
+                </label>
+
+                <label class="input-block">
+                  <span>Starting Condition</span>
+                  <select name="startingCondition">
+                    <option value="Vacant Site" selected>Vacant Site</option>
+                    <option value="Existing Structure">Existing Structure</option>
+                    <option value="Partially Built Structure">Partially Built Structure</option>
+                  </select>
+                </label>
+
+                <label class="input-block">
+                  <span>Timeline</span>
+                  <select name="timeline">
+                    <option value="Immediate (0–1 month)">Immediate (0–1 month)</option>
+                    <option value="Soon (1–3 months)">Soon (1–3 months)</option>
+                    <option value="Planning Stage (3–6 months)" selected>Planning Stage (3–6 months)</option>
+                    <option value="Later (6+ months)">Later (6+ months)</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            <section class="configurator-step">
+              <h2 class="configurator-step-title">05 / Design direction</h2>
+              <p class="configurator-step-copy">Select the general design language and starting service stage.</p>
+
+              <div class="choice-grid" style="margin-bottom: 14px;">
+                <div class="choice-card">
+                  <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
+                  <label for="styleModern">
+                    <strong>Modern</strong>
+                    <span>Clean lines, controlled forms, contemporary expression.</span>
+                  </label>
+                </div>
+
+                <div class="choice-card">
+                  <input type="radio" name="styleDirection" id="styleTropical" value="Tropical" />
+                  <label for="styleTropical">
+                    <strong>Tropical</strong>
+                    <span>Climate-responsive, shaded, airy, relaxed.</span>
+                  </label>
+                </div>
+
+                <div class="choice-card">
+                  <input type="radio" name="styleDirection" id="styleMinimal" value="Minimal" />
+                  <label for="styleMinimal">
+                    <strong>Minimal</strong>
+                    <span>Restrained material palette and simplified form.</span>
+                  </label>
+                </div>
+
+                <div class="choice-card">
+                  <input type="radio" name="styleDirection" id="styleUnsure" value="Unsure" />
+                  <label for="styleUnsure">
+                    <strong>Unsure</strong>
+                    <span>Need direction before settling the design approach.</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="choice-grid">
+                <div class="choice-card">
+                  <input type="radio" name="serviceStage" id="stageConcept" value="Concept Design" checked />
+                  <label for="stageConcept">
+                    <strong>Concept Design</strong>
+                    <span>Early planning, direction, and layout development.</span>
+                  </label>
+                </div>
+
+                <div class="choice-card">
+                  <input type="radio" name="serviceStage" id="stageDevelopment" value="Design Development" />
+                  <label for="stageDevelopment">
+                    <strong>Design Development</strong>
+                    <span>More resolved coordination and refinement.</span>
+                  </label>
+                </div>
+
+                <div class="choice-card">
+                  <input type="radio" name="serviceStage" id="stageDocumentation" value="Documentation" />
+                  <label for="stageDocumentation">
+                    <strong>Documentation</strong>
+                    <span>Drawing information for approval or construction use.</span>
+                  </label>
+                </div>
+
+                <div class="choice-card">
+                  <input type="radio" name="serviceStage" id="stageUnsure" value="Not Sure" />
+                  <label for="stageUnsure">
+                    <strong>Not Sure</strong>
+                    <span>Need help identifying the correct starting stage.</span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="configurator-step">
+              <h2 class="configurator-step-title">06 / Add-ons</h2>
+              <p class="configurator-step-copy">Choose optional support items to test scope direction.</p>
+
+              <fieldset class="configurator-fieldset">
+                <div class="check-grid">
+                  <label class="check-item">
+                    <input type="checkbox" name="addons" value="3D Views" />
+                    <span>3D Views</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="addons" value="BOQ Support" />
+                    <span>BOQ Support</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="addons" value="Electrical Layouts" />
+                    <span>Electrical Layouts</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="addons" value="Plumbing Layouts" />
+                    <span>Plumbing Layouts</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="addons" value="Consultation First" />
+                    <span>Consultation First</span>
+                  </label>
+
+                  <label class="check-item">
+                    <input type="checkbox" name="addons" value="Phased Delivery" />
+                    <span>Phased Delivery</span>
+                  </label>
+                </div>
+              </fieldset>
+            </section>
+          </form>
+        </article>
+
+        <aside class="configurator-summary reveal-soft">
+          <div class="summary-top">
+            <p class="summary-eyebrow">Live Summary</p>
+            <h2 class="summary-title">Project Brief Preview</h2>
+            <p class="summary-note">
+              Preview only. This version is for testing the interaction and structure.
+            </p>
+          </div>
+
+          <div class="progress-block">
+            <div class="progress-meta">
+              <span>Builder progress</span>
+              <span id="progressText">0%</span>
+            </div>
+            <div class="progress-track">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="summary-stack">
+            <div class="summary-card">
+              <h3 class="summary-card-title">Recommended next step</h3>
+              <p id="recommendedAction" class="summary-big">Send Project Enquiry</p>
+              <p id="recommendedReason" class="summary-small">
+                The current selections suggest a project brief is already structured enough to review.
+              </p>
+            </div>
+
+            <div class="summary-card">
+              <h3 class="summary-card-title">Complexity</h3>
+              <p id="complexityLabel" class="summary-big">Moderate</p>
+              <p id="complexityReason" class="summary-small">
+                Based on project type, scale, site conditions, and selected add-ons.
+              </p>
+            </div>
+
+            <div class="summary-card">
+              <h3 class="summary-card-title">Core selections</h3>
+              <ul class="summary-list">
+                <li><span>Project Type</span><strong id="summaryProjectType">Residential New Build</strong></li>
+                <li><span>Scale</span><strong id="summaryScale">2 Storeys · 1,500–3,000 sq ft</strong></li>
+                <li><span>Spaces</span><strong id="summarySpaces">3 Bedrooms · 2 Bathrooms</strong></li>
+                <li><span>Site</span><strong id="summarySite">Suburban · Flat · Vacant Site</strong></li>
+                <li><span>Style</span><strong id="summaryStyle">Modern</strong></li>
+                <li><span>Stage</span><strong id="summaryStage">Concept Design</strong></li>
+                <li><span>Timeline</span><strong id="summaryTimeline">Planning Stage (3–6 months)</strong></li>
+              </ul>
+            </div>
+
+            <div class="summary-card">
+              <h3 class="summary-card-title">Selected features</h3>
+              <div id="featureChips" class="summary-chips"></div>
+            </div>
+
+            <div class="summary-card">
+              <h3 class="summary-card-title">Selected add-ons</h3>
+              <div id="addonChips" class="summary-chips"></div>
+            </div>
+
+            <div class="summary-card">
+              <h3 class="summary-card-title">Generated brief</h3>
+              <p id="generatedBrief" class="summary-brief"></p>
+            </div>
+
+            <div class="summary-actions">
+              <a class="button" href="../contact/">Send Project Enquiry</a>
+              <a
+                class="button-secondary"
+                href="https://calendar.app.google/FwE3691G6Maa2KWc8"
+                target="_blank"
+                rel="noopener"
+              >
+                Book Consultation
+              </a>
+              <button id="resetBuilder" type="button" class="button-secondary reset-button">
+                Reset Builder
+              </button>
+            </div>
+
+            <p class="preview-disclaimer">
+              This prototype is intentionally structured. It is meant to guide scope definition,
+              not replace the design process.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+    <span class="back-to-top-arrow" aria-hidden="true">↑</span>
+    <span class="back-to-top-text">Back to top</span>
+  </button>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div>© <span id="year"></span> SZM Architecture</div>
+      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+        <a href="../terms/">Terms & Conditions</a>
+        <a href="../privacy/">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const yearEl = document.getElementById("year");
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    const header = document.querySelector(".site-header");
+    const revealItems = document.querySelectorAll(".reveal, .reveal-soft");
+    const backToTopBtn = document.getElementById("backToTop");
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.querySelector(".nav-links-inline");
+    const navOverlay = document.getElementById("navOverlay");
+    const overlayLinks = document.querySelectorAll(".nav-overlay-link");
+
+    const form = document.getElementById("projectBuilderForm");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const resetBuilderBtn = document.getElementById("resetBuilder");
+
+    const summaryProjectType = document.getElementById("summaryProjectType");
+    const summaryScale = document.getElementById("summaryScale");
+    const summarySpaces = document.getElementById("summarySpaces");
+    const summarySite = document.getElementById("summarySite");
+    const summaryStyle = document.getElementById("summaryStyle");
+    const summaryStage = document.getElementById("summaryStage");
+    const summaryTimeline = document.getElementById("summaryTimeline");
+
+    const featureChips = document.getElementById("featureChips");
+    const addonChips = document.getElementById("addonChips");
+    const generatedBrief = document.getElementById("generatedBrief");
+    const recommendedAction = document.getElementById("recommendedAction");
+    const recommendedReason = document.getElementById("recommendedReason");
+    const complexityLabel = document.getElementById("complexityLabel");
+    const complexityReason = document.getElementById("complexityReason");
+
+    let navSettleTimer;
+    let scrollTicking = false;
+
+    document.body.classList.add("page-enter");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.body.classList.remove("page-enter");
+      });
+    });
+
+    function updateHeaderState() {
+      if (!header) return;
+
+      if (window.scrollY > 16) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    }
+
+    function updateRevealStates() {
+      revealItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.88 &&
+          rect.bottom > window.innerHeight * 0.12;
+
+        if (inViewportBand) {
+          item.classList.add("is-visible");
+        } else {
+          item.classList.remove("is-visible");
+        }
+      });
+    }
+
+    function updateBackToTop() {
+      if (!backToTopBtn) return;
+
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add("is-visible");
+      } else {
+        backToTopBtn.classList.remove("is-visible");
+      }
+    }
+
+    function openNav() {
+      if (!navToggle || !navOverlay) return;
+
+      clearTimeout(navSettleTimer);
+      navOverlay.classList.add("is-open");
+      navToggle.classList.add("is-open");
+      navToggle.setAttribute("aria-expanded", "true");
+      navOverlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("nav-open");
+
+      navSettleTimer = setTimeout(() => {
+        navOverlay.classList.add("is-settled");
+      }, 80);
+    }
+
+    function closeNav() {
+      if (!navToggle || !navOverlay) return;
+
+      clearTimeout(navSettleTimer);
+      navOverlay.classList.remove("is-settled");
+      navOverlay.classList.remove("is-open");
+      navToggle.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navOverlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("nav-open");
+
+      if (navLinks) {
+        navLinks.classList.remove("is-open");
+      }
+    }
+
+    function toggleNav() {
+      if (!navOverlay) return;
+
+      if (navOverlay.classList.contains("is-open")) {
+        closeNav();
+      } else {
+        openNav();
+      }
+    }
+
+    function getCheckedValue(name) {
+      const checked = form.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "";
+    }
+
+    function getCheckedValues(name) {
+      return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((item) => item.value);
+    }
+
+    function buildChips(container, items, fallbackText) {
+      container.innerHTML = "";
+
+      if (!items.length) {
+        const chip = document.createElement("span");
+        chip.className = "summary-chip";
+        chip.textContent = fallbackText;
+        container.appendChild(chip);
+        return;
+      }
+
+      items.forEach((item) => {
+        const chip = document.createElement("span");
+        chip.className = "summary-chip";
+        chip.textContent = item;
+        container.appendChild(chip);
+      });
+    }
+
+    function calculateComplexity(data) {
+      let score = 0;
+
+      if (data.projectType === "Residential Renovation") score += 3;
+      if (data.projectType === "Extension / Addition") score += 2;
+      if (data.projectType === "Small Mixed Residential Project") score += 3;
+
+      if (data.storeys === "2 Storeys") score += 1;
+      if (data.storeys === "3+ Storeys") score += 3;
+
+      if (data.sizeRange === "3,000–5,000 sq ft") score += 2;
+      if (data.sizeRange === "Over 5,000 sq ft") score += 4;
+
+      if (data.siteSlope === "Gently Sloped") score += 1;
+      if (data.siteSlope === "Sloped") score += 3;
+
+      if (data.startingCondition === "Existing Structure") score += 2;
+      if (data.startingCondition === "Partially Built Structure") score += 3;
+
+      if (data.serviceStage === "Design Development") score += 1;
+      if (data.serviceStage === "Documentation") score += 3;
+      if (data.serviceStage === "Not Sure") score += 1;
+
+      score += data.features.length * 0.35;
+      score += data.addons.length * 0.65;
+
+      if (score >= 9) {
+        return {
+          label: "High",
+          reason: "The project has multiple complexity drivers across scale, conditions, and support requirements."
+        };
+      }
+
+      if (score >= 5) {
+        return {
+          label: "Moderate",
+          reason: "The project has a balanced mix of design scope and coordination requirements."
+        };
+      }
+
+      return {
+        label: "Low",
+        reason: "The project appears more contained in scale and coordination needs."
+      };
+    }
+
+    function getRecommendedAction(data, complexity) {
+      if (data.serviceStage === "Not Sure" || data.styleDirection === "Unsure" || data.addons.includes("Consultation First")) {
+        return {
+          action: "Book Consultation",
+          reason: "The selections suggest the project would benefit from discussion before confirming scope."
+        };
+      }
+
+      if (complexity.label === "High" || data.serviceStage === "Documentation") {
+        return {
+          action: "Send Enquiry + Expect Consultation",
+          reason: "The project appears structured enough for review, but likely needs clarification and coordination discussion."
+        };
+      }
+
+      return {
+        action: "Send Project Enquiry",
+        reason: "The current selections suggest a project brief is already structured enough to review."
+      };
+    }
+
+    function getCompletionPercent(data) {
+      const checks = [
+        data.projectType,
+        data.storeys,
+        data.sizeRange,
+        data.bedrooms,
+        data.bathrooms,
+        data.siteContext,
+        data.siteSlope,
+        data.startingCondition,
+        data.styleDirection,
+        data.serviceStage,
+        data.timeline
+      ];
+
+      const filled = checks.filter(Boolean).length;
+      return Math.round((filled / checks.length) * 100);
+    }
+
+    function updateBuilderSummary() {
+      if (!form) return;
+
+      const data = {
+        projectType: getCheckedValue("projectType"),
+        storeys: form.storeys.value,
+        sizeRange: form.sizeRange.value,
+        bedrooms: form.bedrooms.value,
+        bathrooms: form.bathrooms.value,
+        features: getCheckedValues("features"),
+        siteContext: form.siteContext.value,
+        siteSlope: form.siteSlope.value,
+        startingCondition: form.startingCondition.value,
+        timeline: form.timeline.value,
+        styleDirection: getCheckedValue("styleDirection"),
+        serviceStage: getCheckedValue("serviceStage"),
+        addons: getCheckedValues("addons")
+      };
+
+      const complexity = calculateComplexity(data);
+      const recommendation = getRecommendedAction(data, complexity);
+      const progress = getCompletionPercent(data);
+
+      summaryProjectType.textContent = data.projectType;
+      summaryScale.textContent = `${data.storeys} · ${data.sizeRange}`;
+      summarySpaces.textContent = `${data.bedrooms} · ${data.bathrooms}`;
+      summarySite.textContent = `${data.siteContext} · ${data.siteSlope} · ${data.startingCondition}`;
+      summaryStyle.textContent = data.styleDirection;
+      summaryStage.textContent = data.serviceStage;
+      summaryTimeline.textContent = data.timeline;
+
+      progressBar.style.width = `${progress}%`;
+      progressText.textContent = `${progress}%`;
+
+      complexityLabel.textContent = complexity.label;
+      complexityReason.textContent = complexity.reason;
+
+      recommendedAction.textContent = recommendation.action;
+      recommendedReason.textContent = recommendation.reason;
+
+      buildChips(featureChips, data.features, "No additional features selected");
+      buildChips(addonChips, data.addons, "No add-ons selected");
+
+      const featureText = data.features.length
+        ? `Key features currently selected include ${data.features.join(", ")}.`
+        : "No additional feature preferences have been selected yet.";
+
+      const addonText = data.addons.length
+        ? `Optional support being considered includes ${data.addons.join(", ")}.`
+        : "No additional support add-ons have been selected at this stage.";
+
+      generatedBrief.textContent =
+        `This ${data.projectType.toLowerCase()} is currently being framed as a ${data.storeys.toLowerCase()} project in a ` +
+        `${data.siteContext.toLowerCase()} setting, with an approximate size of ${data.sizeRange.toLowerCase()}. ` +
+        `The working program is ${data.bedrooms.toLowerCase()} and ${data.bathrooms.toLowerCase()}, on a ` +
+        `${data.siteSlope.toLowerCase()} ${data.startingCondition.toLowerCase()}. ` +
+        `The preferred direction is ${data.styleDirection.toLowerCase()}, with ${data.serviceStage.toLowerCase()} identified as the current service path. ` +
+        `${featureText} ${addonText} The present timeline is ${data.timeline.toLowerCase()}.`;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const rect = entry.boundingClientRect;
+        const inViewportBand =
+          rect.top < window.innerHeight * 0.88 &&
+          rect.bottom > window.innerHeight * 0.12;
+
+        if (entry.isIntersecting && inViewportBand) {
+          entry.target.classList.add("is-visible");
+        } else {
+          entry.target.classList.remove("is-visible");
+        }
+      });
+    }, {
+      threshold: [0, 0.12, 0.25, 0.45, 0.65, 0.85, 1]
+    });
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    document.querySelectorAll('a[href]').forEach((link) => {
+      const href = link.getAttribute('href');
+
+      if (
+        href &&
+        !href.startsWith('#') &&
+        !href.startsWith('mailto:') &&
+        !href.startsWith('tel:') &&
+        !link.hasAttribute('target')
+      ) {
+        link.addEventListener('click', (e) => {
+          const url = new URL(link.href, window.location.href);
+
+          if (url.origin === window.location.origin) {
+            closeNav();
+            e.preventDefault();
+            document.body.classList.add('page-leave');
+
+            setTimeout(() => {
+              window.location.href = url.href;
+            }, 320);
+          }
+        });
+      }
+    });
+
+    overlayLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        closeNav();
+      });
+    });
+
+    if (form) {
+      form.addEventListener("input", updateBuilderSummary);
+      form.addEventListener("change", updateBuilderSummary);
+    }
+
+    if (resetBuilderBtn && form) {
+      resetBuilderBtn.addEventListener("click", () => {
+        form.reset();
+
+        const defaults = [
+          "projectTypeNew",
+          "styleModern",
+          "stageConcept"
+        ];
+
+        defaults.forEach((id) => {
+          const input = document.getElementById(id);
+          if (input) input.checked = true;
+        });
+
+        form.storeys.value = "2 Storeys";
+        form.sizeRange.value = "1,500–3,000 sq ft";
+        form.bedrooms.value = "3 Bedrooms";
+        form.bathrooms.value = "2 Bathrooms";
+        form.siteContext.value = "Suburban";
+        form.siteSlope.value = "Flat";
+        form.startingCondition.value = "Vacant Site";
+        form.timeline.value = "Planning Stage (3–6 months)";
+
+        const featureInputs = form.querySelectorAll('input[name="features"]');
+        const addonInputs = form.querySelectorAll('input[name="addons"]');
+
+        featureInputs.forEach((input) => {
+          input.checked = ["Garage", "Laundry Room", "Outdoor Living Area"].includes(input.value);
+        });
+
+        addonInputs.forEach((input) => {
+          input.checked = false;
+        });
+
+        updateBuilderSummary();
+      });
+    }
+
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener("click", toggleNav);
+    }
+
+    document.addEventListener("click", (e) => {
+      if (!navToggle || !navOverlay) return;
+
+      const clickedInsideOverlay = navOverlay.contains(e.target);
+      const clickedToggle = navToggle.contains(e.target);
+
+      if (!clickedInsideOverlay && !clickedToggle) {
+        closeNav();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeNav();
+      }
+    });
+
+    function onScroll() {
+      if (scrollTicking) return;
+      scrollTicking = true;
+
+      requestAnimationFrame(() => {
+        updateHeaderState();
+        updateRevealStates();
+        updateBackToTop();
+        scrollTicking = false;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 720) {
+        closeNav();
+      }
+
+      updateRevealStates();
+    });
+
+    window.addEventListener("load", () => {
+      updateHeaderState();
+      updateRevealStates();
+      updateBackToTop();
+      updateBuilderSummary();
+    });
+
+    updateHeaderState();
+    updateRevealStates();
+    updateBackToTop();
+    updateBuilderSummary();
+  </script>
+</body>
+</html>
