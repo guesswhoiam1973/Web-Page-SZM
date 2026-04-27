@@ -15,12 +15,12 @@
     :root {
       --builder-line: rgba(79, 79, 78, 0.1);
       --builder-line-strong: rgba(79, 79, 78, 0.16);
-      --builder-card: rgba(255, 255, 255, 0.48);
-      --builder-card-strong: rgba(255, 255, 255, 0.88);
-      --builder-dark: #161616;
-      --builder-dark-soft: #202020;
+      --builder-card: rgba(255, 255, 255, 0.52);
+      --builder-card-strong: rgba(255, 255, 255, 0.9);
+      --builder-dark: #151618;
+      --builder-dark-soft: #1c1d20;
       --builder-gold: #d8bc86;
-      --builder-gold-soft: rgba(216, 188, 134, 0.28);
+      --builder-gold-soft: rgba(216, 188, 134, 0.3);
       --builder-light: #f3efe8;
       --builder-light-soft: rgba(243, 239, 232, 0.72);
     }
@@ -55,6 +55,29 @@
       color: var(--text);
       font-size: 1.04rem;
       line-height: 1.7;
+    }
+
+    .builder-toolbar {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 24px;
+      align-items: center;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+    }
+
+    .builder-toolbar-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .builder-toolbar-item svg {
+      width: 15px;
+      height: 15px;
+      opacity: 0.7;
     }
 
     .builder-shell {
@@ -150,6 +173,7 @@
     }
 
     .builder-option label {
+      position: relative;
       display: grid;
       gap: 14px;
       min-height: 132px;
@@ -161,27 +185,24 @@
         transform 0.22s ease,
         border-color 0.22s ease,
         background 0.22s ease,
-        box-shadow 0.22s ease;
+        box-shadow 0.22s ease,
+        color 0.22s ease;
       align-content: start;
+      color: var(--text-strong);
+    }
+
+    .builder-option label:hover {
+      transform: translateY(-1px);
+      border-color: rgba(60, 60, 59, 0.22);
+      background: rgba(255, 255, 255, 0.76);
     }
 
     .builder-option input:checked + label {
       transform: translateY(-2px);
-      border-color: rgba(60, 60, 59, 0.34);
-      background: var(--builder-card-strong);
-      box-shadow: 0 16px 28px rgba(60, 60, 59, 0.06);
-    }
-
-    .builder-option.is-dark label {
-      background: #17191c;
-      color: #f7f3ed;
-      border-color: rgba(255, 255, 255, 0.06);
-    }
-
-    .builder-option.is-dark input:checked + label {
-      background: #101214;
+      background: var(--builder-dark);
+      color: var(--builder-light);
       border-color: rgba(216, 188, 134, 0.34);
-      box-shadow: 0 16px 30px rgba(22, 22, 22, 0.18);
+      box-shadow: 0 18px 32px rgba(22, 22, 22, 0.16);
     }
 
     .builder-option-icon {
@@ -207,9 +228,10 @@
       font-size: 0.78rem;
       line-height: 1.45;
       color: var(--text-soft);
+      transition: color 0.22s ease;
     }
 
-    .builder-option.is-dark .builder-option-text span {
+    .builder-option input:checked + label .builder-option-text span {
       color: rgba(243, 239, 232, 0.72);
     }
 
@@ -289,15 +311,21 @@
       transition:
         transform 0.2s ease,
         border-color 0.2s ease,
-        background 0.2s ease;
+        background 0.2s ease,
+        color 0.2s ease;
       font-size: 0.84rem;
       color: var(--text);
     }
 
+    .builder-chip label:hover {
+      background: rgba(255, 255, 255, 0.76);
+    }
+
     .builder-chip input:checked + label {
       transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.86);
-      border-color: rgba(60, 60, 59, 0.28);
+      background: var(--builder-dark);
+      color: var(--builder-light);
+      border-color: rgba(216, 188, 134, 0.3);
     }
 
     .builder-chip svg {
@@ -331,6 +359,10 @@
       inset: auto 0 0 0;
       height: 42%;
       background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.38));
+    }
+
+    .builder-option input:checked + label .builder-style-card {
+      box-shadow: inset 0 0 0 2px rgba(216, 188, 134, 0.7);
     }
 
     .style-modern {
@@ -442,6 +474,25 @@
       height: 100%;
       background: linear-gradient(90deg, #b69057, #e0c38f);
       transition: width 0.25s ease;
+    }
+
+    .builder-summary-label {
+      margin: 0 0 10px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(243, 239, 232, 0.66);
+    }
+
+    .builder-direction-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border: 1px solid rgba(216, 188, 134, 0.18);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+      color: #f3efe8;
     }
 
     .builder-preview {
@@ -880,7 +931,7 @@
 
     @media (min-width: 1240px) {
       .builder-shell {
-        grid-template-columns: minmax(0, 1.22fr) minmax(380px, 0.68fr);
+        grid-template-columns: minmax(0, 1.22fr) minmax(390px, 0.72fr);
       }
 
       .builder-summary {
@@ -1012,9 +1063,26 @@
         <p class="builder-eyebrow reveal">Project Builder</p>
         <h1 class="builder-title reveal">Build your project.</h1>
         <p class="builder-copy reveal-soft">
-          A guided scope builder for early project definition. The visual direction on the right is placeholder-based for now,
-          but the interface structure, icons, and selection logic are ready to test.
+          A guided scope builder for early project definition. The visual direction is placeholder-based for now,
+          but the interface, options, and summary logic are structured to test how a richer project builder could work.
         </p>
+
+        <div class="builder-toolbar reveal-soft">
+          <span class="builder-toolbar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M12 8v5l3 3"></path>
+              <circle cx="12" cy="12" r="8"></circle>
+            </svg>
+            Progress saves on this device
+          </span>
+          <span class="builder-toolbar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M12 4v16"></path>
+              <path d="M4 12h16"></path>
+            </svg>
+            Add as much scope detail as you already know
+          </span>
+        </div>
       </div>
     </section>
 
@@ -1029,7 +1097,7 @@
             </div>
 
             <div class="builder-grid-5">
-              <div class="builder-option is-dark">
+              <div class="builder-option">
                 <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
                 <label for="projectTypeNew">
                   <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -1254,6 +1322,18 @@
                   Secondary Suite
                 </label>
               </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featurePantry" value="Butler’s Pantry" />
+                <label for="featurePantry">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M7 4h10v16H7z"></path>
+                    <path d="M10 8h4"></path>
+                    <path d="M10 12h4"></path>
+                  </svg>
+                  Butler’s Pantry
+                </label>
+              </div>
             </div>
           </section>
 
@@ -1261,11 +1341,11 @@
             <div class="builder-section-head">
               <div class="builder-step">04</div>
               <h2 class="builder-section-title">Site Conditions</h2>
-              <p class="builder-section-copy">Help us understand your site.</p>
+              <p class="builder-section-copy">Help define the site and planning context.</p>
             </div>
 
             <div class="builder-grid-3">
-              <div class="builder-option is-dark">
+              <div class="builder-option">
                 <input type="radio" name="siteCondition" id="siteFlat" value="Flat" checked />
                 <label for="siteFlat">
                   <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
@@ -1374,6 +1454,36 @@
                   <option value="Corner Access">Corner Access</option>
                 </select>
               </label>
+
+              <label class="builder-select-wrap">
+                <span>Sun Exposure</span>
+                <select name="sunExposure">
+                  <option value="Excellent" selected>Excellent</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Limited">Limited</option>
+                  <option value="Shaded">Shaded</option>
+                </select>
+              </label>
+
+              <label class="builder-select-wrap">
+                <span>Starting Condition</span>
+                <select name="startingCondition">
+                  <option value="Vacant Site" selected>Vacant Site</option>
+                  <option value="Existing House">Existing House</option>
+                  <option value="Partially Built">Partially Built</option>
+                  <option value="Redevelopment">Redevelopment</option>
+                </select>
+              </label>
+
+              <label class="builder-select-wrap">
+                <span>Planning Context</span>
+                <select name="planningContext">
+                  <option value="Residential Zone">Residential Zone</option>
+                  <option value="Mixed-Use Zone" selected>Mixed-Use Zone</option>
+                  <option value="Commercial Zone">Commercial Zone</option>
+                  <option value="Rural / Open Plot">Rural / Open Plot</option>
+                </select>
+              </label>
             </div>
           </section>
 
@@ -1385,7 +1495,7 @@
             </div>
 
             <div class="builder-grid-5 builder-style-grid">
-              <div class="builder-option is-dark">
+              <div class="builder-option">
                 <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
                 <label for="styleModern">
                   <div class="builder-style-card style-modern">
@@ -1437,13 +1547,13 @@
           <div class="builder-summary-stack">
             <div class="builder-summary-topbar">
               <span>Live Summary</span>
-              <span>Auto-saving</span>
+              <span id="saveStatus">Saved locally</span>
             </div>
 
             <div>
               <h2 class="builder-summary-title">Project Brief Preview</h2>
               <p id="summarySentence" class="builder-summary-text">
-                A new 2-storey residential home with approximately 1,800–2,400 sq ft, designed with a modern direction and a north-facing orientation.
+                A residential new build with 2 storeys, approximately 1,800–2,400 sq ft, designed with a modern direction and a north-facing orientation.
               </p>
             </div>
 
@@ -1455,6 +1565,11 @@
               <div class="builder-progress-track">
                 <div id="progressBar" class="builder-progress-bar"></div>
               </div>
+            </div>
+
+            <div>
+              <p class="builder-summary-label">Selected Direction</p>
+              <span id="directionChip" class="builder-direction-chip">Modern</span>
             </div>
 
             <div id="summaryPreview" class="builder-preview project-new style-modern">
@@ -1492,7 +1607,7 @@
             </div>
 
             <div>
-              <p class="builder-overview-title">Project Overview</p>
+              <p class="builder-overview-title">Key Facts</p>
               <ul class="builder-overview-list">
                 <li>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
@@ -1570,6 +1685,34 @@
                   <span>Access</span>
                   <strong id="overviewAccess">Vehicle Access, Rear Lane</strong>
                 </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v3"></path>
+                    <path d="M12 19v3"></path>
+                    <path d="m4.93 4.93 2.12 2.12"></path>
+                    <path d="m16.95 16.95 2.12 2.12"></path>
+                  </svg>
+                  <span>Sun Exposure</span>
+                  <strong id="overviewSun">Excellent</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 20V8l3-3h10l3 3v12"></path>
+                    <path d="M4 10h16"></path>
+                  </svg>
+                  <span>Starting Condition</span>
+                  <strong id="overviewStart">Vacant Site</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 19h16"></path>
+                    <path d="M6 19V8h12v11"></path>
+                    <path d="M9 11h6"></path>
+                  </svg>
+                  <span>Planning Context</span>
+                  <strong id="overviewPlanning">Mixed-Use Zone</strong>
+                </li>
               </ul>
             </div>
 
@@ -1637,6 +1780,8 @@
     const summaryPreview = document.getElementById("summaryPreview");
     const featureChipsSummary = document.getElementById("featureChipsSummary");
     const clearSelections = document.getElementById("clearSelections");
+    const saveStatus = document.getElementById("saveStatus");
+    const directionChip = document.getElementById("directionChip");
 
     const overviewProjectType = document.getElementById("overviewProjectType");
     const overviewStoreys = document.getElementById("overviewStoreys");
@@ -1647,11 +1792,17 @@
     const overviewSite = document.getElementById("overviewSite");
     const overviewOrientation = document.getElementById("overviewOrientation");
     const overviewAccess = document.getElementById("overviewAccess");
+    const overviewSun = document.getElementById("overviewSun");
+    const overviewStart = document.getElementById("overviewStart");
+    const overviewPlanning = document.getElementById("overviewPlanning");
     const budgetRange = document.getElementById("budgetRange");
     const nextStepText = document.getElementById("nextStepText");
 
+    const STORAGE_KEY = "szm_project_builder_state_v2";
+
     let navSettleTimer;
     let scrollTicking = false;
+    let saveTimer;
 
     const projectPreviewClasses = [
       "project-new",
@@ -1734,6 +1885,13 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
           <rect x="4" y="6" width="7" height="12"></rect>
           <rect x="13" y="9" width="7" height="9"></rect>
+        </svg>
+      `,
+      "Butler’s Pantry": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M7 4h10v16H7z"></path>
+          <path d="M10 8h4"></path>
+          <path d="M10 12h4"></path>
         </svg>
       `
     };
@@ -1838,14 +1996,17 @@
     function getProgress(data) {
       let score = 0;
 
-      if (data.projectType) score += 16;
-      if (data.storeys) score += 12;
-      if (data.sizeRange) score += 12;
-      if (data.siteCondition) score += 12;
-      if (data.orientation) score += 10;
-      if (data.access) score += 10;
+      if (data.projectType) score += 12;
+      if (data.storeys) score += 8;
+      if (data.sizeRange) score += 8;
+      if (data.features.length >= 3) score += 14;
+      if (data.siteCondition) score += 10;
+      if (data.orientation) score += 8;
+      if (data.access) score += 8;
+      if (data.sunExposure) score += 8;
+      if (data.startingCondition) score += 8;
+      if (data.planningContext) score += 8;
       if (data.styleDirection) score += 16;
-      if (data.features.length) score += 12;
 
       return Math.min(score, 100);
     }
@@ -1875,7 +2036,7 @@
     }
 
     function buildSummarySentence(data) {
-      return `A ${data.projectType.toLowerCase()} with ${data.storeys.toLowerCase()}, approximately ${data.sizeRange.toLowerCase()}, designed with a ${data.styleDirection.toLowerCase()} direction and a ${data.orientation.toLowerCase()} orientation.`;
+      return `A ${data.projectType.toLowerCase()} with ${data.storeys.toLowerCase()}, approximately ${data.sizeRange.toLowerCase()}, designed with a ${data.styleDirection.toLowerCase()} direction on a ${data.siteCondition.toLowerCase()} site with ${data.orientation.toLowerCase()} orientation.`;
     }
 
     function buildFeatureChips(features) {
@@ -1910,17 +2071,79 @@
       summaryPreview.classList.add(styleClassMap[styleDirection] || "style-modern");
     }
 
-    function updateBuilder() {
-      const data = {
+    function getBuilderState() {
+      return {
         projectType: getCheckedRadioValue("projectType"),
         storeys: form.storeys.value,
         sizeRange: form.sizeRange.value,
         siteCondition: getCheckedRadioValue("siteCondition"),
         orientation: form.orientation.value,
         access: form.access.value,
+        sunExposure: form.sunExposure.value,
+        startingCondition: form.startingCondition.value,
+        planningContext: form.planningContext.value,
         styleDirection: getCheckedRadioValue("styleDirection"),
         features: getCheckedCheckboxValues("features")
       };
+    }
+
+    function saveBuilderState() {
+      if (!form) return;
+
+      const data = getBuilderState();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+      if (saveStatus) {
+        saveStatus.textContent = "Saving...";
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+          saveStatus.textContent = "Saved locally";
+        }, 180);
+      }
+    }
+
+    function restoreBuilderState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw || !form) return;
+
+      try {
+        const data = JSON.parse(raw);
+
+        if (data.projectType) {
+          const input = form.querySelector(`input[name="projectType"][value="${CSS.escape(data.projectType)}"]`);
+          if (input) input.checked = true;
+        }
+
+        if (data.siteCondition) {
+          const input = form.querySelector(`input[name="siteCondition"][value="${CSS.escape(data.siteCondition)}"]`);
+          if (input) input.checked = true;
+        }
+
+        if (data.styleDirection) {
+          const input = form.querySelector(`input[name="styleDirection"][value="${CSS.escape(data.styleDirection)}"]`);
+          if (input) input.checked = true;
+        }
+
+        if (data.storeys) form.storeys.value = data.storeys;
+        if (data.sizeRange) form.sizeRange.value = data.sizeRange;
+        if (data.orientation) form.orientation.value = data.orientation;
+        if (data.access) form.access.value = data.access;
+        if (data.sunExposure) form.sunExposure.value = data.sunExposure;
+        if (data.startingCondition) form.startingCondition.value = data.startingCondition;
+        if (data.planningContext) form.planningContext.value = data.planningContext;
+
+        if (Array.isArray(data.features)) {
+          form.querySelectorAll('input[name="features"]').forEach((item) => {
+            item.checked = data.features.includes(item.value);
+          });
+        }
+      } catch (error) {
+        console.warn("Could not restore builder state.", error);
+      }
+    }
+
+    function updateBuilder() {
+      const data = getBuilderState();
 
       const hasGarage = data.features.includes("Garage");
       const bedroomFeature = data.features.find((item) => item.includes("Bedroom")) || "Not set";
@@ -1931,6 +2154,8 @@
       progressText.textContent = `${progress}%`;
 
       summarySentence.textContent = buildSummarySentence(data);
+      directionChip.textContent = data.styleDirection;
+
       overviewProjectType.textContent = data.projectType;
       overviewStoreys.textContent = data.storeys;
       overviewSize.textContent = data.sizeRange;
@@ -1940,20 +2165,32 @@
       overviewSite.textContent = data.siteCondition;
       overviewOrientation.textContent = data.orientation;
       overviewAccess.textContent = data.access;
+      overviewSun.textContent = data.sunExposure;
+      overviewStart.textContent = data.startingCondition;
+      overviewPlanning.textContent = data.planningContext;
+
       budgetRange.textContent = getBudgetRange(data.projectType, data.sizeRange);
-      nextStepText.textContent = `Send your brief and book a consultation when you are ready to move from ${data.styleDirection.toLowerCase()} direction into review and scope confirmation.`;
+      nextStepText.textContent = `Use the enquiry form when you are ready to submit scope details, or book a consultation if you want to talk through the brief before moving forward.`;
 
       buildFeatureChips(data.features);
       updatePreviewClasses(data.projectType, data.styleDirection);
     }
 
     if (form) {
-      form.addEventListener("change", updateBuilder);
-      form.addEventListener("input", updateBuilder);
+      form.addEventListener("change", () => {
+        updateBuilder();
+        saveBuilderState();
+      });
+
+      form.addEventListener("input", () => {
+        updateBuilder();
+        saveBuilderState();
+      });
     }
 
     if (clearSelections && form) {
       clearSelections.addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
         form.reset();
 
         document.getElementById("projectTypeNew").checked = true;
@@ -1964,6 +2201,9 @@
         form.sizeRange.value = "1,800–2,400 sq ft";
         form.orientation.value = "North-facing";
         form.access.value = "Vehicle Access, Rear Lane";
+        form.sunExposure.value = "Excellent";
+        form.startingCondition.value = "Vacant Site";
+        form.planningContext.value = "Mixed-Use Zone";
 
         [
           "featureBedrooms",
@@ -1979,11 +2219,19 @@
 
         [
           "featureCloset",
-          "featureSuite"
+          "featureSuite",
+          "featurePantry"
         ].forEach((id) => {
           const input = document.getElementById(id);
           if (input) input.checked = false;
         });
+
+        if (saveStatus) {
+          saveStatus.textContent = "Cleared";
+          setTimeout(() => {
+            saveStatus.textContent = "Saved locally";
+          }, 500);
+        }
 
         updateBuilder();
       });
@@ -2093,12 +2341,14 @@
     });
 
     window.addEventListener("load", () => {
+      restoreBuilderState();
       updateHeaderState();
       updateRevealStates();
       updateBackToTop();
       updateBuilder();
     });
 
+    restoreBuilderState();
     updateHeaderState();
     updateRevealStates();
     updateBackToTop();
