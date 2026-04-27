@@ -10,872 +10,975 @@
   />
   <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="stylesheet" href="../style.css" />
+
   <style>
-    .builder-layout {
+    .pb-shell {
       display: grid;
-      gap: 20px;
+      gap: 22px;
       align-items: start;
     }
 
-    .builder-panel,
-    .builder-summary {
-      background: rgba(255, 255, 255, 0.24);
+    .pb-panel,
+    .pb-summary {
       border: 1px solid rgba(79, 79, 78, 0.1);
-      padding: 22px;
+      background: rgba(255, 255, 255, 0.28);
+      padding: 18px;
     }
 
-    .builder-intro {
-      margin: 0 0 24px;
-      color: var(--text-soft);
-      font-size: 0.96rem;
-    }
-
-    .builder-steps {
-      display: grid;
-      gap: 24px;
-    }
-
-    .builder-step {
-      padding-bottom: 24px;
-      border-bottom: 1px solid rgba(79, 79, 78, 0.1);
-    }
-
-    .builder-step:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .builder-step-title {
-      margin: 0 0 6px;
-      font-size: 1.16rem;
-      letter-spacing: -0.02em;
-      color: var(--text-strong);
-    }
-
-    .builder-step-copy {
-      margin: 0 0 16px;
-      color: var(--text-soft);
-      font-size: 0.94rem;
-    }
-
-    .builder-fieldset {
-      margin: 0;
-      padding: 0;
-      border: 0;
+    .pb-panel {
       display: grid;
       gap: 14px;
     }
 
-    .builder-grid-2 {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .pb-summary {
+      background:
+        linear-gradient(180deg, rgba(32, 32, 31, 0.96), rgba(22, 22, 21, 0.98)),
+        #171716;
+      color: #f0ede7;
+      border-color: rgba(201, 177, 126, 0.18);
+      box-shadow: 0 20px 40px rgba(25, 25, 24, 0.18);
     }
 
-    .builder-grid-3 {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .pb-kicker {
+      margin: 0;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
     }
 
-    .visual-choice {
+    .pb-title {
+      margin: 6px 0 0;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.045em;
+      color: var(--text-strong);
+    }
+
+    .pb-copy {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .pb-section {
+      border: 1px solid rgba(79, 79, 78, 0.1);
+      background: rgba(255, 255, 255, 0.36);
+      padding: 14px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .pb-section-head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px 12px;
+      align-items: baseline;
+    }
+
+    .pb-step-no {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .pb-step-title {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-strong);
+      letter-spacing: -0.01em;
+    }
+
+    .pb-step-copy {
+      margin: 2px 0 0;
+      grid-column: 2;
+      color: var(--text-soft);
+      font-size: 0.88rem;
+    }
+
+    .pb-type-grid,
+    .pb-style-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .pb-type-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .pb-style-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .pb-choice {
       position: relative;
     }
 
-    .visual-choice input {
+    .pb-choice input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    .visual-choice label {
+    .pb-choice label {
       display: grid;
-      gap: 12px;
+      gap: 10px;
       min-height: 100%;
-      padding: 12px;
+      padding: 10px;
       border: 1px solid rgba(79, 79, 78, 0.12);
-      background: rgba(255, 255, 255, 0.42);
+      background: rgba(255, 255, 255, 0.52);
       cursor: pointer;
       transition:
-        transform 0.24s ease,
-        border-color 0.24s ease,
-        background 0.24s ease,
-        box-shadow 0.24s ease;
+        border-color 0.22s ease,
+        background 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
     }
 
-    .visual-choice input:checked + label {
-      transform: translateY(-2px);
+    .pb-choice input:checked + label {
+      background: rgba(255, 255, 255, 0.88);
       border-color: rgba(60, 60, 59, 0.32);
-      background: rgba(255, 255, 255, 0.84);
-      box-shadow: 0 14px 28px rgba(60, 60, 59, 0.05);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(60, 60, 59, 0.05);
     }
 
-    .visual-copy {
+    .pb-type-visual,
+    .pb-style-visual {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(79, 79, 78, 0.08);
+      background: #efefed;
+    }
+
+    .pb-type-visual {
+      aspect-ratio: 4 / 3;
+    }
+
+    .pb-style-visual {
+      aspect-ratio: 4 / 3;
+    }
+
+    .pb-type-visual::before,
+    .pb-style-visual::before,
+    .pb-preview-canvas::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(80, 80, 78, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80, 80, 78, 0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    .pb-type-visual .b,
+    .pb-type-visual .l,
+    .pb-preview-canvas .b,
+    .pb-preview-canvas .l {
+      position: absolute;
+      background: rgba(62, 62, 61, 0.72);
+    }
+
+    .pb-type-visual .l,
+    .pb-preview-canvas .l {
+      background: rgba(62, 62, 61, 0.26);
+    }
+
+    .pb-type-new .b1 { left: 12%; bottom: 18%; width: 52%; height: 18%; }
+    .pb-type-new .b2 { left: 38%; bottom: 36%; width: 28%; height: 12%; }
+    .pb-type-new .b3 { right: 12%; bottom: 18%; width: 16%; height: 30%; }
+    .pb-type-new .l1 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
+
+    .pb-type-reno .b1 { left: 12%; bottom: 18%; width: 40%; height: 22%; }
+    .pb-type-reno .b2 { left: 55%; bottom: 18%; width: 15%; height: 18%; opacity: 0.45; }
+    .pb-type-reno .b3 { right: 12%; bottom: 18%; width: 10%; height: 18%; opacity: 0.24; }
+    .pb-type-reno .l1 { left: 14%; right: 18%; top: 30%; height: 2px; transform: rotate(-9deg); transform-origin: left center; }
+    .pb-type-reno .l2 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
+
+    .pb-type-ext .b1 { left: 12%; bottom: 18%; width: 34%; height: 22%; }
+    .pb-type-ext .b2 { left: 48%; bottom: 18%; width: 24%; height: 15%; opacity: 0.54; }
+    .pb-type-ext .b3 { left: 56%; bottom: 34%; width: 16%; height: 10%; }
+    .pb-type-ext .l1 { left: 44%; width: 32%; bottom: 28%; height: 2px; transform: rotate(-10deg); transform-origin: left center; }
+    .pb-type-ext .l2 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
+
+    .pb-type-mixed .b1 { left: 10%; bottom: 18%; width: 18%; height: 18%; }
+    .pb-type-mixed .b2 { left: 31%; bottom: 18%; width: 20%; height: 30%; }
+    .pb-type-mixed .b3 { left: 55%; bottom: 18%; width: 18%; height: 24%; }
+    .pb-type-mixed .b4 { right: 10%; bottom: 18%; width: 10%; height: 14%; opacity: 0.45; }
+    .pb-type-mixed .l1 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
+
+    .pb-type-commercial .b1 { left: 10%; bottom: 18%; width: 66%; height: 16%; }
+    .pb-type-commercial .b2 { left: 22%; bottom: 34%; width: 42%; height: 14%; }
+    .pb-type-commercial .b3 { right: 10%; bottom: 18%; width: 12%; height: 40%; }
+    .pb-type-commercial .l1 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
+
+    .pb-choice-copy {
       display: grid;
-      gap: 4px;
+      gap: 3px;
+      text-align: center;
     }
 
-    .visual-copy strong {
+    .pb-choice-copy strong {
+      font-size: 0.82rem;
+      line-height: 1.25;
       color: var(--text-strong);
-      font-size: 0.98rem;
       font-weight: 600;
     }
 
-    .visual-copy span {
+    .pb-choice-copy span {
+      font-size: 0.74rem;
+      line-height: 1.35;
       color: var(--text-soft);
-      font-size: 0.9rem;
-      line-height: 1.45;
     }
 
-    .massing-card {
-      position: relative;
-      aspect-ratio: 16 / 10;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0)),
-        rgba(240, 240, 238, 0.9);
-      border: 1px solid rgba(79, 79, 78, 0.08);
+    .pb-select-row,
+    .pb-chip-row,
+    .pb-fact-row {
+      display: grid;
+      gap: 10px;
     }
 
-    .massing-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(90, 90, 88, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(90, 90, 88, 0.05) 1px, transparent 1px);
-      background-size: 28px 28px;
-      opacity: 0.7;
+    .pb-select-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .massing-shape {
-      position: absolute;
-      background: rgba(62, 62, 61, 0.78);
-    }
-
-    .massing-line {
-      position: absolute;
-      background: rgba(62, 62, 61, 0.34);
-    }
-
-    .massing-new .shape-a {
-      left: 11%;
-      bottom: 18%;
-      width: 58%;
-      height: 24%;
-    }
-
-    .massing-new .shape-b {
-      left: 36%;
-      bottom: 42%;
-      width: 31%;
-      height: 14%;
-    }
-
-    .massing-new .shape-c {
-      right: 10%;
-      bottom: 18%;
-      width: 15%;
-      height: 38%;
-    }
-
-    .massing-new .line-a {
-      left: 8%;
-      right: 8%;
-      bottom: 15%;
-      height: 1px;
-    }
-
-    .massing-renovation .shape-a {
-      left: 14%;
-      bottom: 18%;
-      width: 46%;
-      height: 28%;
-    }
-
-    .massing-renovation .shape-b {
-      left: 60%;
-      bottom: 23%;
-      width: 18%;
-      height: 23%;
-      opacity: 0.45;
-    }
-
-    .massing-renovation .shape-c {
-      right: 11%;
-      bottom: 23%;
-      width: 12%;
-      height: 23%;
-      opacity: 0.28;
-    }
-
-    .massing-renovation .line-a {
-      left: 14%;
-      right: 14%;
-      top: 28%;
-      height: 2px;
-      transform: rotate(-10deg);
-      transform-origin: left center;
-    }
-
-    .massing-renovation .line-b {
-      left: 8%;
-      right: 8%;
-      bottom: 15%;
-      height: 1px;
-    }
-
-    .massing-extension .shape-a {
-      left: 11%;
-      bottom: 18%;
-      width: 38%;
-      height: 28%;
-    }
-
-    .massing-extension .shape-b {
-      left: 49%;
-      bottom: 18%;
-      width: 30%;
-      height: 19%;
-      opacity: 0.55;
-    }
-
-    .massing-extension .shape-c {
-      left: 58%;
-      bottom: 40%;
-      width: 21%;
-      height: 10%;
-      opacity: 0.8;
-    }
-
-    .massing-extension .line-a {
-      left: 45%;
-      bottom: 30%;
-      width: 38%;
-      height: 2px;
-      transform: rotate(-10deg);
-      transform-origin: left center;
-    }
-
-    .massing-extension .line-b {
-      left: 8%;
-      right: 8%;
-      bottom: 15%;
-      height: 1px;
-    }
-
-    .massing-mixed .shape-a {
-      left: 10%;
-      bottom: 18%;
-      width: 22%;
-      height: 22%;
-    }
-
-    .massing-mixed .shape-b {
-      left: 34%;
-      bottom: 18%;
-      width: 22%;
-      height: 38%;
-    }
-
-    .massing-mixed .shape-c {
-      left: 58%;
-      bottom: 18%;
-      width: 21%;
-      height: 29%;
-    }
-
-    .massing-mixed .shape-d {
-      right: 10%;
-      bottom: 18%;
-      width: 11%;
-      height: 18%;
-      opacity: 0.55;
-    }
-
-    .massing-mixed .line-a {
-      left: 8%;
-      right: 8%;
-      bottom: 15%;
-      height: 1px;
-    }
-
-    .massing-mixed .line-b {
-      left: 40%;
-      top: 18%;
-      width: 26%;
-      height: 1px;
-    }
-
-    .tone-card {
-      position: relative;
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-      border: 1px solid rgba(79, 79, 78, 0.08);
-    }
-
-    .tone-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.16), rgba(255,255,255,0)),
-        linear-gradient(rgba(90, 90, 88, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(90, 90, 88, 0.04) 1px, transparent 1px);
-      background-size: auto, 24px 24px, 24px 24px;
-    }
-
-    .tone-modern {
-      background:
-        linear-gradient(90deg, #dbdbd6 0 33%, #cfcfca 33% 66%, #50504f 66% 100%);
-    }
-
-    .tone-tropical {
-      background:
-        linear-gradient(90deg, #d7d1c3 0 33%, #9eab95 33% 66%, #6d6f61 66% 100%);
-    }
-
-    .tone-minimal {
-      background:
-        linear-gradient(90deg, #ecece8 0 34%, #d9d9d5 34% 67%, #7c7c78 67% 100%);
-    }
-
-    .tone-unsure {
-      background:
-        linear-gradient(90deg, #d9d9d5 0 25%, #c5ccc8 25% 50%, #d1cbc1 50% 75%, #7d7d78 75% 100%);
-    }
-
-    .tone-bars {
-      position: absolute;
-      inset: auto 10% 12% 10%;
+    .pb-select {
       display: grid;
       gap: 6px;
     }
 
-    .tone-bars span {
-      display: block;
-      height: 7px;
-      background: rgba(255,255,255,0.38);
-    }
-
-    .tone-bars span:nth-child(1) {
-      width: 72%;
-    }
-
-    .tone-bars span:nth-child(2) {
-      width: 56%;
-    }
-
-    .tone-bars span:nth-child(3) {
-      width: 84%;
-    }
-
-    .select-grid {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .input-block {
-      display: grid;
-      gap: 8px;
-    }
-
-    .input-block span {
-      font-size: 0.78rem;
+    .pb-select span {
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
       color: var(--text-soft);
     }
 
-    .input-block select {
+    .pb-select select {
       width: 100%;
-      padding: 14px 16px;
-      border: 1px solid rgba(79, 79, 78, 0.16);
-      background: rgba(255, 255, 255, 0.62);
+      min-height: 42px;
+      padding: 0 12px;
+      border: 1px solid rgba(79, 79, 78, 0.14);
+      background: rgba(255, 255, 255, 0.68);
       color: var(--text-strong);
       font: inherit;
     }
 
-    .chip-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .pb-chip-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .chip-option {
+    .pb-chip {
       position: relative;
     }
 
-    .chip-option input {
+    .pb-chip input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    .chip-option label {
+    .pb-chip label {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      min-height: 40px;
-      padding: 0 14px;
+      min-height: 42px;
+      width: 100%;
+      padding: 0 12px;
       border: 1px solid rgba(79, 79, 78, 0.12);
-      background: rgba(255, 255, 255, 0.42);
+      background: rgba(255, 255, 255, 0.48);
       cursor: pointer;
       transition:
-        transform 0.22s ease,
-        border-color 0.22s ease,
-        background 0.22s ease;
-      font-size: 0.92rem;
-      color: var(--text);
-    }
-
-    .chip-option input:checked + label {
-      transform: translateY(-1px);
-      border-color: rgba(60, 60, 59, 0.28);
-      background: rgba(255, 255, 255, 0.82);
-    }
-
-    .chip-option .icon {
-      font-size: 0.96rem;
-      line-height: 1;
-    }
-
-    .summary-top {
-      display: grid;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .summary-eyebrow {
-      margin: 0;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-soft);
-    }
-
-    .summary-title {
-      margin: 0;
-      font-size: 1.5rem;
-      color: var(--text-strong);
-      letter-spacing: -0.03em;
-    }
-
-    .summary-note {
-      margin: 0;
-      font-size: 0.94rem;
-      color: var(--text-soft);
-    }
-
-    .progress-block {
-      display: grid;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 0.88rem;
-      color: var(--text-soft);
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 8px;
-      background: rgba(79, 79, 78, 0.08);
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: var(--text-strong);
-      transition: width 0.25s ease;
-    }
-
-    .summary-stack {
-      display: grid;
-      gap: 16px;
-    }
-
-    .summary-board {
-      position: relative;
-      overflow: hidden;
-      min-height: 280px;
-      border: 1px solid rgba(79, 79, 78, 0.1);
-      background: rgba(255, 255, 255, 0.5);
-      padding: 18px;
-      display: grid;
-      align-content: space-between;
-      gap: 18px;
-    }
-
-    .summary-board::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(90, 90, 88, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(90, 90, 88, 0.04) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-    }
-
-    .summary-board::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0.52;
-      pointer-events: none;
-      transition: background 0.25s ease;
-    }
-
-    .summary-board.project-new::after {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
-        linear-gradient(90deg, #d9d9d4 0 34%, #cfcfca 34% 68%, #7d7d79 68% 100%);
-    }
-
-    .summary-board.project-renovation::after {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
-        linear-gradient(90deg, #dad6cc 0 35%, #bfc2ba 35% 67%, #72726e 67% 100%);
-    }
-
-    .summary-board.project-extension::after {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
-        linear-gradient(90deg, #dad9d4 0 40%, #c8c8c1 40% 72%, #777773 72% 100%);
-    }
-
-    .summary-board.project-mixed::after {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0)),
-        linear-gradient(90deg, #d6d5cf 0 26%, #c4cbc7 26% 52%, #cec7bc 52% 78%, #7c7b77 78% 100%);
-    }
-
-    .summary-board-inner {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 18px;
-      height: 100%;
-    }
-
-    .summary-board-top {
-      display: grid;
-      gap: 12px;
-    }
-
-    .summary-board-top span {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: rgba(60, 60, 59, 0.72);
-    }
-
-    .summary-board-top h3 {
-      margin: 0;
-      font-size: 1.8rem;
-      line-height: 0.96;
-      letter-spacing: -0.04em;
-      color: var(--text-strong);
-      max-width: 9ch;
-    }
-
-    .summary-board-massing {
-      position: relative;
-      min-height: 120px;
-    }
-
-    .summary-board-massing .shape,
-    .summary-board-massing .line {
-      position: absolute;
-      background: rgba(60, 60, 59, 0.78);
-      transition: all 0.25s ease;
-    }
-
-    .summary-board-massing .line {
-      background: rgba(60, 60, 59, 0.3);
-    }
-
-    .summary-board.project-new .shape-a {
-      left: 8%;
-      bottom: 10%;
-      width: 46%;
-      height: 24%;
-    }
-
-    .summary-board.project-new .shape-b {
-      left: 34%;
-      bottom: 34%;
-      width: 25%;
-      height: 14%;
-    }
-
-    .summary-board.project-new .shape-c {
-      right: 8%;
-      bottom: 10%;
-      width: 14%;
-      height: 40%;
-    }
-
-    .summary-board.project-new .line-a {
-      left: 6%;
-      right: 6%;
-      bottom: 7%;
-      height: 1px;
-    }
-
-    .summary-board.project-renovation .shape-a {
-      left: 10%;
-      bottom: 10%;
-      width: 36%;
-      height: 28%;
-    }
-
-    .summary-board.project-renovation .shape-b {
-      left: 48%;
-      bottom: 17%;
-      width: 18%;
-      height: 21%;
-      opacity: 0.5;
-    }
-
-    .summary-board.project-renovation .shape-c {
-      right: 10%;
-      bottom: 17%;
-      width: 11%;
-      height: 21%;
-      opacity: 0.28;
-    }
-
-    .summary-board.project-renovation .line-a {
-      left: 8%;
-      right: 24%;
-      top: 16%;
-      height: 2px;
-      transform: rotate(-8deg);
-      transform-origin: left center;
-    }
-
-    .summary-board.project-renovation .line-b {
-      left: 6%;
-      right: 6%;
-      bottom: 7%;
-      height: 1px;
-    }
-
-    .summary-board.project-extension .shape-a {
-      left: 8%;
-      bottom: 10%;
-      width: 30%;
-      height: 28%;
-    }
-
-    .summary-board.project-extension .shape-b {
-      left: 40%;
-      bottom: 10%;
-      width: 27%;
-      height: 18%;
-      opacity: 0.55;
-    }
-
-    .summary-board.project-extension .shape-c {
-      left: 49%;
-      bottom: 32%;
-      width: 18%;
-      height: 10%;
-      opacity: 0.8;
-    }
-
-    .summary-board.project-extension .line-a {
-      left: 36%;
-      bottom: 22%;
-      width: 34%;
-      height: 2px;
-      transform: rotate(-10deg);
-      transform-origin: left center;
-    }
-
-    .summary-board.project-extension .line-b {
-      left: 6%;
-      right: 6%;
-      bottom: 7%;
-      height: 1px;
-    }
-
-    .summary-board.project-mixed .shape-a {
-      left: 8%;
-      bottom: 10%;
-      width: 18%;
-      height: 20%;
-    }
-
-    .summary-board.project-mixed .shape-b {
-      left: 30%;
-      bottom: 10%;
-      width: 19%;
-      height: 36%;
-    }
-
-    .summary-board.project-mixed .shape-c {
-      left: 53%;
-      bottom: 10%;
-      width: 18%;
-      height: 28%;
-    }
-
-    .summary-board.project-mixed .shape-d {
-      right: 10%;
-      bottom: 10%;
-      width: 10%;
-      height: 16%;
-      opacity: 0.55;
-    }
-
-    .summary-board.project-mixed .line-a {
-      left: 6%;
-      right: 6%;
-      bottom: 7%;
-      height: 1px;
-    }
-
-    .summary-board.project-mixed .line-b {
-      left: 34%;
-      top: 10%;
-      width: 22%;
-      height: 1px;
-    }
-
-    .summary-board-bottom {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .summary-tag {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 10px;
-      background: rgba(255, 255, 255, 0.74);
-      border: 1px solid rgba(79, 79, 78, 0.12);
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+      text-align: center;
       font-size: 0.82rem;
       color: var(--text);
     }
 
-    .summary-card {
-      padding: 14px;
-      border: 1px solid rgba(79, 79, 78, 0.1);
-      background: rgba(255, 255, 255, 0.4);
+    .pb-chip input:checked + label {
+      background: rgba(255, 255, 255, 0.84);
+      border-color: rgba(60, 60, 59, 0.28);
+      transform: translateY(-1px);
     }
 
-    .summary-card-title {
-      margin: 0 0 10px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-soft);
+    .pb-chip .pb-chip-icon {
+      font-size: 0.9rem;
+      line-height: 1;
     }
 
-    .summary-big {
-      margin: 0;
-      font-size: 1.26rem;
-      color: var(--text-strong);
-      letter-spacing: -0.02em;
+    .pb-fact-row {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .summary-small {
-      margin: 6px 0 0;
+    .pb-fact-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 12px;
+      border: 1px solid rgba(79, 79, 78, 0.12);
+      background: rgba(255, 255, 255, 0.48);
+      font-size: 0.82rem;
       color: var(--text);
-      font-size: 0.94rem;
-      line-height: 1.55;
+      text-align: center;
     }
 
-    .summary-list {
+    .pb-style-modern {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
+        linear-gradient(90deg, #2f3034 0 24%, #5f625f 24% 48%, #c8c5bd 48% 74%, #ece7df 74% 100%);
+    }
+
+    .pb-style-organic {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
+        linear-gradient(90deg, #3f3c35 0 22%, #736953 22% 48%, #b7a98f 48% 74%, #e2d9c8 74% 100%);
+    }
+
+    .pb-style-minimal {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0)),
+        linear-gradient(90deg, #d7d5d0 0 30%, #eceae5 30% 60%, #c9c6c1 60% 82%, #f5f4f1 82% 100%);
+    }
+
+    .pb-style-coastal {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
+        linear-gradient(90deg, #88a1ac 0 22%, #c7d7dd 22% 48%, #d9d4c7 48% 74%, #f0ede6 74% 100%);
+    }
+
+    .pb-style-timeless {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0)),
+        linear-gradient(90deg, #beb7ab 0 24%, #ddd7cd 24% 50%, #bdb7b1 50% 76%, #f2eee8 76% 100%);
+    }
+
+    .pb-style-modern::after,
+    .pb-style-organic::after,
+    .pb-style-minimal::after,
+    .pb-style-coastal::after,
+    .pb-style-timeless::after {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      bottom: 14%;
+      height: 30%;
+      border-top: 1px solid rgba(255, 255, 255, 0.42);
+      border-left: 1px solid rgba(255, 255, 255, 0.22);
+      opacity: 0.9;
+    }
+
+    .pb-summary-head {
+      display: grid;
+      gap: 6px;
+    }
+
+    .pb-summary-kicker {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(236, 215, 176, 0.86);
+    }
+
+    .pb-summary-title {
+      margin: 0;
+      font-size: 1.45rem;
+      color: #f6f2ea;
+      letter-spacing: -0.03em;
+    }
+
+    .pb-summary-copy {
+      margin: 0;
+      color: rgba(240, 236, 228, 0.78);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .pb-progress-wrap {
       display: grid;
       gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
     }
 
-    .summary-list li {
+    .pb-progress-meta {
       display: flex;
       justify-content: space-between;
-      gap: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(79, 79, 78, 0.08);
-      font-size: 0.94rem;
+      gap: 12px;
+      color: rgba(240, 236, 228, 0.72);
+      font-size: 0.78rem;
     }
 
-    .summary-list li strong {
-      color: var(--text-strong);
+    .pb-progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .pb-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #a98b56, #d8bc7e);
+      transition: width 0.25s ease;
+    }
+
+    .pb-preview-canvas {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(180deg, rgba(38, 43, 50, 0.28), rgba(20, 20, 19, 0.18)),
+        linear-gradient(180deg, #6e7d8f 0%, #cad2d7 36%, #d7d2c7 60%, #8f856f 100%);
+    }
+
+    .pb-preview-canvas::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 78% 24%, rgba(255,255,255,0.34), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .pb-preview-canvas.project-new {
+      background:
+        linear-gradient(180deg, rgba(32, 37, 42, 0.22), rgba(22, 22, 21, 0.18)),
+        linear-gradient(180deg, #6f8193 0%, #cdd7db 36%, #d8d2c7 61%, #95856d 100%);
+    }
+
+    .pb-preview-canvas.project-renovation {
+      background:
+        linear-gradient(180deg, rgba(38, 32, 28, 0.2), rgba(24, 22, 20, 0.18)),
+        linear-gradient(180deg, #7b877f 0%, #ced5d0 34%, #d9d2c6 61%, #958268 100%);
+    }
+
+    .pb-preview-canvas.project-extension {
+      background:
+        linear-gradient(180deg, rgba(32, 34, 38, 0.22), rgba(22, 22, 21, 0.18)),
+        linear-gradient(180deg, #6d7a88 0%, #ccd6db 35%, #d5cfbf 61%, #8c8068 100%);
+    }
+
+    .pb-preview-canvas.project-mixed {
+      background:
+        linear-gradient(180deg, rgba(33, 35, 39, 0.22), rgba(22, 22, 21, 0.18)),
+        linear-gradient(180deg, #6d7886 0%, #cdd5d8 35%, #d4cec3 61%, #8b7f69 100%);
+    }
+
+    .pb-preview-canvas.project-commercial {
+      background:
+        linear-gradient(180deg, rgba(29, 33, 38, 0.22), rgba(22, 22, 21, 0.18)),
+        linear-gradient(180deg, #67717d 0%, #c8d0d4 34%, #d7d1c6 61%, #8b7f69 100%);
+    }
+
+    .pb-preview-canvas.style-modern .pb-preview-house {
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .pb-preview-canvas.style-organic .pb-preview-house {
+      filter: sepia(0.08) saturate(0.95);
+    }
+
+    .pb-preview-canvas.style-minimal .pb-preview-house {
+      filter: grayscale(0.08) brightness(1.04);
+    }
+
+    .pb-preview-canvas.style-coastal .pb-preview-house {
+      filter: saturate(0.95) brightness(1.05);
+    }
+
+    .pb-preview-canvas.style-timeless .pb-preview-house {
+      filter: sepia(0.04) brightness(1.02);
+    }
+
+    .pb-preview-house {
+      position: absolute;
+      inset: 0;
+    }
+
+    .pb-preview-ground {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 30%;
+      background:
+        linear-gradient(180deg, rgba(52, 58, 49, 0.18), rgba(52, 58, 49, 0.42)),
+        linear-gradient(90deg, #6d735c 0%, #8f8d72 50%, #6e725a 100%);
+    }
+
+    .pb-preview-pool {
+      position: absolute;
+      left: 12%;
+      bottom: 8%;
+      width: 42%;
+      height: 14%;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0)),
+        linear-gradient(90deg, #445863 0%, #718c97 44%, #5f7983 100%);
+      opacity: 0.94;
+    }
+
+    .pb-preview-volume-a,
+    .pb-preview-volume-b,
+    .pb-preview-volume-c,
+    .pb-preview-volume-d {
+      position: absolute;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+
+    .pb-preview-window-row {
+      position: absolute;
+      display: grid;
+      gap: 6px;
+    }
+
+    .pb-preview-window-row span {
+      display: block;
+      background: rgba(32, 36, 39, 0.84);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .pb-preview-palms {
+      position: absolute;
+      right: 4%;
+      bottom: 18%;
+      width: 24%;
+      height: 42%;
+      opacity: 0.6;
+    }
+
+    .pb-preview-palms::before,
+    .pb-preview-palms::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 2px;
+      background: rgba(52, 52, 48, 0.8);
+    }
+
+    .pb-preview-palms::before {
+      left: 38%;
+      height: 70%;
+    }
+
+    .pb-preview-palms::after {
+      left: 66%;
+      height: 56%;
+    }
+
+    .pb-preview-palms span,
+    .pb-preview-palms b {
+      position: absolute;
+      display: block;
+      width: 54px;
+      height: 20px;
+      border-top: 2px solid rgba(61, 67, 54, 0.72);
+      border-radius: 100% 0 0 0;
+      transform-origin: left center;
+    }
+
+    .pb-preview-palms span:nth-child(1) { left: 36%; top: 2%; transform: rotate(-18deg); }
+    .pb-preview-palms span:nth-child(2) { left: 34%; top: 10%; transform: rotate(14deg); }
+    .pb-preview-palms span:nth-child(3) { left: 58%; top: 18%; transform: rotate(-22deg); }
+    .pb-preview-palms b:nth-child(4) { left: 62%; top: 26%; transform: rotate(18deg); }
+    .pb-preview-palms b:nth-child(5) { left: 48%; top: 8%; transform: rotate(4deg); }
+
+    .pb-preview-canvas.project-new .pb-preview-volume-a {
+      left: 20%;
+      bottom: 24%;
+      width: 44%;
+      height: 26%;
+      background-color: rgba(231, 227, 220, 0.9);
+    }
+
+    .pb-preview-canvas.project-new .pb-preview-volume-b {
+      left: 34%;
+      bottom: 40%;
+      width: 38%;
+      height: 22%;
+      background-color: rgba(244, 241, 236, 0.96);
+    }
+
+    .pb-preview-canvas.project-new .pb-preview-volume-c {
+      right: 10%;
+      bottom: 24%;
+      width: 12%;
+      height: 30%;
+      background-color: rgba(202, 190, 168, 0.88);
+    }
+
+    .pb-preview-canvas.project-renovation .pb-preview-volume-a {
+      left: 18%;
+      bottom: 24%;
+      width: 40%;
+      height: 24%;
+      background-color: rgba(224, 219, 210, 0.9);
+    }
+
+    .pb-preview-canvas.project-renovation .pb-preview-volume-b {
+      left: 50%;
+      bottom: 24%;
+      width: 18%;
+      height: 20%;
+      background-color: rgba(197, 185, 164, 0.7);
+    }
+
+    .pb-preview-canvas.project-renovation .pb-preview-volume-c {
+      right: 12%;
+      bottom: 24%;
+      width: 10%;
+      height: 20%;
+      background-color: rgba(219, 209, 191, 0.46);
+    }
+
+    .pb-preview-canvas.project-extension .pb-preview-volume-a {
+      left: 18%;
+      bottom: 24%;
+      width: 32%;
+      height: 24%;
+      background-color: rgba(229, 225, 216, 0.9);
+    }
+
+    .pb-preview-canvas.project-extension .pb-preview-volume-b {
+      left: 50%;
+      bottom: 24%;
+      width: 24%;
+      height: 16%;
+      background-color: rgba(197, 186, 165, 0.74);
+    }
+
+    .pb-preview-canvas.project-extension .pb-preview-volume-c {
+      left: 58%;
+      bottom: 40%;
+      width: 16%;
+      height: 10%;
+      background-color: rgba(240, 236, 229, 0.92);
+    }
+
+    .pb-preview-canvas.project-mixed .pb-preview-volume-a {
+      left: 16%;
+      bottom: 24%;
+      width: 14%;
+      height: 18%;
+      background-color: rgba(225, 220, 211, 0.86);
+    }
+
+    .pb-preview-canvas.project-mixed .pb-preview-volume-b {
+      left: 34%;
+      bottom: 24%;
+      width: 18%;
+      height: 30%;
+      background-color: rgba(243, 239, 234, 0.95);
+    }
+
+    .pb-preview-canvas.project-mixed .pb-preview-volume-c {
+      left: 56%;
+      bottom: 24%;
+      width: 16%;
+      height: 22%;
+      background-color: rgba(217, 208, 191, 0.84);
+    }
+
+    .pb-preview-canvas.project-mixed .pb-preview-volume-d {
+      right: 10%;
+      bottom: 24%;
+      width: 10%;
+      height: 14%;
+      background-color: rgba(208, 195, 173, 0.58);
+    }
+
+    .pb-preview-canvas.project-commercial .pb-preview-volume-a {
+      left: 14%;
+      bottom: 24%;
+      width: 54%;
+      height: 18%;
+      background-color: rgba(230, 225, 217, 0.9);
+    }
+
+    .pb-preview-canvas.project-commercial .pb-preview-volume-b {
+      left: 26%;
+      bottom: 40%;
+      width: 38%;
+      height: 14%;
+      background-color: rgba(243, 239, 233, 0.94);
+    }
+
+    .pb-preview-canvas.project-commercial .pb-preview-volume-c {
+      right: 10%;
+      bottom: 24%;
+      width: 12%;
+      height: 34%;
+      background-color: rgba(191, 181, 165, 0.84);
+    }
+
+    .pb-preview-canvas.project-new .pb-window-a {
+      left: 24%;
+      bottom: 29%;
+      grid-template-columns: repeat(4, 1fr);
+      width: 30%;
+      height: 8%;
+    }
+
+    .pb-preview-canvas.project-new .pb-window-b {
+      left: 38%;
+      bottom: 46%;
+      grid-template-columns: repeat(5, 1fr);
+      width: 28%;
+      height: 10%;
+    }
+
+    .pb-preview-canvas.project-renovation .pb-window-a {
+      left: 21%;
+      bottom: 29%;
+      grid-template-columns: repeat(3, 1fr);
+      width: 24%;
+      height: 8%;
+    }
+
+    .pb-preview-canvas.project-renovation .pb-window-b {
+      left: 52%;
+      bottom: 29%;
+      grid-template-columns: repeat(2, 1fr);
+      width: 14%;
+      height: 8%;
+    }
+
+    .pb-preview-canvas.project-extension .pb-window-a {
+      left: 21%;
+      bottom: 29%;
+      grid-template-columns: repeat(3, 1fr);
+      width: 20%;
+      height: 8%;
+    }
+
+    .pb-preview-canvas.project-extension .pb-window-b {
+      left: 53%;
+      bottom: 29%;
+      grid-template-columns: repeat(2, 1fr);
+      width: 16%;
+      height: 7%;
+    }
+
+    .pb-preview-canvas.project-mixed .pb-window-a {
+      left: 35%;
+      bottom: 30%;
+      grid-template-columns: repeat(2, 1fr);
+      width: 12%;
+      height: 10%;
+    }
+
+    .pb-preview-canvas.project-mixed .pb-window-b {
+      left: 58%;
+      bottom: 29%;
+      grid-template-columns: repeat(2, 1fr);
+      width: 12%;
+      height: 8%;
+    }
+
+    .pb-preview-canvas.project-commercial .pb-window-a {
+      left: 20%;
+      bottom: 28%;
+      grid-template-columns: repeat(6, 1fr);
+      width: 44%;
+      height: 7%;
+    }
+
+    .pb-preview-canvas.project-commercial .pb-window-b {
+      left: 29%;
+      bottom: 44%;
+      grid-template-columns: repeat(5, 1fr);
+      width: 28%;
+      height: 7%;
+    }
+
+    .pb-thumb-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pb-thumb {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(32, 37, 42, 0.2), rgba(22, 22, 21, 0.16)),
+        linear-gradient(180deg, #6f8193 0%, #ccd6da 34%, #d8d2c7 60%, #8f856f 100%);
+    }
+
+    .pb-thumb::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0)),
+        linear-gradient(rgba(80, 80, 78, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80, 80, 78, 0.04) 1px, transparent 1px);
+      background-size: auto, 16px 16px, 16px 16px;
+    }
+
+    .pb-thumb .t1,
+    .pb-thumb .t2,
+    .pb-thumb .t3 {
+      position: absolute;
+      background: rgba(236, 231, 222, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .pb-thumb .t1 { left: 18%; bottom: 24%; width: 44%; height: 18%; }
+    .pb-thumb .t2 { left: 36%; bottom: 38%; width: 32%; height: 16%; }
+    .pb-thumb .t3 { right: 10%; bottom: 24%; width: 12%; height: 28%; opacity: 0.84; }
+
+    .pb-keyfacts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pb-keyfact {
+      display: grid;
+      gap: 4px;
+      justify-items: start;
+    }
+
+    .pb-keyfact span {
+      color: rgba(239, 233, 222, 0.66);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .pb-keyfact strong {
+      color: #f4efe6;
+      font-size: 0.88rem;
       font-weight: 600;
-      text-align: right;
     }
 
-    .summary-chips {
+    .pb-summary-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .pb-summary-subtitle {
+      margin: 0;
+      color: rgba(239, 233, 222, 0.72);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .pb-summary-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .summary-chip {
+    .pb-summary-chip {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      min-height: 34px;
+      min-height: 32px;
       padding: 0 12px;
-      border: 1px solid rgba(79, 79, 78, 0.12);
-      background: rgba(255, 255, 255, 0.62);
-      font-size: 0.88rem;
-      color: var(--text);
+      border: 1px solid rgba(216, 188, 126, 0.18);
+      background: rgba(255, 255, 255, 0.05);
+      color: #f1ece3;
+      font-size: 0.82rem;
     }
 
-    .summary-brief {
+    .pb-summary-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .pb-summary-actions .button {
+      background: linear-gradient(180deg, #d2b075, #c39d5f);
+      color: #161514;
+      border: 0;
+    }
+
+    .pb-summary-actions .button-secondary {
+      color: #efe9dd;
+      border-color: rgba(216, 188, 126, 0.32);
+      background: transparent;
+    }
+
+    .pb-reset {
+      margin-top: 4px;
+      background: transparent;
+      border: 1px solid rgba(216, 188, 126, 0.18);
+      color: rgba(240, 236, 228, 0.8);
+      min-height: 42px;
+      font: inherit;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+    }
+
+    .pb-helper {
       margin: 0;
-      font-size: 0.96rem;
-      color: var(--text);
-      line-height: 1.68;
+      color: rgba(240, 236, 228, 0.62);
+      font-size: 0.82rem;
+      line-height: 1.55;
     }
 
-    .summary-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .preview-disclaimer {
-      margin: 0;
-      color: var(--text-soft);
-      font-size: 0.88rem;
-    }
-
-    .reset-button {
-      width: 100%;
-    }
-
-    @media (min-width: 980px) {
-      .builder-layout {
-        grid-template-columns: minmax(0, 1.28fr) minmax(340px, 0.88fr);
+    @media (min-width: 1100px) {
+      .pb-shell {
+        grid-template-columns: minmax(0, 1.3fr) minmax(340px, 0.58fr);
       }
 
-      .builder-summary {
+      .pb-summary {
         position: sticky;
-        top: 100px;
+        top: 92px;
       }
     }
 
-    @media (max-width: 719px) {
-      .builder-grid-2,
-      .builder-grid-3,
-      .select-grid {
+    @media (max-width: 1024px) {
+      .pb-type-grid,
+      .pb-style-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .pb-type-grid,
+      .pb-style-grid,
+      .pb-select-row,
+      .pb-chip-row,
+      .pb-fact-row,
+      .pb-keyfacts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 580px) {
+      .pb-type-grid,
+      .pb-style-grid,
+      .pb-select-row,
+      .pb-chip-row,
+      .pb-fact-row,
+      .pb-keyfacts,
+      .pb-thumb-row {
         grid-template-columns: 1fr;
+      }
+
+      .pb-section-head {
+        grid-template-columns: 1fr;
+      }
+
+      .pb-step-copy {
+        grid-column: auto;
       }
     }
   </style>
@@ -933,133 +1036,151 @@
   <main>
     <section class="page-hero">
       <div class="wrap">
-        <p class="page-eyebrow reveal">Project Builder</p>
-        <h1 class="page-title reveal">Build a structured house project brief.</h1>
-        <p class="page-copy reveal-soft">
-          This is a prototype. It is meant to define scope and direction more clearly before
-          moving into enquiry or consultation.
+        <p class="pb-kicker reveal">Project Builder</p>
+        <h1 class="pb-title reveal">Build your project brief.</h1>
+        <p class="pb-copy reveal-soft">
+          This prototype is meant to help structure scope, priorities, and likely next steps
+          before moving into enquiry or consultation.
         </p>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap builder-layout">
-        <article class="builder-panel reveal">
-          <p class="builder-intro">
-            The selections below update a live summary board. This version focuses on a cleaner,
-            more architectural interface rather than a literal house preview.
-          </p>
+      <div class="wrap pb-shell">
+        <section class="pb-panel reveal">
+          <form id="projectBuilderForm" style="display:grid; gap:14px;">
+            <div class="pb-section">
+              <div class="pb-section-head">
+                <div class="pb-step-no">01</div>
+                <h2 class="pb-step-title">Project Type</h2>
+                <p class="pb-step-copy">Select the closest project category.</p>
+              </div>
 
-          <form id="projectBuilderForm" class="builder-steps">
-            <section class="builder-step">
-              <h2 class="builder-step-title">01 / Base project</h2>
-              <p class="builder-step-copy">Choose the closest project category.</p>
-
-              <fieldset class="builder-fieldset">
-                <div class="builder-grid-2">
-                  <div class="visual-choice">
-                    <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
-                    <label for="projectTypeNew">
-                      <div class="massing-card massing-new">
-                        <span class="massing-shape shape-a"></span>
-                        <span class="massing-shape shape-b"></span>
-                        <span class="massing-shape shape-c"></span>
-                        <span class="massing-line line-a"></span>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Residential New Build</strong>
-                        <span>New house planned from the ground up.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="projectType" id="projectTypeRenovation" value="Residential Renovation" />
-                    <label for="projectTypeRenovation">
-                      <div class="massing-card massing-renovation">
-                        <span class="massing-shape shape-a"></span>
-                        <span class="massing-shape shape-b"></span>
-                        <span class="massing-shape shape-c"></span>
-                        <span class="massing-line line-a"></span>
-                        <span class="massing-line line-b"></span>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Renovation</strong>
-                        <span>Rework, upgrade, or reconfigure an existing house.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="projectType" id="projectTypeExtension" value="Extension / Addition" />
-                    <label for="projectTypeExtension">
-                      <div class="massing-card massing-extension">
-                        <span class="massing-shape shape-a"></span>
-                        <span class="massing-shape shape-b"></span>
-                        <span class="massing-shape shape-c"></span>
-                        <span class="massing-line line-a"></span>
-                        <span class="massing-line line-b"></span>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Extension / Addition</strong>
-                        <span>Add rooms or expand an existing structure.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="projectType" id="projectTypeMixed" value="Small Mixed Residential Project" />
-                    <label for="projectTypeMixed">
-                      <div class="massing-card massing-mixed">
-                        <span class="massing-shape shape-a"></span>
-                        <span class="massing-shape shape-b"></span>
-                        <span class="massing-shape shape-c"></span>
-                        <span class="massing-shape shape-d"></span>
-                        <span class="massing-line line-a"></span>
-                        <span class="massing-line line-b"></span>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Mixed Residential</strong>
-                        <span>Compact combination of living and supporting uses.</span>
-                      </div>
-                    </label>
-                  </div>
+              <div class="pb-type-grid">
+                <div class="pb-choice">
+                  <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
+                  <label for="projectTypeNew">
+                    <div class="pb-type-visual pb-type-new">
+                      <span class="b b1"></span>
+                      <span class="b b2"></span>
+                      <span class="b b3"></span>
+                      <span class="l l1"></span>
+                    </div>
+                    <div class="pb-choice-copy">
+                      <strong>Residential New Build</strong>
+                      <span>New house</span>
+                    </div>
+                  </label>
                 </div>
-              </fieldset>
-            </section>
 
-            <section class="builder-step">
-              <h2 class="builder-step-title">02 / Scale</h2>
-              <p class="builder-step-copy">Set the general project size and height.</p>
+                <div class="pb-choice">
+                  <input type="radio" name="projectType" id="projectTypeReno" value="Residential Renovation" />
+                  <label for="projectTypeReno">
+                    <div class="pb-type-visual pb-type-reno">
+                      <span class="b b1"></span>
+                      <span class="b b2"></span>
+                      <span class="b b3"></span>
+                      <span class="l l1"></span>
+                      <span class="l l2"></span>
+                    </div>
+                    <div class="pb-choice-copy">
+                      <strong>Renovation</strong>
+                      <span>Existing house</span>
+                    </div>
+                  </label>
+                </div>
 
-              <div class="select-grid">
-                <label class="input-block">
+                <div class="pb-choice">
+                  <input type="radio" name="projectType" id="projectTypeExt" value="Extension / Addition" />
+                  <label for="projectTypeExt">
+                    <div class="pb-type-visual pb-type-ext">
+                      <span class="b b1"></span>
+                      <span class="b b2"></span>
+                      <span class="b b3"></span>
+                      <span class="l l1"></span>
+                      <span class="l l2"></span>
+                    </div>
+                    <div class="pb-choice-copy">
+                      <strong>Extension / Addition</strong>
+                      <span>Expanded scope</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="pb-choice">
+                  <input type="radio" name="projectType" id="projectTypeMixed" value="Small Mixed Residential Project" />
+                  <label for="projectTypeMixed">
+                    <div class="pb-type-visual pb-type-mixed">
+                      <span class="b b1"></span>
+                      <span class="b b2"></span>
+                      <span class="b b3"></span>
+                      <span class="b b4"></span>
+                      <span class="l l1"></span>
+                    </div>
+                    <div class="pb-choice-copy">
+                      <strong>Mixed Residential</strong>
+                      <span>Compact hybrid</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="pb-choice">
+                  <input type="radio" name="projectType" id="projectTypeCommercial" value="Commercial Project" />
+                  <label for="projectTypeCommercial">
+                    <div class="pb-type-visual pb-type-commercial">
+                      <span class="b b1"></span>
+                      <span class="b b2"></span>
+                      <span class="b b3"></span>
+                      <span class="l l1"></span>
+                    </div>
+                    <div class="pb-choice-copy">
+                      <strong>Commercial</strong>
+                      <span>Business space</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="pb-section">
+              <div class="pb-section-head">
+                <div class="pb-step-no">02</div>
+                <h2 class="pb-step-title">Scale</h2>
+                <p class="pb-step-copy">Set the size and building height.</p>
+              </div>
+
+              <div class="pb-select-row">
+                <label class="pb-select">
                   <span>Storeys</span>
                   <select name="storeys">
                     <option value="1 Storey">1 Storey</option>
                     <option value="2 Storeys" selected>2 Storeys</option>
-                    <option value="3+ Storeys">3+ Storeys</option>
+                    <option value="3 Storeys">3 Storeys</option>
+                    <option value="4+ Storeys">4+ Storeys</option>
                   </select>
                 </label>
 
-                <label class="input-block">
-                  <span>Approximate Size</span>
+                <label class="pb-select">
+                  <span>Approx. Size</span>
                   <select name="sizeRange">
                     <option value="Under 1,500 sq ft">Under 1,500 sq ft</option>
                     <option value="1,500–3,000 sq ft" selected>1,500–3,000 sq ft</option>
                     <option value="3,000–5,000 sq ft">3,000–5,000 sq ft</option>
-                    <option value="Over 5,000 sq ft">Over 5,000 sq ft</option>
+                    <option value="5,000+ sq ft">5,000+ sq ft</option>
                   </select>
                 </label>
               </div>
-            </section>
+            </div>
 
-            <section class="builder-step">
-              <h2 class="builder-step-title">03 / Space needs</h2>
-              <p class="builder-step-copy">Define the main domestic program.</p>
+            <div class="pb-section">
+              <div class="pb-section-head">
+                <div class="pb-step-no">03</div>
+                <h2 class="pb-step-title">Space Needs</h2>
+                <p class="pb-step-copy">Choose the spaces you require.</p>
+              </div>
 
-              <div class="select-grid" style="margin-bottom: 14px;">
-                <label class="input-block">
+              <div class="pb-select-row">
+                <label class="pb-select">
                   <span>Bedrooms</span>
                   <select name="bedrooms">
                     <option value="1 Bedroom">1 Bedroom</option>
@@ -1070,356 +1191,285 @@
                   </select>
                 </label>
 
-                <label class="input-block">
+                <label class="pb-select">
                   <span>Bathrooms</span>
                   <select name="bathrooms">
                     <option value="1 Bathroom">1 Bathroom</option>
-                    <option value="2 Bathrooms" selected>2 Bathrooms</option>
+                    <option value="2 Bathrooms">2 Bathrooms</option>
+                    <option value="2.5 Bathrooms" selected>2.5 Bathrooms</option>
                     <option value="3 Bathrooms">3 Bathrooms</option>
                     <option value="4+ Bathrooms">4+ Bathrooms</option>
                   </select>
                 </label>
               </div>
 
-              <fieldset class="builder-fieldset">
-                <div class="chip-grid">
-                  <div class="chip-option">
-                    <input type="checkbox" name="features" id="featureGarage" value="Garage" checked />
-                    <label for="featureGarage"><span class="icon">🚗</span><span>Garage</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="features" id="featureOffice" value="Home Office" />
-                    <label for="featureOffice"><span class="icon">💼</span><span>Home Office</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="features" id="featureLaundry" value="Laundry Room" checked />
-                    <label for="featureLaundry"><span class="icon">🧺</span><span>Laundry Room</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="features" id="featureOutdoor" value="Outdoor Living Area" checked />
-                    <label for="featureOutdoor"><span class="icon">🌿</span><span>Outdoor Living</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="features" id="featureCloset" value="Walk-in Closet" />
-                    <label for="featureCloset"><span class="icon">👕</span><span>Walk-in Closet</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="features" id="featureSuite" value="Secondary Suite" />
-                    <label for="featureSuite"><span class="icon">🛏️</span><span>Secondary Suite</span></label>
-                  </div>
+              <div class="pb-chip-row">
+                <div class="pb-chip">
+                  <input type="checkbox" name="features" id="featureGarage" value="Garage" checked />
+                  <label for="featureGarage"><span class="pb-chip-icon">🚗</span>Garage</label>
                 </div>
-              </fieldset>
-            </section>
 
-            <section class="builder-step">
-              <h2 class="builder-step-title">04 / Site conditions</h2>
-              <p class="builder-step-copy">Describe the project context and starting condition.</p>
+                <div class="pb-chip">
+                  <input type="checkbox" name="features" id="featureOffice" value="Home Office" checked />
+                  <label for="featureOffice"><span class="pb-chip-icon">💼</span>Home Office</label>
+                </div>
 
-              <div class="select-grid">
-                <label class="input-block">
+                <div class="pb-chip">
+                  <input type="checkbox" name="features" id="featureOutdoor" value="Outdoor Living" checked />
+                  <label for="featureOutdoor"><span class="pb-chip-icon">🌿</span>Outdoor Living</label>
+                </div>
+
+                <div class="pb-chip">
+                  <input type="checkbox" name="features" id="featureLaundry" value="Laundry Room" checked />
+                  <label for="featureLaundry"><span class="pb-chip-icon">🧺</span>Laundry Room</label>
+                </div>
+
+                <div class="pb-chip">
+                  <input type="checkbox" name="features" id="featureCloset" value="Walk-in Closet" />
+                  <label for="featureCloset"><span class="pb-chip-icon">👕</span>Walk-in Closet</label>
+                </div>
+
+                <div class="pb-chip">
+                  <input type="checkbox" name="features" id="featureSuite" value="Secondary Suite" />
+                  <label for="featureSuite"><span class="pb-chip-icon">🛏️</span>Secondary Suite</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="pb-section">
+              <div class="pb-section-head">
+                <div class="pb-step-no">04</div>
+                <h2 class="pb-step-title">Site Conditions</h2>
+                <p class="pb-step-copy">Set the site context.</p>
+              </div>
+
+              <div class="pb-fact-row">
+                <label class="pb-select">
                   <span>Setting</span>
                   <select name="siteContext">
+                    <option value="Coastal">Coastal</option>
                     <option value="Urban">Urban</option>
                     <option value="Suburban" selected>Suburban</option>
                     <option value="Rural">Rural</option>
                   </select>
                 </label>
 
-                <label class="input-block">
+                <label class="pb-select">
                   <span>Site Slope</span>
                   <select name="siteSlope">
-                    <option value="Flat" selected>Flat</option>
-                    <option value="Gently Sloped">Gently Sloped</option>
-                    <option value="Sloped">Sloped</option>
+                    <option value="Flat">Flat</option>
+                    <option value="Gentle Slope">Gentle Slope</option>
+                    <option value="Steep Site">Steep Site</option>
                   </select>
                 </label>
 
-                <label class="input-block">
+                <label class="pb-select">
                   <span>Starting Condition</span>
                   <select name="startingCondition">
                     <option value="Vacant Site" selected>Vacant Site</option>
                     <option value="Existing Structure">Existing Structure</option>
-                    <option value="Partially Built Structure">Partially Built Structure</option>
+                    <option value="Partially Built">Partially Built</option>
                   </select>
                 </label>
 
-                <label class="input-block">
-                  <span>Timeline</span>
-                  <select name="timeline">
-                    <option value="Immediate (0–1 month)">Immediate (0–1 month)</option>
-                    <option value="Soon (1–3 months)">Soon (1–3 months)</option>
-                    <option value="Planning Stage (3–6 months)" selected>Planning Stage (3–6 months)</option>
-                    <option value="Later (6+ months)">Later (6+ months)</option>
+                <label class="pb-select">
+                  <span>Planning Zone</span>
+                  <select name="planningZone">
+                    <option value="R1">R1</option>
+                    <option value="R1-a" selected>R1-a</option>
+                    <option value="R2">R2</option>
+                    <option value="Mixed Use">Mixed Use</option>
                   </select>
                 </label>
               </div>
-            </section>
+            </div>
 
-            <section class="builder-step">
-              <h2 class="builder-step-title">05 / Design direction</h2>
-              <p class="builder-step-copy">Choose the overall tone and likely starting stage.</p>
+            <div class="pb-section">
+              <div class="pb-section-head">
+                <div class="pb-step-no">05</div>
+                <h2 class="pb-step-title">Design Direction</h2>
+                <p class="pb-step-copy">Choose the architectural tone.</p>
+              </div>
 
-              <fieldset class="builder-fieldset" style="margin-bottom: 14px;">
-                <div class="builder-grid-2">
-                  <div class="visual-choice">
-                    <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
-                    <label for="styleModern">
-                      <div class="tone-card tone-modern">
-                        <div class="tone-bars">
-                          <span></span><span></span><span></span>
-                        </div>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Modern</strong>
-                        <span>Controlled form, cleaner geometry, sharper contrast.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="styleDirection" id="styleTropical" value="Tropical" />
-                    <label for="styleTropical">
-                      <div class="tone-card tone-tropical">
-                        <div class="tone-bars">
-                          <span></span><span></span><span></span>
-                        </div>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Tropical</strong>
-                        <span>Shaded, airy, climate-responsive, more relaxed.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="styleDirection" id="styleMinimal" value="Minimal" />
-                    <label for="styleMinimal">
-                      <div class="tone-card tone-minimal">
-                        <div class="tone-bars">
-                          <span></span><span></span><span></span>
-                        </div>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Minimal</strong>
-                        <span>Reduced palette, quieter composition, restraint.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="styleDirection" id="styleUnsure" value="Unsure" />
-                    <label for="styleUnsure">
-                      <div class="tone-card tone-unsure">
-                        <div class="tone-bars">
-                          <span></span><span></span><span></span>
-                        </div>
-                      </div>
-                      <div class="visual-copy">
-                        <strong>Unsure</strong>
-                        <span>Need help defining the right architectural direction.</span>
-                      </div>
-                    </label>
-                  </div>
+              <div class="pb-style-grid">
+                <div class="pb-choice">
+                  <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
+                  <label for="styleModern">
+                    <div class="pb-style-visual pb-style-modern"></div>
+                    <div class="pb-choice-copy">
+                      <strong>Modern</strong>
+                      <span>Sharper lines</span>
+                    </div>
+                  </label>
                 </div>
-              </fieldset>
 
-              <fieldset class="builder-fieldset">
-                <div class="builder-grid-2">
-                  <div class="visual-choice">
-                    <input type="radio" name="serviceStage" id="stageConcept" value="Concept Design" checked />
-                    <label for="stageConcept">
-                      <div class="visual-copy">
-                        <strong>Concept Design</strong>
-                        <span>Early planning, direction, spatial thinking, and layout development.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="serviceStage" id="stageDevelopment" value="Design Development" />
-                    <label for="stageDevelopment">
-                      <div class="visual-copy">
-                        <strong>Design Development</strong>
-                        <span>Further refinement, coordination, and clearer technical direction.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="serviceStage" id="stageDocumentation" value="Documentation" />
-                    <label for="stageDocumentation">
-                      <div class="visual-copy">
-                        <strong>Documentation</strong>
-                        <span>Drawing information for approval or construction-oriented use.</span>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div class="visual-choice">
-                    <input type="radio" name="serviceStage" id="stageUnsure" value="Not Sure" />
-                    <label for="stageUnsure">
-                      <div class="visual-copy">
-                        <strong>Not Sure</strong>
-                        <span>Need help identifying the correct stage to begin from.</span>
-                      </div>
-                    </label>
-                  </div>
+                <div class="pb-choice">
+                  <input type="radio" name="styleDirection" id="styleOrganic" value="Organic Modern" />
+                  <label for="styleOrganic">
+                    <div class="pb-style-visual pb-style-organic"></div>
+                    <div class="pb-choice-copy">
+                      <strong>Organic Modern</strong>
+                      <span>Warmer palette</span>
+                    </div>
+                  </label>
                 </div>
-              </fieldset>
-            </section>
 
-            <section class="builder-step">
-              <h2 class="builder-step-title">06 / Add-ons</h2>
-              <p class="builder-step-copy">Select optional support items to test possible scope.</p>
-
-              <fieldset class="builder-fieldset">
-                <div class="chip-grid">
-                  <div class="chip-option">
-                    <input type="checkbox" name="addons" id="addon3d" value="3D Views" />
-                    <label for="addon3d"><span class="icon">🧊</span><span>3D Views</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="addons" id="addonBoq" value="BOQ Support" />
-                    <label for="addonBoq"><span class="icon">📋</span><span>BOQ Support</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="addons" id="addonElectrical" value="Electrical Layouts" />
-                    <label for="addonElectrical"><span class="icon">⚡</span><span>Electrical Layouts</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="addons" id="addonPlumbing" value="Plumbing Layouts" />
-                    <label for="addonPlumbing"><span class="icon">💧</span><span>Plumbing Layouts</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="addons" id="addonConsult" value="Consultation First" />
-                    <label for="addonConsult"><span class="icon">🗣️</span><span>Consultation First</span></label>
-                  </div>
-
-                  <div class="chip-option">
-                    <input type="checkbox" name="addons" id="addonPhased" value="Phased Delivery" />
-                    <label for="addonPhased"><span class="icon">📐</span><span>Phased Delivery</span></label>
-                  </div>
+                <div class="pb-choice">
+                  <input type="radio" name="styleDirection" id="styleMinimal" value="Minimal" />
+                  <label for="styleMinimal">
+                    <div class="pb-style-visual pb-style-minimal"></div>
+                    <div class="pb-choice-copy">
+                      <strong>Minimal</strong>
+                      <span>Reduced expression</span>
+                    </div>
+                  </label>
                 </div>
-              </fieldset>
-            </section>
+
+                <div class="pb-choice">
+                  <input type="radio" name="styleDirection" id="styleCoastal" value="Coastal" />
+                  <label for="styleCoastal">
+                    <div class="pb-style-visual pb-style-coastal"></div>
+                    <div class="pb-choice-copy">
+                      <strong>Coastal</strong>
+                      <span>Lighter atmosphere</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="pb-choice">
+                  <input type="radio" name="styleDirection" id="styleTimeless" value="Timeless" />
+                  <label for="styleTimeless">
+                    <div class="pb-style-visual pb-style-timeless"></div>
+                    <div class="pb-choice-copy">
+                      <strong>Timeless</strong>
+                      <span>Balanced restraint</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="pb-section">
+              <div class="pb-section-head">
+                <div class="pb-step-no">06</div>
+                <h2 class="pb-step-title">Service Path</h2>
+                <p class="pb-step-copy">Choose the current starting stage.</p>
+              </div>
+
+              <div class="pb-chip-row">
+                <div class="pb-chip">
+                  <input type="radio" name="serviceStage" id="stageConcept" value="Concept Design" checked />
+                  <label for="stageConcept">Concept Design</label>
+                </div>
+
+                <div class="pb-chip">
+                  <input type="radio" name="serviceStage" id="stageDevelopment" value="Design Development" />
+                  <label for="stageDevelopment">Design Development</label>
+                </div>
+
+                <div class="pb-chip">
+                  <input type="radio" name="serviceStage" id="stageDocumentation" value="Documentation" />
+                  <label for="stageDocumentation">Documentation</label>
+                </div>
+              </div>
+            </div>
           </form>
-        </article>
+        </section>
 
-        <aside class="builder-summary reveal-soft">
-          <div class="summary-top">
-            <p class="summary-eyebrow">Live Summary</p>
-            <h2 class="summary-title">Project Brief Preview</h2>
-            <p class="summary-note">
-              This is a structured prototype. It is helping define scope, not replacing the design process.
-            </p>
-          </div>
-
-          <div class="progress-block">
-            <div class="progress-meta">
-              <span>Builder progress</span>
-              <span id="progressText">0%</span>
+        <aside class="pb-summary reveal-soft">
+          <div class="pb-summary-stack">
+            <div class="pb-summary-head">
+              <span class="pb-summary-kicker">Live Summary</span>
+              <h2 class="pb-summary-title">Project Brief Preview</h2>
+              <p id="summarySentence" class="pb-summary-copy">
+                Contemporary residential direction with a clean palette, structured massing, and a clearer indoor-outdoor relationship.
+              </p>
             </div>
-            <div class="progress-track">
-              <div id="progressBar" class="progress-bar"></div>
-            </div>
-          </div>
 
-          <div class="summary-stack">
-            <div id="summaryBoard" class="summary-board project-new">
-              <div class="summary-board-inner">
-                <div class="summary-board-top">
-                  <span>Configured Direction</span>
-                  <h3 id="summaryBoardTitle">Residential New Build</h3>
+            <div class="pb-progress-wrap">
+              <div class="pb-progress-meta">
+                <span>Builder progress</span>
+                <span id="progressText">68%</span>
+              </div>
+              <div class="pb-progress-track">
+                <div id="progressBar" class="pb-progress-bar"></div>
+              </div>
+            </div>
+
+            <div id="previewCanvas" class="pb-preview-canvas project-new style-modern">
+              <div class="pb-preview-house">
+                <div class="pb-preview-ground"></div>
+                <div class="pb-preview-pool"></div>
+
+                <div class="pb-preview-volume-a"></div>
+                <div class="pb-preview-volume-b"></div>
+                <div class="pb-preview-volume-c"></div>
+                <div class="pb-preview-volume-d"></div>
+
+                <div class="pb-preview-window-row pb-window-a">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
                 </div>
 
-                <div class="summary-board-massing">
-                  <span class="shape shape-a"></span>
-                  <span class="shape shape-b"></span>
-                  <span class="shape shape-c"></span>
-                  <span class="shape shape-d"></span>
-                  <span class="line line-a"></span>
-                  <span class="line line-b"></span>
+                <div class="pb-preview-window-row pb-window-b">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
                 </div>
 
-                <div class="summary-board-bottom">
-                  <span id="boardStyleTag" class="summary-tag">Modern</span>
-                  <span id="boardStageTag" class="summary-tag">Concept Design</span>
-                  <span id="boardScaleTag" class="summary-tag">2 Storeys</span>
-                  <span id="boardSizeTag" class="summary-tag">1,500–3,000 sq ft</span>
+                <div class="pb-preview-palms">
+                  <span></span><span></span><span></span><b></b><b></b>
                 </div>
               </div>
             </div>
 
-            <div class="summary-card">
-              <h3 class="summary-card-title">Recommended next step</h3>
-              <p id="recommendedAction" class="summary-big">Send Project Enquiry</p>
-              <p id="recommendedReason" class="summary-small">
-                The current selections suggest a project brief is already structured enough to review.
-              </p>
+            <div class="pb-thumb-row">
+              <div class="pb-thumb">
+                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+              </div>
+              <div class="pb-thumb">
+                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+              </div>
+              <div class="pb-thumb">
+                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+              </div>
+              <div class="pb-thumb">
+                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+              </div>
             </div>
 
-            <div class="summary-card">
-              <h3 class="summary-card-title">Complexity</h3>
-              <p id="complexityLabel" class="summary-big">Moderate</p>
-              <p id="complexityReason" class="summary-small">
-                Based on project type, scale, site conditions, and support requirements.
-              </p>
+            <div class="pb-keyfacts">
+              <div class="pb-keyfact">
+                <span>Storeys</span>
+                <strong id="factStoreys">2</strong>
+              </div>
+              <div class="pb-keyfact">
+                <span>Bedrooms</span>
+                <strong id="factBedrooms">3</strong>
+              </div>
+              <div class="pb-keyfact">
+                <span>Bathrooms</span>
+                <strong id="factBathrooms">2.5</strong>
+              </div>
+              <div class="pb-keyfact">
+                <span>Size</span>
+                <strong id="factSize">2,000–3,000 sq ft</strong>
+              </div>
             </div>
 
-            <div class="summary-card">
-              <h3 class="summary-card-title">Core selections</h3>
-              <ul class="summary-list">
-                <li><span>Project Type</span><strong id="summaryProjectType">Residential New Build</strong></li>
-                <li><span>Scale</span><strong id="summaryScale">2 Storeys · 1,500–3,000 sq ft</strong></li>
-                <li><span>Spaces</span><strong id="summarySpaces">3 Bedrooms · 2 Bathrooms</strong></li>
-                <li><span>Site</span><strong id="summarySite">Suburban · Flat · Vacant Site</strong></li>
-                <li><span>Style</span><strong id="summaryStyle">Modern</strong></li>
-                <li><span>Stage</span><strong id="summaryStage">Concept Design</strong></li>
-                <li><span>Timeline</span><strong id="summaryTimeline">Planning Stage (3–6 months)</strong></li>
-              </ul>
+            <div>
+              <p class="pb-summary-subtitle">Selected Features</p>
+              <div id="featureChips" class="pb-summary-chips"></div>
             </div>
 
-            <div class="summary-card">
-              <h3 class="summary-card-title">Selected features</h3>
-              <div id="featureChips" class="summary-chips"></div>
-            </div>
-
-            <div class="summary-card">
-              <h3 class="summary-card-title">Selected add-ons</h3>
-              <div id="addonChips" class="summary-chips"></div>
-            </div>
-
-            <div class="summary-card">
-              <h3 class="summary-card-title">Generated brief</h3>
-              <p id="generatedBrief" class="summary-brief"></p>
-            </div>
-
-            <div class="summary-actions">
+            <div class="pb-summary-actions">
               <a class="button" href="../contact/">Send Project Enquiry</a>
-              <a
-                class="button-secondary"
-                href="https://calendar.app.google/FwE3691G6Maa2KWc8"
-                target="_blank"
-                rel="noopener"
-              >
+              <a class="button-secondary" href="https://calendar.app.google/FwE3691G6Maa2KWc8" target="_blank" rel="noopener">
                 Book Consultation
               </a>
-              <button id="resetBuilder" type="button" class="button-secondary reset-button">
-                Reset Builder
-              </button>
+              <button id="resetBuilder" class="pb-reset" type="button">Reset Builder</button>
             </div>
 
-            <p class="preview-disclaimer">
-              This version is intentionally abstract. The goal is to make choices feel guided and visual without turning the tool into a fake design generator.
+            <p class="pb-helper">
+              This remains a guided brief builder, not a literal design generator.
+              The goal is to make the starting point clearer before formal engagement.
             </p>
           </div>
         </aside>
@@ -1457,67 +1507,45 @@
     const overlayLinks = document.querySelectorAll(".nav-overlay-link");
 
     const form = document.getElementById("projectBuilderForm");
+    const previewCanvas = document.getElementById("previewCanvas");
     const progressBar = document.getElementById("progressBar");
     const progressText = document.getElementById("progressText");
-    const resetBuilderBtn = document.getElementById("resetBuilder");
-
-    const summaryBoard = document.getElementById("summaryBoard");
-    const summaryBoardTitle = document.getElementById("summaryBoardTitle");
-    const boardStyleTag = document.getElementById("boardStyleTag");
-    const boardStageTag = document.getElementById("boardStageTag");
-    const boardScaleTag = document.getElementById("boardScaleTag");
-    const boardSizeTag = document.getElementById("boardSizeTag");
-
-    const summaryProjectType = document.getElementById("summaryProjectType");
-    const summaryScale = document.getElementById("summaryScale");
-    const summarySpaces = document.getElementById("summarySpaces");
-    const summarySite = document.getElementById("summarySite");
-    const summaryStyle = document.getElementById("summaryStyle");
-    const summaryStage = document.getElementById("summaryStage");
-    const summaryTimeline = document.getElementById("summaryTimeline");
-
+    const summarySentence = document.getElementById("summarySentence");
     const featureChips = document.getElementById("featureChips");
-    const addonChips = document.getElementById("addonChips");
-    const generatedBrief = document.getElementById("generatedBrief");
-    const recommendedAction = document.getElementById("recommendedAction");
-    const recommendedReason = document.getElementById("recommendedReason");
-    const complexityLabel = document.getElementById("complexityLabel");
-    const complexityReason = document.getElementById("complexityReason");
+    const resetBuilder = document.getElementById("resetBuilder");
 
-    const featureIcons = {
+    const factStoreys = document.getElementById("factStoreys");
+    const factBedrooms = document.getElementById("factBedrooms");
+    const factBathrooms = document.getElementById("factBathrooms");
+    const factSize = document.getElementById("factSize");
+
+    let navSettleTimer;
+    let scrollTicking = false;
+
+    const featureIconMap = {
       "Garage": "🚗",
       "Home Office": "💼",
+      "Outdoor Living": "🌿",
       "Laundry Room": "🧺",
-      "Outdoor Living Area": "🌿",
       "Walk-in Closet": "👕",
       "Secondary Suite": "🛏️"
     };
-
-    const addonIcons = {
-      "3D Views": "🧊",
-      "BOQ Support": "📋",
-      "Electrical Layouts": "⚡",
-      "Plumbing Layouts": "💧",
-      "Consultation First": "🗣️",
-      "Phased Delivery": "📐"
-    };
-
-    const boardProjectClasses = [
-      "project-new",
-      "project-renovation",
-      "project-extension",
-      "project-mixed"
-    ];
 
     const projectClassMap = {
       "Residential New Build": "project-new",
       "Residential Renovation": "project-renovation",
       "Extension / Addition": "project-extension",
-      "Small Mixed Residential Project": "project-mixed"
+      "Small Mixed Residential Project": "project-mixed",
+      "Commercial Project": "project-commercial"
     };
 
-    let navSettleTimer;
-    let scrollTicking = false;
+    const styleClassMap = {
+      "Modern": "style-modern",
+      "Organic Modern": "style-organic",
+      "Minimal": "style-minimal",
+      "Coastal": "style-coastal",
+      "Timeless": "style-timeless"
+    };
 
     document.body.classList.add("page-enter");
     requestAnimationFrame(() => {
@@ -1606,103 +1634,35 @@
     }
 
     function getCheckedValues(name) {
-      return Array.from(
-        form.querySelectorAll(`input[name="${name}"]:checked`)
-      ).map((item) => item.value);
+      return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map(item => item.value);
     }
 
-    function buildChips(container, items, iconMap, fallbackText) {
+    function updateChips(container, values) {
       container.innerHTML = "";
 
-      if (!items.length) {
+      if (!values.length) {
         const chip = document.createElement("span");
-        chip.className = "summary-chip";
-        chip.textContent = fallbackText;
+        chip.className = "pb-summary-chip";
+        chip.textContent = "No selected features";
         container.appendChild(chip);
         return;
       }
 
-      items.forEach((item) => {
+      values.forEach((value) => {
         const chip = document.createElement("span");
-        chip.className = "summary-chip";
-        chip.innerHTML = `<span>${iconMap[item] || "•"}</span><span>${item}</span>`;
+        chip.className = "pb-summary-chip";
+        chip.innerHTML = `<span>${featureIconMap[value] || "•"}</span><span>${value}</span>`;
         container.appendChild(chip);
       });
     }
 
-    function calculateComplexity(data) {
-      let score = 0;
-
-      if (data.projectType === "Residential Renovation") score += 3;
-      if (data.projectType === "Extension / Addition") score += 2;
-      if (data.projectType === "Small Mixed Residential Project") score += 3;
-
-      if (data.storeys === "2 Storeys") score += 1;
-      if (data.storeys === "3+ Storeys") score += 3;
-
-      if (data.sizeRange === "3,000–5,000 sq ft") score += 2;
-      if (data.sizeRange === "Over 5,000 sq ft") score += 4;
-
-      if (data.siteSlope === "Gently Sloped") score += 1;
-      if (data.siteSlope === "Sloped") score += 3;
-
-      if (data.startingCondition === "Existing Structure") score += 2;
-      if (data.startingCondition === "Partially Built Structure") score += 3;
-
-      if (data.serviceStage === "Design Development") score += 1;
-      if (data.serviceStage === "Documentation") score += 3;
-      if (data.serviceStage === "Not Sure") score += 1;
-
-      score += data.features.length * 0.35;
-      score += data.addons.length * 0.65;
-
-      if (score >= 9) {
-        return {
-          label: "High",
-          reason: "The project has several complexity drivers across scale, conditions, and support needs."
-        };
-      }
-
-      if (score >= 5) {
-        return {
-          label: "Moderate",
-          reason: "The project has a balanced mix of design scope and coordination requirements."
-        };
-      }
-
-      return {
-        label: "Low",
-        reason: "The project appears relatively contained in scale and coordination demands."
-      };
+    function parseLeadingNumber(text) {
+      const match = String(text).match(/\d+(\.\d+)?/);
+      return match ? match[0] : text;
     }
 
-    function getRecommendedAction(data, complexity) {
-      if (
-        data.serviceStage === "Not Sure" ||
-        data.styleDirection === "Unsure" ||
-        data.addons.includes("Consultation First")
-      ) {
-        return {
-          action: "Book Consultation",
-          reason: "The selections suggest the project would benefit from discussion before confirming scope."
-        };
-      }
-
-      if (complexity.label === "High" || data.serviceStage === "Documentation") {
-        return {
-          action: "Send Enquiry + Expect Consultation",
-          reason: "The project appears structured enough for review, but will likely need clarification and coordination discussion."
-        };
-      }
-
-      return {
-        action: "Send Project Enquiry",
-        reason: "The current selections suggest the project brief is already structured enough to review."
-      };
-    }
-
-    function getCompletionPercent(data) {
-      const checks = [
+    function getProgress(data) {
+      const fields = [
         data.projectType,
         data.storeys,
         data.sizeRange,
@@ -1711,86 +1671,129 @@
         data.siteContext,
         data.siteSlope,
         data.startingCondition,
+        data.planningZone,
         data.styleDirection,
-        data.serviceStage,
-        data.timeline
+        data.serviceStage
       ];
 
-      const filled = checks.filter(Boolean).length;
-      return Math.round((filled / checks.length) * 100);
+      const filled = fields.filter(Boolean).length;
+      return Math.round((filled / fields.length) * 100);
     }
 
-    function updateBoardClass(projectType) {
-      boardProjectClasses.forEach((cls) => summaryBoard.classList.remove(cls));
-      summaryBoard.classList.add(projectClassMap[projectType] || "project-new");
+    function buildSentence(data) {
+      const styleMap = {
+        "Modern": "clean lines, refined materials, and a more seamless indoor-outdoor relationship",
+        "Organic Modern": "warmer materials, calmer contrast, and a softer contemporary character",
+        "Minimal": "reduced detailing, lighter surfaces, and a quieter architectural expression",
+        "Coastal": "lighter tones, breezier massing, and a more open atmospheric quality",
+        "Timeless": "balanced proportions, restrained contrast, and a more enduring visual language"
+      };
+
+      const projectMap = {
+        "Residential New Build": "Contemporary residential direction",
+        "Residential Renovation": "Renovation-focused residential direction",
+        "Extension / Addition": "Addition-led residential direction",
+        "Small Mixed Residential Project": "Compact mixed residential direction",
+        "Commercial Project": "Commercial project direction"
+      };
+
+      const lead = projectMap[data.projectType] || "Project direction";
+      const tail = styleMap[data.styleDirection] || "a measured architectural direction";
+
+      return `${lead} with ${tail}.`;
+    }
+
+    function setPreviewClasses(projectType, styleDirection) {
+      previewCanvas.classList.remove(
+        "project-new",
+        "project-renovation",
+        "project-extension",
+        "project-mixed",
+        "project-commercial",
+        "style-modern",
+        "style-organic",
+        "style-minimal",
+        "style-coastal",
+        "style-timeless"
+      );
+
+      previewCanvas.classList.add(projectClassMap[projectType] || "project-new");
+      previewCanvas.classList.add(styleClassMap[styleDirection] || "style-modern");
     }
 
     function updateBuilderSummary() {
-      if (!form) return;
-
       const data = {
         projectType: getCheckedValue("projectType"),
         storeys: form.storeys.value,
         sizeRange: form.sizeRange.value,
         bedrooms: form.bedrooms.value,
         bathrooms: form.bathrooms.value,
-        features: getCheckedValues("features"),
         siteContext: form.siteContext.value,
         siteSlope: form.siteSlope.value,
         startingCondition: form.startingCondition.value,
-        timeline: form.timeline.value,
+        planningZone: form.planningZone.value,
         styleDirection: getCheckedValue("styleDirection"),
         serviceStage: getCheckedValue("serviceStage"),
-        addons: getCheckedValues("addons")
+        features: getCheckedValues("features")
       };
 
-      const complexity = calculateComplexity(data);
-      const recommendation = getRecommendedAction(data, complexity);
-      const progress = getCompletionPercent(data);
-
-      summaryBoardTitle.textContent = data.projectType;
-      boardStyleTag.textContent = data.styleDirection;
-      boardStageTag.textContent = data.serviceStage;
-      boardScaleTag.textContent = data.storeys;
-      boardSizeTag.textContent = data.sizeRange;
-
-      summaryProjectType.textContent = data.projectType;
-      summaryScale.textContent = `${data.storeys} · ${data.sizeRange}`;
-      summarySpaces.textContent = `${data.bedrooms} · ${data.bathrooms}`;
-      summarySite.textContent = `${data.siteContext} · ${data.siteSlope} · ${data.startingCondition}`;
-      summaryStyle.textContent = data.styleDirection;
-      summaryStage.textContent = data.serviceStage;
-      summaryTimeline.textContent = data.timeline;
+      const progress = getProgress(data);
 
       progressBar.style.width = `${progress}%`;
       progressText.textContent = `${progress}%`;
 
-      complexityLabel.textContent = complexity.label;
-      complexityReason.textContent = complexity.reason;
+      factStoreys.textContent = parseLeadingNumber(data.storeys);
+      factBedrooms.textContent = parseLeadingNumber(data.bedrooms);
+      factBathrooms.textContent = parseLeadingNumber(data.bathrooms);
+      factSize.textContent = data.sizeRange;
 
-      recommendedAction.textContent = recommendation.action;
-      recommendedReason.textContent = recommendation.reason;
+      summarySentence.textContent = buildSentence(data);
+      updateChips(featureChips, data.features);
+      setPreviewClasses(data.projectType, data.styleDirection);
+    }
 
-      buildChips(featureChips, data.features, featureIcons, "No additional features selected");
-      buildChips(addonChips, data.addons, addonIcons, "No add-ons selected");
+    if (form) {
+      form.addEventListener("input", updateBuilderSummary);
+      form.addEventListener("change", updateBuilderSummary);
+    }
 
-      const featureText = data.features.length
-        ? `Key features currently selected include ${data.features.join(", ")}.`
-        : `No additional feature preferences have been selected yet.`;
+    if (resetBuilder && form) {
+      resetBuilder.addEventListener("click", () => {
+        form.reset();
 
-      const addonText = data.addons.length
-        ? `Optional support currently being considered includes ${data.addons.join(", ")}.`
-        : `No additional support add-ons have been selected at this stage.`;
+        document.getElementById("projectTypeNew").checked = true;
+        document.getElementById("styleModern").checked = true;
+        document.getElementById("stageConcept").checked = true;
 
-      generatedBrief.textContent =
-        `This ${data.projectType.toLowerCase()} is currently being framed as a ${data.storeys.toLowerCase()} project in a ` +
-        `${data.siteContext.toLowerCase()} setting, with an approximate size of ${data.sizeRange.toLowerCase()}. ` +
-        `The working program is ${data.bedrooms.toLowerCase()} and ${data.bathrooms.toLowerCase()}, on a ` +
-        `${data.siteSlope.toLowerCase()} ${data.startingCondition.toLowerCase()}. ` +
-        `The preferred design direction is ${data.styleDirection.toLowerCase()}, with ${data.serviceStage.toLowerCase()} identified as the current service path. ` +
-        `${featureText} ${addonText} The present timeline is ${data.timeline.toLowerCase()}.`;
+        form.storeys.value = "2 Storeys";
+        form.sizeRange.value = "1,500–3,000 sq ft";
+        form.bedrooms.value = "3 Bedrooms";
+        form.bathrooms.value = "2.5 Bathrooms";
+        form.siteContext.value = "Suburban";
+        form.siteSlope.value = "Flat";
+        form.startingCondition.value = "Vacant Site";
+        form.planningZone.value = "R1-a";
 
-      updateBoardClass(data.projectType);
+        [
+          "featureGarage",
+          "featureOffice",
+          "featureOutdoor",
+          "featureLaundry"
+        ].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.checked = true;
+        });
+
+        [
+          "featureCloset",
+          "featureSuite"
+        ].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.checked = false;
+        });
+
+        updateBuilderSummary();
+      });
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -1844,40 +1847,6 @@
       });
     });
 
-    if (form) {
-      form.addEventListener("input", updateBuilderSummary);
-      form.addEventListener("change", updateBuilderSummary);
-    }
-
-    if (resetBuilderBtn && form) {
-      resetBuilderBtn.addEventListener("click", () => {
-        form.reset();
-
-        document.getElementById("projectTypeNew").checked = true;
-        document.getElementById("styleModern").checked = true;
-        document.getElementById("stageConcept").checked = true;
-
-        form.storeys.value = "2 Storeys";
-        form.sizeRange.value = "1,500–3,000 sq ft";
-        form.bedrooms.value = "3 Bedrooms";
-        form.bathrooms.value = "2 Bathrooms";
-        form.siteContext.value = "Suburban";
-        form.siteSlope.value = "Flat";
-        form.startingCondition.value = "Vacant Site";
-        form.timeline.value = "Planning Stage (3–6 months)";
-
-        form.querySelectorAll('input[name="features"]').forEach((input) => {
-          input.checked = ["Garage", "Laundry Room", "Outdoor Living Area"].includes(input.value);
-        });
-
-        form.querySelectorAll('input[name="addons"]').forEach((input) => {
-          input.checked = false;
-        });
-
-        updateBuilderSummary();
-      });
-    }
-
     if (backToTopBtn) {
       backToTopBtn.addEventListener("click", () => {
         window.scrollTo({
@@ -1893,6 +1862,7 @@
 
     document.addEventListener("click", (e) => {
       if (!navToggle || !navOverlay) return;
+
       const clickedInsideOverlay = navOverlay.contains(e.target);
       const clickedToggle = navToggle.contains(e.target);
 
