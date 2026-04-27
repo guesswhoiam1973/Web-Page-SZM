@@ -12,34 +12,28 @@
   <link rel="stylesheet" href="../style.css" />
 
   <style>
-    .pb-shell {
-      display: grid;
-      gap: 22px;
-      align-items: start;
+    :root {
+      --builder-line: rgba(79, 79, 78, 0.1);
+      --builder-line-strong: rgba(79, 79, 78, 0.16);
+      --builder-card: rgba(255, 255, 255, 0.42);
+      --builder-card-strong: rgba(255, 255, 255, 0.82);
+      --builder-dark: #161616;
+      --builder-dark-soft: #202020;
+      --builder-gold: #d8bc86;
+      --builder-gold-soft: rgba(216, 188, 134, 0.28);
+      --builder-light: #f3efe8;
+      --builder-light-soft: rgba(243, 239, 232, 0.72);
     }
 
-    .pb-panel,
-    .pb-summary {
-      border: 1px solid rgba(79, 79, 78, 0.1);
-      background: rgba(255, 255, 255, 0.28);
-      padding: 18px;
+    .builder-page {
+      padding-top: 22px;
     }
 
-    .pb-panel {
-      display: grid;
-      gap: 14px;
+    .builder-hero {
+      padding: 0 0 24px;
     }
 
-    .pb-summary {
-      background:
-        linear-gradient(180deg, rgba(32, 32, 31, 0.96), rgba(22, 22, 21, 0.98)),
-        #171716;
-      color: #f0ede7;
-      border-color: rgba(201, 177, 126, 0.18);
-      box-shadow: 0 20px 40px rgba(25, 25, 24, 0.18);
-    }
-
-    .pb-kicker {
+    .builder-eyebrow {
       margin: 0;
       font-size: 0.78rem;
       text-transform: uppercase;
@@ -47,37 +41,55 @@
       color: var(--text-soft);
     }
 
-    .pb-title {
-      margin: 6px 0 0;
-      font-size: clamp(2rem, 5vw, 3.6rem);
+    .builder-title {
+      margin: 8px 0 0;
+      font-size: clamp(2rem, 5vw, 3.5rem);
       line-height: 0.95;
       letter-spacing: -0.045em;
       color: var(--text-strong);
     }
 
-    .pb-copy {
-      max-width: 760px;
-      margin: 16px 0 0;
+    .builder-copy {
+      margin: 12px 0 0;
+      max-width: 680px;
       color: var(--text);
       font-size: 1rem;
     }
 
-    .pb-section {
-      border: 1px solid rgba(79, 79, 78, 0.1);
-      background: rgba(255, 255, 255, 0.36);
-      padding: 14px;
+    .builder-shell {
       display: grid;
-      gap: 14px;
+      gap: 22px;
+      align-items: start;
     }
 
-    .pb-section-head {
+    .builder-form {
+      display: grid;
+      gap: 0;
+      border: 1px solid var(--builder-line);
+      background: rgba(255, 255, 255, 0.24);
+      overflow: hidden;
+    }
+
+    .builder-section {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+      border-top: 1px solid var(--builder-line);
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .builder-section:first-child {
+      border-top: 0;
+    }
+
+    .builder-section-head {
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: 10px 12px;
+      gap: 8px 14px;
       align-items: baseline;
     }
 
-    .pb-step-no {
+    .builder-step {
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
@@ -85,900 +97,843 @@
       white-space: nowrap;
     }
 
-    .pb-step-title {
+    .builder-section-title {
       margin: 0;
-      font-size: 1rem;
+      font-size: 0.96rem;
+      line-height: 1.2;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--text-strong);
-      letter-spacing: -0.01em;
     }
 
-    .pb-step-copy {
-      margin: 2px 0 0;
+    .builder-section-copy {
       grid-column: 2;
+      margin: 0;
+      font-size: 0.82rem;
       color: var(--text-soft);
-      font-size: 0.88rem;
     }
 
-    .pb-type-grid,
-    .pb-style-grid {
+    .builder-grid-5,
+    .builder-grid-4,
+    .builder-grid-3,
+    .builder-grid-2 {
       display: grid;
       gap: 10px;
     }
 
-    .pb-type-grid {
+    .builder-grid-5 {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
-    .pb-style-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+    .builder-grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .pb-choice {
+    .builder-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .builder-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .builder-option {
       position: relative;
     }
 
-    .pb-choice input {
+    .builder-option input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    .pb-choice label {
+    .builder-option label {
       display: grid;
       gap: 10px;
       min-height: 100%;
-      padding: 10px;
-      border: 1px solid rgba(79, 79, 78, 0.12);
-      background: rgba(255, 255, 255, 0.52);
+      padding: 12px;
+      border: 1px solid var(--builder-line);
+      background: var(--builder-card);
       cursor: pointer;
       transition:
+        transform 0.22s ease,
         border-color 0.22s ease,
         background 0.22s ease,
-        transform 0.22s ease,
         box-shadow 0.22s ease;
     }
 
-    .pb-choice input:checked + label {
-      background: rgba(255, 255, 255, 0.88);
-      border-color: rgba(60, 60, 59, 0.32);
+    .builder-option input:checked + label {
       transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(60, 60, 59, 0.05);
+      border-color: rgba(60, 60, 59, 0.34);
+      background: var(--builder-card-strong);
+      box-shadow: 0 14px 24px rgba(60, 60, 59, 0.05);
     }
 
-    .pb-type-visual,
-    .pb-style-visual {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(79, 79, 78, 0.08);
-      background: #efefed;
+    .builder-option.is-dark label {
+      background: #17191c;
+      color: #f7f3ed;
+      border-color: rgba(255, 255, 255, 0.06);
     }
 
-    .pb-type-visual {
-      aspect-ratio: 4 / 3;
+    .builder-option.is-dark input:checked + label {
+      background: #101214;
+      border-color: rgba(216, 188, 134, 0.34);
+      box-shadow: 0 14px 28px rgba(22, 22, 22, 0.16);
     }
 
-    .pb-style-visual {
-      aspect-ratio: 4 / 3;
+    .builder-option-icon {
+      width: 28px;
+      height: 28px;
+      color: currentColor;
+      opacity: 0.9;
     }
 
-    .pb-type-visual::before,
-    .pb-style-visual::before,
-    .pb-preview-canvas::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(80, 80, 78, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(80, 80, 78, 0.05) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-    }
-
-    .pb-type-visual .b,
-    .pb-type-visual .l,
-    .pb-preview-canvas .b,
-    .pb-preview-canvas .l {
-      position: absolute;
-      background: rgba(62, 62, 61, 0.72);
-    }
-
-    .pb-type-visual .l,
-    .pb-preview-canvas .l {
-      background: rgba(62, 62, 61, 0.26);
-    }
-
-    .pb-type-new .b1 { left: 12%; bottom: 18%; width: 52%; height: 18%; }
-    .pb-type-new .b2 { left: 38%; bottom: 36%; width: 28%; height: 12%; }
-    .pb-type-new .b3 { right: 12%; bottom: 18%; width: 16%; height: 30%; }
-    .pb-type-new .l1 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
-
-    .pb-type-reno .b1 { left: 12%; bottom: 18%; width: 40%; height: 22%; }
-    .pb-type-reno .b2 { left: 55%; bottom: 18%; width: 15%; height: 18%; opacity: 0.45; }
-    .pb-type-reno .b3 { right: 12%; bottom: 18%; width: 10%; height: 18%; opacity: 0.24; }
-    .pb-type-reno .l1 { left: 14%; right: 18%; top: 30%; height: 2px; transform: rotate(-9deg); transform-origin: left center; }
-    .pb-type-reno .l2 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
-
-    .pb-type-ext .b1 { left: 12%; bottom: 18%; width: 34%; height: 22%; }
-    .pb-type-ext .b2 { left: 48%; bottom: 18%; width: 24%; height: 15%; opacity: 0.54; }
-    .pb-type-ext .b3 { left: 56%; bottom: 34%; width: 16%; height: 10%; }
-    .pb-type-ext .l1 { left: 44%; width: 32%; bottom: 28%; height: 2px; transform: rotate(-10deg); transform-origin: left center; }
-    .pb-type-ext .l2 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
-
-    .pb-type-mixed .b1 { left: 10%; bottom: 18%; width: 18%; height: 18%; }
-    .pb-type-mixed .b2 { left: 31%; bottom: 18%; width: 20%; height: 30%; }
-    .pb-type-mixed .b3 { left: 55%; bottom: 18%; width: 18%; height: 24%; }
-    .pb-type-mixed .b4 { right: 10%; bottom: 18%; width: 10%; height: 14%; opacity: 0.45; }
-    .pb-type-mixed .l1 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
-
-    .pb-type-commercial .b1 { left: 10%; bottom: 18%; width: 66%; height: 16%; }
-    .pb-type-commercial .b2 { left: 22%; bottom: 34%; width: 42%; height: 14%; }
-    .pb-type-commercial .b3 { right: 10%; bottom: 18%; width: 12%; height: 40%; }
-    .pb-type-commercial .l1 { left: 10%; right: 10%; bottom: 14%; height: 1px; }
-
-    .pb-choice-copy {
+    .builder-option-text {
       display: grid;
       gap: 3px;
-      text-align: center;
     }
 
-    .pb-choice-copy strong {
-      font-size: 0.82rem;
+    .builder-option-text strong {
+      font-size: 0.84rem;
       line-height: 1.25;
-      color: var(--text-strong);
+      color: inherit;
       font-weight: 600;
     }
 
-    .pb-choice-copy span {
+    .builder-option-text span {
       font-size: 0.74rem;
       line-height: 1.35;
       color: var(--text-soft);
     }
 
-    .pb-select-row,
-    .pb-chip-row,
-    .pb-fact-row {
+    .builder-option.is-dark .builder-option-text span {
+      color: rgba(243, 239, 232, 0.7);
+    }
+
+    .builder-select-wrap {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .pb-select-row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .pb-select {
-      display: grid;
-      gap: 6px;
-    }
-
-    .pb-select span {
+    .builder-select-wrap span {
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
       color: var(--text-soft);
     }
 
-    .pb-select select {
+    .builder-select-wrap select {
       width: 100%;
-      min-height: 42px;
+      min-height: 46px;
       padding: 0 12px;
-      border: 1px solid rgba(79, 79, 78, 0.14);
+      border: 1px solid var(--builder-line-strong);
       background: rgba(255, 255, 255, 0.68);
       color: var(--text-strong);
       font: inherit;
     }
 
-    .pb-chip-row {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .builder-scale-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 0.9fr);
+      gap: 18px;
+      align-items: end;
     }
 
-    .pb-chip {
+    .builder-wireframe {
+      position: relative;
+      min-height: 128px;
+      border: 1px dashed rgba(79, 79, 78, 0.12);
+      background:
+        linear-gradient(rgba(125, 125, 123, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(125, 125, 123, 0.04) 1px, transparent 1px);
+      background-size: 26px 26px;
+      overflow: hidden;
+    }
+
+    .builder-wireframe svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.42;
+    }
+
+    .builder-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .builder-chip {
       position: relative;
     }
 
-    .pb-chip input {
+    .builder-chip input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    .pb-chip label {
+    .builder-chip label {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-      min-height: 42px;
-      width: 100%;
-      padding: 0 12px;
-      border: 1px solid rgba(79, 79, 78, 0.12);
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--builder-line);
       background: rgba(255, 255, 255, 0.48);
       cursor: pointer;
       transition:
+        transform 0.2s ease,
         border-color 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease;
-      text-align: center;
+        background 0.2s ease;
       font-size: 0.82rem;
       color: var(--text);
     }
 
-    .pb-chip input:checked + label {
+    .builder-chip input:checked + label {
+      transform: translateY(-1px);
       background: rgba(255, 255, 255, 0.84);
       border-color: rgba(60, 60, 59, 0.28);
-      transform: translateY(-1px);
     }
 
-    .pb-chip .pb-chip-icon {
-      font-size: 0.9rem;
-      line-height: 1;
+    .builder-chip svg {
+      width: 15px;
+      height: 15px;
+      opacity: 0.8;
     }
 
-    .pb-fact-row {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    .builder-style-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      border: 1px solid rgba(79, 79, 78, 0.08);
+      background: #ddd8d0;
     }
 
-    .pb-fact-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 12px;
-      border: 1px solid rgba(79, 79, 78, 0.12);
-      background: rgba(255, 255, 255, 0.48);
-      font-size: 0.82rem;
-      color: var(--text);
-      text-align: center;
-    }
-
-    .pb-style-modern {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
-        linear-gradient(90deg, #2f3034 0 24%, #5f625f 24% 48%, #c8c5bd 48% 74%, #ece7df 74% 100%);
-    }
-
-    .pb-style-organic {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
-        linear-gradient(90deg, #3f3c35 0 22%, #736953 22% 48%, #b7a98f 48% 74%, #e2d9c8 74% 100%);
-    }
-
-    .pb-style-minimal {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0)),
-        linear-gradient(90deg, #d7d5d0 0 30%, #eceae5 30% 60%, #c9c6c1 60% 82%, #f5f4f1 82% 100%);
-    }
-
-    .pb-style-coastal {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
-        linear-gradient(90deg, #88a1ac 0 22%, #c7d7dd 22% 48%, #d9d4c7 48% 74%, #f0ede6 74% 100%);
-    }
-
-    .pb-style-timeless {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0)),
-        linear-gradient(90deg, #beb7ab 0 24%, #ddd7cd 24% 50%, #bdb7b1 50% 76%, #f2eee8 76% 100%);
-    }
-
-    .pb-style-modern::after,
-    .pb-style-organic::after,
-    .pb-style-minimal::after,
-    .pb-style-coastal::after,
-    .pb-style-timeless::after {
+    .builder-style-card::before {
       content: "";
       position: absolute;
-      left: 10%;
-      right: 10%;
-      bottom: 14%;
-      height: 30%;
-      border-top: 1px solid rgba(255, 255, 255, 0.42);
-      border-left: 1px solid rgba(255, 255, 255, 0.22);
-      opacity: 0.9;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0)),
+        linear-gradient(rgba(80, 80, 78, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80, 80, 78, 0.04) 1px, transparent 1px);
+      background-size: auto, 22px 22px, 22px 22px;
     }
 
-    .pb-summary-head {
+    .builder-style-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 38%;
+      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.38));
+    }
+
+    .style-modern {
+      background:
+        linear-gradient(180deg, rgba(27, 35, 42, 0.1), rgba(27, 35, 42, 0)),
+        linear-gradient(135deg, #31363c 0%, #6d736f 38%, #d4cec4 68%, #f0ebe3 100%);
+    }
+
+    .style-warm {
+      background:
+        linear-gradient(180deg, rgba(43, 32, 22, 0.12), rgba(43, 32, 22, 0)),
+        linear-gradient(135deg, #5a473a 0%, #927255 38%, #d4bf9c 68%, #efe4d5 100%);
+    }
+
+    .style-coastal {
+      background:
+        linear-gradient(180deg, rgba(35, 48, 55, 0.1), rgba(35, 48, 55, 0)),
+        linear-gradient(135deg, #738c98 0%, #bfd1d7 40%, #d8d2c7 72%, #f2efe8 100%);
+    }
+
+    .style-minimal {
+      background:
+        linear-gradient(180deg, rgba(70, 70, 70, 0.05), rgba(70, 70, 70, 0)),
+        linear-gradient(135deg, #dad7d0 0%, #f0efec 40%, #cbc7c0 70%, #faf8f5 100%);
+    }
+
+    .style-classic {
+      background:
+        linear-gradient(180deg, rgba(36, 30, 27, 0.08), rgba(36, 30, 27, 0)),
+        linear-gradient(135deg, #7f6d61 0%, #c7b7a6 42%, #e1d8cb 72%, #f5f1eb 100%);
+    }
+
+    .builder-style-card .style-label {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 1;
+      color: #fff;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .builder-summary {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(216, 188, 134, 0.18);
+      background:
+        radial-gradient(circle at top right, rgba(63, 76, 108, 0.34), transparent 30%),
+        linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(18, 18, 18, 0.98));
+      color: var(--builder-light);
+      padding: 18px;
+      box-shadow: 0 20px 40px rgba(25, 25, 24, 0.16);
+    }
+
+    .builder-summary-stack {
       display: grid;
-      gap: 6px;
+      gap: 16px;
     }
 
-    .pb-summary-kicker {
+    .builder-summary-topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
       font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(236, 215, 176, 0.86);
+      letter-spacing: 0.14em;
+      color: rgba(243, 239, 232, 0.64);
     }
 
-    .pb-summary-title {
+    .builder-summary-title {
       margin: 0;
-      font-size: 1.45rem;
-      color: #f6f2ea;
+      font-size: 1.28rem;
       letter-spacing: -0.03em;
+      color: #fff;
     }
 
-    .pb-summary-copy {
+    .builder-summary-text {
       margin: 0;
-      color: rgba(240, 236, 228, 0.78);
+      color: rgba(243, 239, 232, 0.82);
       font-size: 0.9rem;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    .pb-progress-wrap {
+    .builder-progress {
       display: grid;
       gap: 8px;
     }
 
-    .pb-progress-meta {
+    .builder-progress-meta {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      color: rgba(240, 236, 228, 0.72);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
+      color: rgba(243, 239, 232, 0.7);
     }
 
-    .pb-progress-track {
+    .builder-progress-track {
       width: 100%;
       height: 6px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       overflow: hidden;
     }
 
-    .pb-progress-bar {
+    .builder-progress-bar {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #a98b56, #d8bc7e);
+      background: linear-gradient(90deg, #b69057, #e0c38f);
       transition: width 0.25s ease;
     }
 
-    .pb-preview-canvas {
+    .builder-preview {
       position: relative;
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 4 / 3;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       background:
-        linear-gradient(180deg, rgba(38, 43, 50, 0.28), rgba(20, 20, 19, 0.18)),
-        linear-gradient(180deg, #6e7d8f 0%, #cad2d7 36%, #d7d2c7 60%, #8f856f 100%);
+        linear-gradient(180deg, rgba(24, 31, 38, 0.18), rgba(24, 31, 38, 0)),
+        linear-gradient(180deg, #708497 0%, #cfd7dc 34%, #ddd6c8 62%, #8a7f67 100%);
     }
 
-    .pb-preview-canvas::after {
+    .builder-preview::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 78% 24%, rgba(255,255,255,0.34), transparent 20%),
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+        linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0)),
+        linear-gradient(rgba(80, 80, 78, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80, 80, 78, 0.04) 1px, transparent 1px);
+      background-size: auto, 20px 20px, 20px 20px;
       pointer-events: none;
     }
 
-    .pb-preview-canvas.project-new {
-      background:
-        linear-gradient(180deg, rgba(32, 37, 42, 0.22), rgba(22, 22, 21, 0.18)),
-        linear-gradient(180deg, #6f8193 0%, #cdd7db 36%, #d8d2c7 61%, #95856d 100%);
-    }
-
-    .pb-preview-canvas.project-renovation {
-      background:
-        linear-gradient(180deg, rgba(38, 32, 28, 0.2), rgba(24, 22, 20, 0.18)),
-        linear-gradient(180deg, #7b877f 0%, #ced5d0 34%, #d9d2c6 61%, #958268 100%);
-    }
-
-    .pb-preview-canvas.project-extension {
-      background:
-        linear-gradient(180deg, rgba(32, 34, 38, 0.22), rgba(22, 22, 21, 0.18)),
-        linear-gradient(180deg, #6d7a88 0%, #ccd6db 35%, #d5cfbf 61%, #8c8068 100%);
-    }
-
-    .pb-preview-canvas.project-mixed {
-      background:
-        linear-gradient(180deg, rgba(33, 35, 39, 0.22), rgba(22, 22, 21, 0.18)),
-        linear-gradient(180deg, #6d7886 0%, #cdd5d8 35%, #d4cec3 61%, #8b7f69 100%);
-    }
-
-    .pb-preview-canvas.project-commercial {
-      background:
-        linear-gradient(180deg, rgba(29, 33, 38, 0.22), rgba(22, 22, 21, 0.18)),
-        linear-gradient(180deg, #67717d 0%, #c8d0d4 34%, #d7d1c6 61%, #8b7f69 100%);
-    }
-
-    .pb-preview-canvas.style-modern .pb-preview-house {
-      filter: saturate(1.05) contrast(1.02);
-    }
-
-    .pb-preview-canvas.style-organic .pb-preview-house {
-      filter: sepia(0.08) saturate(0.95);
-    }
-
-    .pb-preview-canvas.style-minimal .pb-preview-house {
-      filter: grayscale(0.08) brightness(1.04);
-    }
-
-    .pb-preview-canvas.style-coastal .pb-preview-house {
-      filter: saturate(0.95) brightness(1.05);
-    }
-
-    .pb-preview-canvas.style-timeless .pb-preview-house {
-      filter: sepia(0.04) brightness(1.02);
-    }
-
-    .pb-preview-house {
+    .builder-preview-house {
       position: absolute;
       inset: 0;
     }
 
-    .pb-preview-ground {
+    .builder-preview-ground {
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
-      height: 30%;
-      background:
-        linear-gradient(180deg, rgba(52, 58, 49, 0.18), rgba(52, 58, 49, 0.42)),
-        linear-gradient(90deg, #6d735c 0%, #8f8d72 50%, #6e725a 100%);
+      height: 24%;
+      background: linear-gradient(180deg, rgba(71, 83, 62, 0.2), rgba(71, 83, 62, 0.45));
     }
 
-    .pb-preview-pool {
+    .builder-preview-water {
       position: absolute;
-      left: 12%;
-      bottom: 8%;
-      width: 42%;
+      left: 8%;
+      bottom: 7%;
+      width: 44%;
       height: 14%;
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0)),
-        linear-gradient(90deg, #445863 0%, #718c97 44%, #5f7983 100%);
-      opacity: 0.94;
+        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0)),
+        linear-gradient(90deg, #425864 0%, #6a8793 50%, #58727d 100%);
+      opacity: 0.96;
     }
 
-    .pb-preview-volume-a,
-    .pb-preview-volume-b,
-    .pb-preview-volume-c,
-    .pb-preview-volume-d {
+    .builder-preview-volume {
       position: absolute;
-      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
-    }
-
-    .pb-preview-window-row {
-      position: absolute;
-      display: grid;
-      gap: 6px;
-    }
-
-    .pb-preview-window-row span {
-      display: block;
-      background: rgba(32, 36, 39, 0.84);
+      background: rgba(236, 230, 220, 0.92);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
     }
 
-    .pb-preview-palms {
+    .builder-preview-window-row {
       position: absolute;
-      right: 4%;
-      bottom: 18%;
-      width: 24%;
-      height: 42%;
-      opacity: 0.6;
+      display: grid;
+      gap: 5px;
     }
 
-    .pb-preview-palms::before,
-    .pb-preview-palms::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      width: 2px;
-      background: rgba(52, 52, 48, 0.8);
-    }
-
-    .pb-preview-palms::before {
-      left: 38%;
-      height: 70%;
-    }
-
-    .pb-preview-palms::after {
-      left: 66%;
-      height: 56%;
-    }
-
-    .pb-preview-palms span,
-    .pb-preview-palms b {
-      position: absolute;
+    .builder-preview-window-row span {
       display: block;
-      width: 54px;
-      height: 20px;
-      border-top: 2px solid rgba(61, 67, 54, 0.72);
-      border-radius: 100% 0 0 0;
-      transform-origin: left center;
+      background: rgba(28, 33, 38, 0.88);
     }
 
-    .pb-preview-palms span:nth-child(1) { left: 36%; top: 2%; transform: rotate(-18deg); }
-    .pb-preview-palms span:nth-child(2) { left: 34%; top: 10%; transform: rotate(14deg); }
-    .pb-preview-palms span:nth-child(3) { left: 58%; top: 18%; transform: rotate(-22deg); }
-    .pb-preview-palms b:nth-child(4) { left: 62%; top: 26%; transform: rotate(18deg); }
-    .pb-preview-palms b:nth-child(5) { left: 48%; top: 8%; transform: rotate(4deg); }
-
-    .pb-preview-canvas.project-new .pb-preview-volume-a {
+    .builder-preview.project-new .vol-a {
       left: 20%;
-      bottom: 24%;
+      bottom: 22%;
       width: 44%;
-      height: 26%;
-      background-color: rgba(231, 227, 220, 0.9);
+      height: 28%;
     }
 
-    .pb-preview-canvas.project-new .pb-preview-volume-b {
-      left: 34%;
-      bottom: 40%;
-      width: 38%;
-      height: 22%;
-      background-color: rgba(244, 241, 236, 0.96);
+    .builder-preview.project-new .vol-b {
+      left: 36%;
+      bottom: 42%;
+      width: 36%;
+      height: 24%;
     }
 
-    .pb-preview-canvas.project-new .pb-preview-volume-c {
+    .builder-preview.project-new .vol-c {
       right: 10%;
-      bottom: 24%;
-      width: 12%;
-      height: 30%;
-      background-color: rgba(202, 190, 168, 0.88);
+      bottom: 22%;
+      width: 14%;
+      height: 34%;
     }
 
-    .pb-preview-canvas.project-renovation .pb-preview-volume-a {
-      left: 18%;
-      bottom: 24%;
+    .builder-preview.project-new .win-a {
+      left: 24%;
+      bottom: 28%;
+      width: 32%;
+      height: 8%;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .builder-preview.project-new .win-b {
+      left: 40%;
+      bottom: 48%;
+      width: 28%;
+      height: 10%;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .builder-preview.project-renovation .vol-a {
+      left: 19%;
+      bottom: 22%;
       width: 40%;
       height: 24%;
-      background-color: rgba(224, 219, 210, 0.9);
     }
 
-    .pb-preview-canvas.project-renovation .pb-preview-volume-b {
-      left: 50%;
-      bottom: 24%;
-      width: 18%;
+    .builder-preview.project-renovation .vol-b {
+      left: 58%;
+      bottom: 22%;
+      width: 14%;
       height: 20%;
-      background-color: rgba(197, 185, 164, 0.7);
+      opacity: 0.78;
     }
 
-    .pb-preview-canvas.project-renovation .pb-preview-volume-c {
-      right: 12%;
-      bottom: 24%;
+    .builder-preview.project-renovation .vol-c {
+      right: 10%;
+      bottom: 22%;
       width: 10%;
       height: 20%;
-      background-color: rgba(219, 209, 191, 0.46);
+      opacity: 0.48;
     }
 
-    .pb-preview-canvas.project-extension .pb-preview-volume-a {
+    .builder-preview.project-renovation .win-a {
+      left: 23%;
+      bottom: 28%;
+      width: 24%;
+      height: 8%;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .builder-preview.project-renovation .win-b {
+      left: 60%;
+      bottom: 28%;
+      width: 10%;
+      height: 8%;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .builder-preview.project-extension .vol-a {
       left: 18%;
-      bottom: 24%;
+      bottom: 22%;
       width: 32%;
       height: 24%;
-      background-color: rgba(229, 225, 216, 0.9);
     }
 
-    .pb-preview-canvas.project-extension .pb-preview-volume-b {
+    .builder-preview.project-extension .vol-b {
       left: 50%;
-      bottom: 24%;
+      bottom: 22%;
       width: 24%;
       height: 16%;
-      background-color: rgba(197, 186, 165, 0.74);
+      opacity: 0.8;
     }
 
-    .pb-preview-canvas.project-extension .pb-preview-volume-c {
-      left: 58%;
-      bottom: 40%;
-      width: 16%;
-      height: 10%;
-      background-color: rgba(240, 236, 229, 0.92);
-    }
-
-    .pb-preview-canvas.project-mixed .pb-preview-volume-a {
-      left: 16%;
-      bottom: 24%;
-      width: 14%;
-      height: 18%;
-      background-color: rgba(225, 220, 211, 0.86);
-    }
-
-    .pb-preview-canvas.project-mixed .pb-preview-volume-b {
-      left: 34%;
-      bottom: 24%;
-      width: 18%;
-      height: 30%;
-      background-color: rgba(243, 239, 234, 0.95);
-    }
-
-    .pb-preview-canvas.project-mixed .pb-preview-volume-c {
-      left: 56%;
-      bottom: 24%;
-      width: 16%;
-      height: 22%;
-      background-color: rgba(217, 208, 191, 0.84);
-    }
-
-    .pb-preview-canvas.project-mixed .pb-preview-volume-d {
-      right: 10%;
-      bottom: 24%;
-      width: 10%;
-      height: 14%;
-      background-color: rgba(208, 195, 173, 0.58);
-    }
-
-    .pb-preview-canvas.project-commercial .pb-preview-volume-a {
-      left: 14%;
-      bottom: 24%;
-      width: 54%;
-      height: 18%;
-      background-color: rgba(230, 225, 217, 0.9);
-    }
-
-    .pb-preview-canvas.project-commercial .pb-preview-volume-b {
-      left: 26%;
-      bottom: 40%;
-      width: 38%;
-      height: 14%;
-      background-color: rgba(243, 239, 233, 0.94);
-    }
-
-    .pb-preview-canvas.project-commercial .pb-preview-volume-c {
-      right: 10%;
-      bottom: 24%;
-      width: 12%;
-      height: 34%;
-      background-color: rgba(191, 181, 165, 0.84);
-    }
-
-    .pb-preview-canvas.project-new .pb-window-a {
-      left: 24%;
-      bottom: 29%;
-      grid-template-columns: repeat(4, 1fr);
-      width: 30%;
-      height: 8%;
-    }
-
-    .pb-preview-canvas.project-new .pb-window-b {
-      left: 38%;
-      bottom: 46%;
-      grid-template-columns: repeat(5, 1fr);
-      width: 28%;
+    .builder-preview.project-extension .vol-c {
+      left: 57%;
+      bottom: 38%;
+      width: 17%;
       height: 10%;
     }
 
-    .pb-preview-canvas.project-renovation .pb-window-a {
-      left: 21%;
-      bottom: 29%;
-      grid-template-columns: repeat(3, 1fr);
-      width: 24%;
-      height: 8%;
-    }
-
-    .pb-preview-canvas.project-renovation .pb-window-b {
-      left: 52%;
-      bottom: 29%;
-      grid-template-columns: repeat(2, 1fr);
-      width: 14%;
-      height: 8%;
-    }
-
-    .pb-preview-canvas.project-extension .pb-window-a {
-      left: 21%;
-      bottom: 29%;
-      grid-template-columns: repeat(3, 1fr);
+    .builder-preview.project-extension .win-a {
+      left: 22%;
+      bottom: 28%;
       width: 20%;
       height: 8%;
+      grid-template-columns: repeat(3, 1fr);
     }
 
-    .pb-preview-canvas.project-extension .pb-window-b {
-      left: 53%;
-      bottom: 29%;
+    .builder-preview.project-extension .win-b {
+      left: 54%;
+      bottom: 27%;
+      width: 14%;
+      height: 7%;
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .builder-preview.project-mixed .vol-a {
+      left: 15%;
+      bottom: 22%;
+      width: 14%;
+      height: 18%;
+    }
+
+    .builder-preview.project-mixed .vol-b {
+      left: 34%;
+      bottom: 22%;
+      width: 18%;
+      height: 32%;
+    }
+
+    .builder-preview.project-mixed .vol-c {
+      left: 56%;
+      bottom: 22%;
       width: 16%;
-      height: 7%;
+      height: 22%;
     }
 
-    .pb-preview-canvas.project-mixed .pb-window-a {
-      left: 35%;
-      bottom: 30%;
-      grid-template-columns: repeat(2, 1fr);
-      width: 12%;
-      height: 10%;
-    }
-
-    .pb-preview-canvas.project-mixed .pb-window-b {
-      left: 58%;
-      bottom: 29%;
-      grid-template-columns: repeat(2, 1fr);
-      width: 12%;
-      height: 8%;
-    }
-
-    .pb-preview-canvas.project-commercial .pb-window-a {
-      left: 20%;
+    .builder-preview.project-mixed .win-a {
+      left: 36%;
       bottom: 28%;
+      width: 10%;
+      height: 10%;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .builder-preview.project-mixed .win-b {
+      left: 58%;
+      bottom: 27%;
+      width: 10%;
+      height: 8%;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .builder-preview.project-commercial .vol-a {
+      left: 14%;
+      bottom: 22%;
+      width: 56%;
+      height: 18%;
+    }
+
+    .builder-preview.project-commercial .vol-b {
+      left: 24%;
+      bottom: 40%;
+      width: 42%;
+      height: 16%;
+    }
+
+    .builder-preview.project-commercial .vol-c {
+      right: 10%;
+      bottom: 22%;
+      width: 12%;
+      height: 38%;
+    }
+
+    .builder-preview.project-commercial .win-a {
+      left: 18%;
+      bottom: 27%;
+      width: 46%;
+      height: 7%;
       grid-template-columns: repeat(6, 1fr);
-      width: 44%;
-      height: 7%;
     }
 
-    .pb-preview-canvas.project-commercial .pb-window-b {
+    .builder-preview.project-commercial .win-b {
       left: 29%;
-      bottom: 44%;
-      grid-template-columns: repeat(5, 1fr);
+      bottom: 46%;
       width: 28%;
-      height: 7%;
+      height: 8%;
+      grid-template-columns: repeat(5, 1fr);
     }
 
-    .pb-thumb-row {
+    .builder-preview.project-new.style-modern,
+    .builder-preview.project-commercial.style-modern {
+      filter: contrast(1.04) saturate(1.02);
+    }
+
+    .builder-preview.style-warm {
+      filter: sepia(0.1) saturate(1.05);
+    }
+
+    .builder-preview.style-minimal {
+      filter: grayscale(0.12) brightness(1.05);
+    }
+
+    .builder-preview.style-coastal {
+      filter: brightness(1.04) saturate(0.92);
+    }
+
+    .builder-preview.style-classic {
+      filter: sepia(0.06) brightness(1.02);
+    }
+
+    .builder-thumb-row {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
       align-items: center;
     }
 
-    .pb-thumb {
+    .builder-thumb {
       position: relative;
-      aspect-ratio: 16 / 10;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      aspect-ratio: 4 / 3;
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       background:
-        linear-gradient(180deg, rgba(32, 37, 42, 0.2), rgba(22, 22, 21, 0.16)),
-        linear-gradient(180deg, #6f8193 0%, #ccd6da 34%, #d8d2c7 60%, #8f856f 100%);
+        linear-gradient(180deg, rgba(24, 31, 38, 0.14), rgba(24, 31, 38, 0)),
+        linear-gradient(180deg, #7a8d9f 0%, #d3dbdf 34%, #ddd6c8 62%, #8a7f67 100%);
     }
 
-    .pb-thumb::before {
+    .builder-thumb::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0)),
+        linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0)),
         linear-gradient(rgba(80, 80, 78, 0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(80, 80, 78, 0.04) 1px, transparent 1px);
       background-size: auto, 16px 16px, 16px 16px;
     }
 
-    .pb-thumb .t1,
-    .pb-thumb .t2,
-    .pb-thumb .t3 {
+    .builder-thumb span {
       position: absolute;
-      background: rgba(236, 231, 222, 0.9);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      background: rgba(236, 230, 220, 0.92);
     }
 
-    .pb-thumb .t1 { left: 18%; bottom: 24%; width: 44%; height: 18%; }
-    .pb-thumb .t2 { left: 36%; bottom: 38%; width: 32%; height: 16%; }
-    .pb-thumb .t3 { right: 10%; bottom: 24%; width: 12%; height: 28%; opacity: 0.84; }
+    .builder-thumb .a {
+      left: 18%;
+      bottom: 22%;
+      width: 44%;
+      height: 20%;
+    }
 
-    .pb-keyfacts {
+    .builder-thumb .b {
+      left: 36%;
+      bottom: 38%;
+      width: 30%;
+      height: 18%;
+    }
+
+    .builder-thumb .c {
+      right: 10%;
+      bottom: 22%;
+      width: 12%;
+      height: 28%;
+    }
+
+    .builder-overview-title {
+      margin: 0 0 10px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(243, 239, 232, 0.66);
+    }
+
+    .builder-overview-list {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-    }
-
-    .pb-keyfact {
-      display: grid;
-      gap: 4px;
-      justify-items: start;
-    }
-
-    .pb-keyfact span {
-      color: rgba(239, 233, 222, 0.66);
-      font-size: 0.72rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .pb-keyfact strong {
-      color: #f4efe6;
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-
-    .pb-summary-stack {
-      display: grid;
-      gap: 14px;
-    }
-
-    .pb-summary-subtitle {
       margin: 0;
-      color: rgba(239, 233, 222, 0.72);
-      font-size: 0.8rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      padding: 0;
+      list-style: none;
     }
 
-    .pb-summary-chips {
+    .builder-overview-list li {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      color: rgba(243, 239, 232, 0.84);
+      font-size: 0.84rem;
+    }
+
+    .builder-overview-list svg {
+      width: 15px;
+      height: 15px;
+      opacity: 0.75;
+    }
+
+    .builder-overview-list strong {
+      color: #fff;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .builder-summary-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .pb-summary-chip {
+    .builder-summary-chip {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       min-height: 32px;
       padding: 0 12px;
-      border: 1px solid rgba(216, 188, 126, 0.18);
-      background: rgba(255, 255, 255, 0.05);
-      color: #f1ece3;
-      font-size: 0.82rem;
+      border: 1px solid rgba(216, 188, 134, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+      color: #f3efe8;
+      font-size: 0.8rem;
     }
 
-    .pb-summary-actions {
+    .builder-summary-chip svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.8;
+    }
+
+    .builder-range {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .builder-next {
+      margin: 8px 0 0;
+      color: rgba(243, 239, 232, 0.76);
+      font-size: 0.84rem;
+      line-height: 1.6;
+    }
+
+    .builder-actions {
       display: grid;
       gap: 10px;
     }
 
-    .pb-summary-actions .button {
-      background: linear-gradient(180deg, #d2b075, #c39d5f);
+    .builder-actions .button {
+      background: linear-gradient(180deg, #d2b07a, #c59f62);
       color: #161514;
       border: 0;
     }
 
-    .pb-summary-actions .button-secondary {
-      color: #efe9dd;
-      border-color: rgba(216, 188, 126, 0.32);
+    .builder-actions .button-secondary {
+      color: #f2ede4;
+      border-color: rgba(216, 188, 134, 0.3);
       background: transparent;
     }
 
-    .pb-reset {
-      margin-top: 4px;
+    .builder-clear {
+      border: 0;
       background: transparent;
-      border: 1px solid rgba(216, 188, 126, 0.18);
-      color: rgba(240, 236, 228, 0.8);
-      min-height: 42px;
+      color: rgba(243, 239, 232, 0.7);
       font: inherit;
-      cursor: pointer;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
       font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-align: left;
+      cursor: pointer;
+      padding: 0;
     }
 
-    .pb-helper {
-      margin: 0;
-      color: rgba(240, 236, 228, 0.62);
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
-
-    @media (min-width: 1100px) {
-      .pb-shell {
-        grid-template-columns: minmax(0, 1.3fr) minmax(340px, 0.58fr);
+    @media (min-width: 1180px) {
+      .builder-shell {
+        grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.64fr);
       }
 
-      .pb-summary {
+      .builder-summary {
         position: sticky;
         top: 92px;
       }
     }
 
-    @media (max-width: 1024px) {
-      .pb-type-grid,
-      .pb-style-grid {
+    @media (max-width: 1100px) {
+      .builder-grid-5 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .builder-style-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 820px) {
-      .pb-type-grid,
-      .pb-style-grid,
-      .pb-select-row,
-      .pb-chip-row,
-      .pb-fact-row,
-      .pb-keyfacts {
+      .builder-scale-row,
+      .builder-grid-4,
+      .builder-grid-3,
+      .builder-grid-2,
+      .builder-thumb-row {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .builder-scale-row {
+        grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 580px) {
-      .pb-type-grid,
-      .pb-style-grid,
-      .pb-select-row,
-      .pb-chip-row,
-      .pb-fact-row,
-      .pb-keyfacts,
-      .pb-thumb-row {
+    @media (max-width: 620px) {
+      .builder-grid-5,
+      .builder-grid-4,
+      .builder-grid-3,
+      .builder-grid-2,
+      .builder-style-grid,
+      .builder-thumb-row {
         grid-template-columns: 1fr;
       }
 
-      .pb-section-head {
+      .builder-section-head {
         grid-template-columns: 1fr;
       }
 
-      .pb-step-copy {
+      .builder-section-copy {
         grid-column: auto;
+      }
+
+      .builder-overview-list li {
+        grid-template-columns: 16px 1fr;
+      }
+
+      .builder-overview-list strong {
+        grid-column: 2;
+        text-align: left;
       }
     }
   </style>
@@ -1009,6 +964,7 @@
         <a href="../services/">Services</a>
         <a href="../projects/">Projects</a>
         <a href="../contact/">Contact</a>
+        <a class="active" href="./">Project Builder</a>
       </nav>
     </div>
   </header>
@@ -1025,6 +981,7 @@
       <a class="nav-overlay-link" href="../services/">Services</a>
       <a class="nav-overlay-link" href="../projects/">Projects</a>
       <a class="nav-overlay-link" href="../contact/">Contact</a>
+      <a class="nav-overlay-link" href="./">Project Builder</a>
     </nav>
 
     <div class="nav-overlay-meta">
@@ -1033,124 +990,116 @@
     </div>
   </div>
 
-  <main>
-    <section class="page-hero">
+  <main class="builder-page">
+    <section class="builder-hero">
       <div class="wrap">
-        <p class="pb-kicker reveal">Project Builder</p>
-        <h1 class="pb-title reveal">Build your project brief.</h1>
-        <p class="pb-copy reveal-soft">
-          This prototype is meant to help structure scope, priorities, and likely next steps
-          before moving into enquiry or consultation.
+        <p class="builder-eyebrow reveal">Project Builder</p>
+        <h1 class="builder-title reveal">Build your project.</h1>
+        <p class="builder-copy reveal-soft">
+          A guided scope builder for early project definition. The visual direction on the right is placeholder-based for now,
+          but the interface structure, icons, and selection logic are ready to test.
         </p>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap pb-shell">
-        <section class="pb-panel reveal">
-          <form id="projectBuilderForm" style="display:grid; gap:14px;">
-            <div class="pb-section">
-              <div class="pb-section-head">
-                <div class="pb-step-no">01</div>
-                <h2 class="pb-step-title">Project Type</h2>
-                <p class="pb-step-copy">Select the closest project category.</p>
-              </div>
-
-              <div class="pb-type-grid">
-                <div class="pb-choice">
-                  <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
-                  <label for="projectTypeNew">
-                    <div class="pb-type-visual pb-type-new">
-                      <span class="b b1"></span>
-                      <span class="b b2"></span>
-                      <span class="b b3"></span>
-                      <span class="l l1"></span>
-                    </div>
-                    <div class="pb-choice-copy">
-                      <strong>Residential New Build</strong>
-                      <span>New house</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="projectType" id="projectTypeReno" value="Residential Renovation" />
-                  <label for="projectTypeReno">
-                    <div class="pb-type-visual pb-type-reno">
-                      <span class="b b1"></span>
-                      <span class="b b2"></span>
-                      <span class="b b3"></span>
-                      <span class="l l1"></span>
-                      <span class="l l2"></span>
-                    </div>
-                    <div class="pb-choice-copy">
-                      <strong>Renovation</strong>
-                      <span>Existing house</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="projectType" id="projectTypeExt" value="Extension / Addition" />
-                  <label for="projectTypeExt">
-                    <div class="pb-type-visual pb-type-ext">
-                      <span class="b b1"></span>
-                      <span class="b b2"></span>
-                      <span class="b b3"></span>
-                      <span class="l l1"></span>
-                      <span class="l l2"></span>
-                    </div>
-                    <div class="pb-choice-copy">
-                      <strong>Extension / Addition</strong>
-                      <span>Expanded scope</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="projectType" id="projectTypeMixed" value="Small Mixed Residential Project" />
-                  <label for="projectTypeMixed">
-                    <div class="pb-type-visual pb-type-mixed">
-                      <span class="b b1"></span>
-                      <span class="b b2"></span>
-                      <span class="b b3"></span>
-                      <span class="b b4"></span>
-                      <span class="l l1"></span>
-                    </div>
-                    <div class="pb-choice-copy">
-                      <strong>Mixed Residential</strong>
-                      <span>Compact hybrid</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="projectType" id="projectTypeCommercial" value="Commercial Project" />
-                  <label for="projectTypeCommercial">
-                    <div class="pb-type-visual pb-type-commercial">
-                      <span class="b b1"></span>
-                      <span class="b b2"></span>
-                      <span class="b b3"></span>
-                      <span class="l l1"></span>
-                    </div>
-                    <div class="pb-choice-copy">
-                      <strong>Commercial</strong>
-                      <span>Business space</span>
-                    </div>
-                  </label>
-                </div>
-              </div>
+      <div class="wrap builder-shell">
+        <form id="projectBuilderForm" class="builder-form reveal">
+          <section class="builder-section">
+            <div class="builder-section-head">
+              <div class="builder-step">01</div>
+              <h2 class="builder-section-title">Base Project</h2>
+              <p class="builder-section-copy">Choose the general project category.</p>
             </div>
 
-            <div class="pb-section">
-              <div class="pb-section-head">
-                <div class="pb-step-no">02</div>
-                <h2 class="pb-step-title">Scale</h2>
-                <p class="pb-step-copy">Set the size and building height.</p>
+            <div class="builder-grid-5">
+              <div class="builder-option is-dark">
+                <input type="radio" name="projectType" id="projectTypeNew" value="Residential New Build" checked />
+                <label for="projectTypeNew">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M3 11.5 12 4l9 7.5"></path>
+                    <path d="M5.5 10.5V20h13V10.5"></path>
+                    <path d="M9.5 20v-5h5v5"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Residential New Build</strong>
+                    <span>New house</span>
+                  </div>
+                </label>
               </div>
 
-              <div class="pb-select-row">
-                <label class="pb-select">
+              <div class="builder-option">
+                <input type="radio" name="projectType" id="projectTypeRenovation" value="Residential Renovation" />
+                <label for="projectTypeRenovation">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M14 4 20 10"></path>
+                    <path d="M4 20l5-1 10-10-4-4L5 15l-1 5Z"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Renovation</strong>
+                    <span>Existing house</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="projectType" id="projectTypeExtension" value="Extension / Addition" />
+                <label for="projectTypeExtension">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <rect x="4" y="6" width="8" height="8"></rect>
+                    <path d="M12 10h8"></path>
+                    <path d="M16 6v8"></path>
+                    <path d="M4 18h16"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Extension / Addition</strong>
+                    <span>Expanded scope</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="projectType" id="projectTypeMixed" value="Mixed Residential" />
+                <label for="projectTypeMixed">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <rect x="4" y="9" width="6" height="11"></rect>
+                    <rect x="10" y="5" width="5" height="15"></rect>
+                    <rect x="15" y="11" width="5" height="9"></rect>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Mixed Residential</strong>
+                    <span>Compact hybrid</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="projectType" id="projectTypeCommercial" value="Commercial Project" />
+                <label for="projectTypeCommercial">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M4 20V8l3-3h10l3 3v12"></path>
+                    <path d="M4 10h16"></path>
+                    <path d="M9 20v-4h6v4"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Commercial</strong>
+                    <span>Business space</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="builder-section">
+            <div class="builder-section-head">
+              <div class="builder-step">02</div>
+              <h2 class="builder-section-title">Scale</h2>
+              <p class="builder-section-copy">Set the overall project size and height.</p>
+            </div>
+
+            <div class="builder-scale-row">
+              <div class="builder-grid-2">
+                <label class="builder-select-wrap">
                   <span>Storeys</span>
                   <select name="storeys">
                     <option value="1 Storey">1 Storey</option>
@@ -1160,317 +1109,476 @@
                   </select>
                 </label>
 
-                <label class="pb-select">
-                  <span>Approx. Size</span>
+                <label class="builder-select-wrap">
+                  <span>Approximate Size</span>
                   <select name="sizeRange">
                     <option value="Under 1,500 sq ft">Under 1,500 sq ft</option>
-                    <option value="1,500–3,000 sq ft" selected>1,500–3,000 sq ft</option>
-                    <option value="3,000–5,000 sq ft">3,000–5,000 sq ft</option>
-                    <option value="5,000+ sq ft">5,000+ sq ft</option>
+                    <option value="1,800–2,400 sq ft" selected>1,800–2,400 sq ft</option>
+                    <option value="2,400–3,500 sq ft">2,400–3,500 sq ft</option>
+                    <option value="3,500+ sq ft">3,500+ sq ft</option>
                   </select>
+                </label>
+              </div>
+
+              <div class="builder-wireframe" aria-hidden="true">
+                <svg viewBox="0 0 500 220" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M30 185h430"></path>
+                  <rect x="90" y="115" width="120" height="70"></rect>
+                  <rect x="210" y="70" width="130" height="115"></rect>
+                  <rect x="315" y="100" width="90" height="85"></rect>
+                  <path d="M90 115 140 80h145"></path>
+                  <path d="M210 70 255 40h120"></path>
+                  <path d="M340 100 380 75h55"></path>
+                  <path d="M128 185v-52h44v52"></path>
+                  <path d="M240 185v-62h56v62"></path>
+                  <path d="M345 185v-40h42v40"></path>
+                </svg>
+              </div>
+            </div>
+          </section>
+
+          <section class="builder-section">
+            <div class="builder-section-head">
+              <div class="builder-step">03</div>
+              <h2 class="builder-section-title">Space Needs</h2>
+              <p class="builder-section-copy">Define the key spaces you need.</p>
+            </div>
+
+            <div class="builder-chip-row">
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureBedrooms" value="3 Bedrooms" checked />
+                <label for="featureBedrooms">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 13h16v5H4z"></path>
+                    <path d="M6 13V9h5a3 3 0 0 1 3 3v1"></path>
+                    <path d="M4 18v2"></path>
+                    <path d="M20 18v2"></path>
+                  </svg>
+                  3 Bedrooms
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureBathrooms" value="2 Bathrooms" checked />
+                <label for="featureBathrooms">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                    <path d="M5 10h14v4a7 7 0 0 1-14 0z"></path>
+                  </svg>
+                  2 Bathrooms
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureGarage" value="Garage" checked />
+                <label for="featureGarage">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M3 11.5 12 5l9 6.5V20H3z"></path>
+                    <path d="M8 20v-5h8v5"></path>
+                  </svg>
+                  Garage
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureOffice" value="Home Office" checked />
+                <label for="featureOffice">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <rect x="4" y="5" width="16" height="11"></rect>
+                    <path d="M10 19h4"></path>
+                    <path d="M12 16v3"></path>
+                  </svg>
+                  Home Office
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureLaundry" value="Laundry Room" checked />
+                <label for="featureLaundry">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <rect x="5" y="4" width="14" height="16"></rect>
+                    <circle cx="12" cy="13" r="4"></circle>
+                    <path d="M8 8h.01"></path>
+                    <path d="M11 8h.01"></path>
+                  </svg>
+                  Laundry Room
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureOutdoor" value="Outdoor Living" checked />
+                <label for="featureOutdoor">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M12 4v10"></path>
+                    <path d="M7 9a5 5 0 0 1 10 0"></path>
+                    <path d="M5 20h14"></path>
+                  </svg>
+                  Outdoor Living
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureCloset" value="Walk-in Closet" />
+                <label for="featureCloset">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M6 20V6l6-2 6 2v14"></path>
+                    <path d="M12 4v16"></path>
+                  </svg>
+                  Walk-in Closet
+                </label>
+              </div>
+
+              <div class="builder-chip">
+                <input type="checkbox" name="features" id="featureSuite" value="Secondary Suite" />
+                <label for="featureSuite">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <rect x="4" y="6" width="7" height="12"></rect>
+                    <rect x="13" y="9" width="7" height="9"></rect>
+                  </svg>
+                  Secondary Suite
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="builder-section">
+            <div class="builder-section-head">
+              <div class="builder-step">04</div>
+              <h2 class="builder-section-title">Site Conditions</h2>
+              <p class="builder-section-copy">Help us understand your site.</p>
+            </div>
+
+            <div class="builder-grid-3">
+              <div class="builder-option is-dark">
+                <input type="radio" name="siteCondition" id="siteFlat" value="Flat" checked />
+                <label for="siteFlat">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 17h16"></path>
+                    <path d="M6 17V6"></path>
+                    <path d="M6 17 18 11"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Flat</strong>
+                    <span>Level site</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="siteCondition" id="siteSloped" value="Sloped" />
+                <label for="siteSloped">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 17h16"></path>
+                    <path d="M6 17 12 12l6 2"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Sloped</strong>
+                    <span>Falling grade</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="siteCondition" id="siteCorner" value="Corner Lot" />
+                <label for="siteCorner">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M5 5h14v14"></path>
+                    <path d="M5 19V5"></path>
+                    <path d="M19 19H5"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Corner Lot</strong>
+                    <span>Dual frontages</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="siteCondition" id="siteNarrow" value="Narrow Lot" />
+                <label for="siteNarrow">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <rect x="9" y="5" width="6" height="14"></rect>
+                    <path d="M5 12h4"></path>
+                    <path d="M15 12h4"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Narrow Lot</strong>
+                    <span>Tight width</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="siteCondition" id="siteCoastal" value="Coastal" />
+                <label for="siteCoastal">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M3 16c2 0 2-1 4-1s2 1 4 1 2-1 4-1 2 1 4 1 2-1 4-1"></path>
+                    <path d="M3 12c2 0 2-1 4-1s2 1 4 1 2-1 4-1 2 1 4 1 2-1 4-1"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Coastal</strong>
+                    <span>Marine exposure</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="builder-option">
+                <input type="radio" name="siteCondition" id="siteExisting" value="Existing Structure" />
+                <label for="siteExisting">
+                  <svg class="builder-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 20V8l3-3h10l3 3v12"></path>
+                    <path d="M4 10h16"></path>
+                    <path d="M10 20v-4h4v4"></path>
+                  </svg>
+                  <div class="builder-option-text">
+                    <strong>Existing Structure</strong>
+                    <span>Built condition</span>
+                  </div>
                 </label>
               </div>
             </div>
 
-            <div class="pb-section">
-              <div class="pb-section-head">
-                <div class="pb-step-no">03</div>
-                <h2 class="pb-step-title">Space Needs</h2>
-                <p class="pb-step-copy">Choose the spaces you require.</p>
-              </div>
+            <div class="builder-grid-2">
+              <label class="builder-select-wrap">
+                <span>Site Orientation</span>
+                <select name="orientation">
+                  <option value="North-facing" selected>North-facing</option>
+                  <option value="South-facing">South-facing</option>
+                  <option value="East-facing">East-facing</option>
+                  <option value="West-facing">West-facing</option>
+                </select>
+              </label>
 
-              <div class="pb-select-row">
-                <label class="pb-select">
-                  <span>Bedrooms</span>
-                  <select name="bedrooms">
-                    <option value="1 Bedroom">1 Bedroom</option>
-                    <option value="2 Bedrooms">2 Bedrooms</option>
-                    <option value="3 Bedrooms" selected>3 Bedrooms</option>
-                    <option value="4 Bedrooms">4 Bedrooms</option>
-                    <option value="5+ Bedrooms">5+ Bedrooms</option>
-                  </select>
-                </label>
+              <label class="builder-select-wrap">
+                <span>Access</span>
+                <select name="access">
+                  <option value="Vehicle Access, Rear Lane" selected>Vehicle Access, Rear Lane</option>
+                  <option value="Vehicle Access Only">Vehicle Access Only</option>
+                  <option value="Pedestrian Access Only">Pedestrian Access Only</option>
+                  <option value="Corner Access">Corner Access</option>
+                </select>
+              </label>
+            </div>
+          </section>
 
-                <label class="pb-select">
-                  <span>Bathrooms</span>
-                  <select name="bathrooms">
-                    <option value="1 Bathroom">1 Bathroom</option>
-                    <option value="2 Bathrooms">2 Bathrooms</option>
-                    <option value="2.5 Bathrooms" selected>2.5 Bathrooms</option>
-                    <option value="3 Bathrooms">3 Bathrooms</option>
-                    <option value="4+ Bathrooms">4+ Bathrooms</option>
-                  </select>
-                </label>
-              </div>
-
-              <div class="pb-chip-row">
-                <div class="pb-chip">
-                  <input type="checkbox" name="features" id="featureGarage" value="Garage" checked />
-                  <label for="featureGarage"><span class="pb-chip-icon">🚗</span>Garage</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="checkbox" name="features" id="featureOffice" value="Home Office" checked />
-                  <label for="featureOffice"><span class="pb-chip-icon">💼</span>Home Office</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="checkbox" name="features" id="featureOutdoor" value="Outdoor Living" checked />
-                  <label for="featureOutdoor"><span class="pb-chip-icon">🌿</span>Outdoor Living</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="checkbox" name="features" id="featureLaundry" value="Laundry Room" checked />
-                  <label for="featureLaundry"><span class="pb-chip-icon">🧺</span>Laundry Room</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="checkbox" name="features" id="featureCloset" value="Walk-in Closet" />
-                  <label for="featureCloset"><span class="pb-chip-icon">👕</span>Walk-in Closet</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="checkbox" name="features" id="featureSuite" value="Secondary Suite" />
-                  <label for="featureSuite"><span class="pb-chip-icon">🛏️</span>Secondary Suite</label>
-                </div>
-              </div>
+          <section class="builder-section">
+            <div class="builder-section-head">
+              <div class="builder-step">05</div>
+              <h2 class="builder-section-title">Design Direction</h2>
+              <p class="builder-section-copy">Choose the mood and feel that inspires you.</p>
             </div>
 
-            <div class="pb-section">
-              <div class="pb-section-head">
-                <div class="pb-step-no">04</div>
-                <h2 class="pb-step-title">Site Conditions</h2>
-                <p class="pb-step-copy">Set the site context.</p>
+            <div class="builder-grid-5 builder-style-grid">
+              <div class="builder-option is-dark">
+                <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
+                <label for="styleModern">
+                  <div class="builder-style-card style-modern">
+                    <div class="style-label">Modern</div>
+                  </div>
+                </label>
               </div>
 
-              <div class="pb-fact-row">
-                <label class="pb-select">
-                  <span>Setting</span>
-                  <select name="siteContext">
-                    <option value="Coastal">Coastal</option>
-                    <option value="Urban">Urban</option>
-                    <option value="Suburban" selected>Suburban</option>
-                    <option value="Rural">Rural</option>
-                  </select>
+              <div class="builder-option">
+                <input type="radio" name="styleDirection" id="styleWarm" value="Warm Contemporary" />
+                <label for="styleWarm">
+                  <div class="builder-style-card style-warm">
+                    <div class="style-label">Warm Contemporary</div>
+                  </div>
                 </label>
+              </div>
 
-                <label class="pb-select">
-                  <span>Site Slope</span>
-                  <select name="siteSlope">
-                    <option value="Flat">Flat</option>
-                    <option value="Gentle Slope">Gentle Slope</option>
-                    <option value="Steep Site">Steep Site</option>
-                  </select>
+              <div class="builder-option">
+                <input type="radio" name="styleDirection" id="styleCoastal" value="Coastal" />
+                <label for="styleCoastal">
+                  <div class="builder-style-card style-coastal">
+                    <div class="style-label">Coastal</div>
+                  </div>
                 </label>
+              </div>
 
-                <label class="pb-select">
-                  <span>Starting Condition</span>
-                  <select name="startingCondition">
-                    <option value="Vacant Site" selected>Vacant Site</option>
-                    <option value="Existing Structure">Existing Structure</option>
-                    <option value="Partially Built">Partially Built</option>
-                  </select>
+              <div class="builder-option">
+                <input type="radio" name="styleDirection" id="styleMinimal" value="Minimalist" />
+                <label for="styleMinimal">
+                  <div class="builder-style-card style-minimal">
+                    <div class="style-label">Minimalist</div>
+                  </div>
                 </label>
+              </div>
 
-                <label class="pb-select">
-                  <span>Planning Zone</span>
-                  <select name="planningZone">
-                    <option value="R1">R1</option>
-                    <option value="R1-a" selected>R1-a</option>
-                    <option value="R2">R2</option>
-                    <option value="Mixed Use">Mixed Use</option>
-                  </select>
+              <div class="builder-option">
+                <input type="radio" name="styleDirection" id="styleClassic" value="Classic Contemporary" />
+                <label for="styleClassic">
+                  <div class="builder-style-card style-classic">
+                    <div class="style-label">Classic Contemporary</div>
+                  </div>
                 </label>
               </div>
             </div>
+          </section>
+        </form>
 
-            <div class="pb-section">
-              <div class="pb-section-head">
-                <div class="pb-step-no">05</div>
-                <h2 class="pb-step-title">Design Direction</h2>
-                <p class="pb-step-copy">Choose the architectural tone.</p>
-              </div>
-
-              <div class="pb-style-grid">
-                <div class="pb-choice">
-                  <input type="radio" name="styleDirection" id="styleModern" value="Modern" checked />
-                  <label for="styleModern">
-                    <div class="pb-style-visual pb-style-modern"></div>
-                    <div class="pb-choice-copy">
-                      <strong>Modern</strong>
-                      <span>Sharper lines</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="styleDirection" id="styleOrganic" value="Organic Modern" />
-                  <label for="styleOrganic">
-                    <div class="pb-style-visual pb-style-organic"></div>
-                    <div class="pb-choice-copy">
-                      <strong>Organic Modern</strong>
-                      <span>Warmer palette</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="styleDirection" id="styleMinimal" value="Minimal" />
-                  <label for="styleMinimal">
-                    <div class="pb-style-visual pb-style-minimal"></div>
-                    <div class="pb-choice-copy">
-                      <strong>Minimal</strong>
-                      <span>Reduced expression</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="styleDirection" id="styleCoastal" value="Coastal" />
-                  <label for="styleCoastal">
-                    <div class="pb-style-visual pb-style-coastal"></div>
-                    <div class="pb-choice-copy">
-                      <strong>Coastal</strong>
-                      <span>Lighter atmosphere</span>
-                    </div>
-                  </label>
-                </div>
-
-                <div class="pb-choice">
-                  <input type="radio" name="styleDirection" id="styleTimeless" value="Timeless" />
-                  <label for="styleTimeless">
-                    <div class="pb-style-visual pb-style-timeless"></div>
-                    <div class="pb-choice-copy">
-                      <strong>Timeless</strong>
-                      <span>Balanced restraint</span>
-                    </div>
-                  </label>
-                </div>
-              </div>
+        <aside class="builder-summary reveal-soft">
+          <div class="builder-summary-stack">
+            <div class="builder-summary-topbar">
+              <span>Live Summary</span>
+              <span>Auto-saving</span>
             </div>
 
-            <div class="pb-section">
-              <div class="pb-section-head">
-                <div class="pb-step-no">06</div>
-                <h2 class="pb-step-title">Service Path</h2>
-                <p class="pb-step-copy">Choose the current starting stage.</p>
-              </div>
-
-              <div class="pb-chip-row">
-                <div class="pb-chip">
-                  <input type="radio" name="serviceStage" id="stageConcept" value="Concept Design" checked />
-                  <label for="stageConcept">Concept Design</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="radio" name="serviceStage" id="stageDevelopment" value="Design Development" />
-                  <label for="stageDevelopment">Design Development</label>
-                </div>
-
-                <div class="pb-chip">
-                  <input type="radio" name="serviceStage" id="stageDocumentation" value="Documentation" />
-                  <label for="stageDocumentation">Documentation</label>
-                </div>
-              </div>
-            </div>
-          </form>
-        </section>
-
-        <aside class="pb-summary reveal-soft">
-          <div class="pb-summary-stack">
-            <div class="pb-summary-head">
-              <span class="pb-summary-kicker">Live Summary</span>
-              <h2 class="pb-summary-title">Project Brief Preview</h2>
-              <p id="summarySentence" class="pb-summary-copy">
-                Contemporary residential direction with a clean palette, structured massing, and a clearer indoor-outdoor relationship.
+            <div>
+              <h2 class="builder-summary-title">Project Brief Preview</h2>
+              <p id="summarySentence" class="builder-summary-text">
+                A new 2-storey residential home with approximately 1,800–2,400 sq ft, designed with a modern direction and a north-facing orientation.
               </p>
             </div>
 
-            <div class="pb-progress-wrap">
-              <div class="pb-progress-meta">
+            <div class="builder-progress">
+              <div class="builder-progress-meta">
                 <span>Builder progress</span>
                 <span id="progressText">68%</span>
               </div>
-              <div class="pb-progress-track">
-                <div id="progressBar" class="pb-progress-bar"></div>
+              <div class="builder-progress-track">
+                <div id="progressBar" class="builder-progress-bar"></div>
               </div>
             </div>
 
-            <div id="previewCanvas" class="pb-preview-canvas project-new style-modern">
-              <div class="pb-preview-house">
-                <div class="pb-preview-ground"></div>
-                <div class="pb-preview-pool"></div>
+            <div id="summaryPreview" class="builder-preview project-new style-modern">
+              <div class="builder-preview-house">
+                <div class="builder-preview-ground"></div>
+                <div class="builder-preview-water"></div>
 
-                <div class="pb-preview-volume-a"></div>
-                <div class="pb-preview-volume-b"></div>
-                <div class="pb-preview-volume-c"></div>
-                <div class="pb-preview-volume-d"></div>
+                <div class="builder-preview-volume vol-a"></div>
+                <div class="builder-preview-volume vol-b"></div>
+                <div class="builder-preview-volume vol-c"></div>
 
-                <div class="pb-preview-window-row pb-window-a">
+                <div class="builder-preview-window-row win-a">
                   <span></span><span></span><span></span><span></span><span></span><span></span>
                 </div>
 
-                <div class="pb-preview-window-row pb-window-b">
+                <div class="builder-preview-window-row win-b">
                   <span></span><span></span><span></span><span></span><span></span><span></span>
                 </div>
-
-                <div class="pb-preview-palms">
-                  <span></span><span></span><span></span><b></b><b></b>
-                </div>
               </div>
             </div>
 
-            <div class="pb-thumb-row">
-              <div class="pb-thumb">
-                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+            <div class="builder-thumb-row" aria-hidden="true">
+              <div class="builder-thumb">
+                <span class="a"></span><span class="b"></span><span class="c"></span>
               </div>
-              <div class="pb-thumb">
-                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+              <div class="builder-thumb">
+                <span class="a"></span><span class="b"></span><span class="c"></span>
               </div>
-              <div class="pb-thumb">
-                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
+              <div class="builder-thumb">
+                <span class="a"></span><span class="b"></span><span class="c"></span>
               </div>
-              <div class="pb-thumb">
-                <span class="t1"></span><span class="t2"></span><span class="t3"></span>
-              </div>
-            </div>
-
-            <div class="pb-keyfacts">
-              <div class="pb-keyfact">
-                <span>Storeys</span>
-                <strong id="factStoreys">2</strong>
-              </div>
-              <div class="pb-keyfact">
-                <span>Bedrooms</span>
-                <strong id="factBedrooms">3</strong>
-              </div>
-              <div class="pb-keyfact">
-                <span>Bathrooms</span>
-                <strong id="factBathrooms">2.5</strong>
-              </div>
-              <div class="pb-keyfact">
-                <span>Size</span>
-                <strong id="factSize">2,000–3,000 sq ft</strong>
+              <div class="builder-thumb">
+                <span class="a"></span><span class="b"></span><span class="c"></span>
               </div>
             </div>
 
             <div>
-              <p class="pb-summary-subtitle">Selected Features</p>
-              <div id="featureChips" class="pb-summary-chips"></div>
+              <p class="builder-overview-title">Project Overview</p>
+              <ul class="builder-overview-list">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M3 11.5 12 4l9 7.5"></path>
+                    <path d="M5.5 10.5V20h13V10.5"></path>
+                  </svg>
+                  <span>Project Type</span>
+                  <strong id="overviewProjectType">Residential New Build</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M6 19V9"></path>
+                    <path d="M12 19V5"></path>
+                    <path d="M18 19V12"></path>
+                  </svg>
+                  <span>Storeys</span>
+                  <strong id="overviewStoreys">2 Storeys</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 18h16"></path>
+                    <path d="M6 18V6h12v12"></path>
+                  </svg>
+                  <span>Approx. Size</span>
+                  <strong id="overviewSize">1,800–2,400 sq ft</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 13h16v5H4z"></path>
+                    <path d="M6 13V9h5a3 3 0 0 1 3 3v1"></path>
+                  </svg>
+                  <span>Bedrooms</span>
+                  <strong id="overviewBedrooms">3</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                    <path d="M5 10h14v4a7 7 0 0 1-14 0z"></path>
+                  </svg>
+                  <span>Bathrooms</span>
+                  <strong id="overviewBathrooms">2</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M3 11.5 12 5l9 6.5V20H3z"></path>
+                    <path d="M8 20v-5h8v5"></path>
+                  </svg>
+                  <span>Garage</span>
+                  <strong id="overviewGarage">Yes</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 17h16"></path>
+                    <path d="M6 17V6"></path>
+                    <path d="M6 17 18 11"></path>
+                  </svg>
+                  <span>Site</span>
+                  <strong id="overviewSite">Flat</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M12 4v16"></path>
+                    <path d="M8 8l4-4 4 4"></path>
+                  </svg>
+                  <span>Orientation</span>
+                  <strong id="overviewOrientation">North-facing</strong>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M4 16h16"></path>
+                    <path d="M7 16V9h10v7"></path>
+                    <circle cx="9" cy="18" r="1.5"></circle>
+                    <circle cx="15" cy="18" r="1.5"></circle>
+                  </svg>
+                  <span>Access</span>
+                  <strong id="overviewAccess">Vehicle Access, Rear Lane</strong>
+                </li>
+              </ul>
             </div>
 
-            <div class="pb-summary-actions">
+            <div>
+              <p class="builder-overview-title">Selected Features</p>
+              <div id="featureChipsSummary" class="builder-summary-chips"></div>
+            </div>
+
+            <div>
+              <p class="builder-overview-title">Estimated Budget Range</p>
+              <p id="budgetRange" class="builder-range">$800K – $1.2M</p>
+              <p id="nextStepText" class="builder-next">
+                Send your brief and book a consultation when you are ready to move into review and scope confirmation.
+              </p>
+            </div>
+
+            <div class="builder-actions">
               <a class="button" href="../contact/">Send Project Enquiry</a>
               <a class="button-secondary" href="https://calendar.app.google/FwE3691G6Maa2KWc8" target="_blank" rel="noopener">
                 Book Consultation
               </a>
-              <button id="resetBuilder" class="pb-reset" type="button">Reset Builder</button>
+              <button id="clearSelections" class="builder-clear" type="button">
+                Clear all selections
+              </button>
             </div>
-
-            <p class="pb-helper">
-              This remains a guided brief builder, not a literal design generator.
-              The goal is to make the starting point clearer before formal engagement.
-            </p>
           </div>
         </aside>
       </div>
@@ -1507,44 +1615,111 @@
     const overlayLinks = document.querySelectorAll(".nav-overlay-link");
 
     const form = document.getElementById("projectBuilderForm");
-    const previewCanvas = document.getElementById("previewCanvas");
     const progressBar = document.getElementById("progressBar");
     const progressText = document.getElementById("progressText");
     const summarySentence = document.getElementById("summarySentence");
-    const featureChips = document.getElementById("featureChips");
-    const resetBuilder = document.getElementById("resetBuilder");
+    const summaryPreview = document.getElementById("summaryPreview");
+    const featureChipsSummary = document.getElementById("featureChipsSummary");
+    const clearSelections = document.getElementById("clearSelections");
 
-    const factStoreys = document.getElementById("factStoreys");
-    const factBedrooms = document.getElementById("factBedrooms");
-    const factBathrooms = document.getElementById("factBathrooms");
-    const factSize = document.getElementById("factSize");
+    const overviewProjectType = document.getElementById("overviewProjectType");
+    const overviewStoreys = document.getElementById("overviewStoreys");
+    const overviewSize = document.getElementById("overviewSize");
+    const overviewBedrooms = document.getElementById("overviewBedrooms");
+    const overviewBathrooms = document.getElementById("overviewBathrooms");
+    const overviewGarage = document.getElementById("overviewGarage");
+    const overviewSite = document.getElementById("overviewSite");
+    const overviewOrientation = document.getElementById("overviewOrientation");
+    const overviewAccess = document.getElementById("overviewAccess");
+    const budgetRange = document.getElementById("budgetRange");
+    const nextStepText = document.getElementById("nextStepText");
 
     let navSettleTimer;
     let scrollTicking = false;
 
-    const featureIconMap = {
-      "Garage": "🚗",
-      "Home Office": "💼",
-      "Outdoor Living": "🌿",
-      "Laundry Room": "🧺",
-      "Walk-in Closet": "👕",
-      "Secondary Suite": "🛏️"
-    };
+    const projectPreviewClasses = [
+      "project-new",
+      "project-renovation",
+      "project-extension",
+      "project-mixed",
+      "project-commercial"
+    ];
+
+    const stylePreviewClasses = [
+      "style-modern",
+      "style-warm",
+      "style-coastal",
+      "style-minimal",
+      "style-classic"
+    ];
 
     const projectClassMap = {
       "Residential New Build": "project-new",
       "Residential Renovation": "project-renovation",
       "Extension / Addition": "project-extension",
-      "Small Mixed Residential Project": "project-mixed",
+      "Mixed Residential": "project-mixed",
       "Commercial Project": "project-commercial"
     };
 
     const styleClassMap = {
       "Modern": "style-modern",
-      "Organic Modern": "style-organic",
-      "Minimal": "style-minimal",
+      "Warm Contemporary": "style-warm",
       "Coastal": "style-coastal",
-      "Timeless": "style-timeless"
+      "Minimalist": "style-minimal",
+      "Classic Contemporary": "style-classic"
+    };
+
+    const featureIconMap = {
+      "3 Bedrooms": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M4 13h16v5H4z"></path>
+          <path d="M6 13V9h5a3 3 0 0 1 3 3v1"></path>
+        </svg>
+      `,
+      "2 Bathrooms": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+          <path d="M5 10h14v4a7 7 0 0 1-14 0z"></path>
+        </svg>
+      `,
+      "Garage": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M3 11.5 12 5l9 6.5V20H3z"></path>
+          <path d="M8 20v-5h8v5"></path>
+        </svg>
+      `,
+      "Home Office": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="4" y="5" width="16" height="11"></rect>
+          <path d="M10 19h4"></path>
+          <path d="M12 16v3"></path>
+        </svg>
+      `,
+      "Laundry Room": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="5" y="4" width="14" height="16"></rect>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+      `,
+      "Outdoor Living": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M12 4v10"></path>
+          <path d="M7 9a5 5 0 0 1 10 0"></path>
+          <path d="M5 20h14"></path>
+        </svg>
+      `,
+      "Walk-in Closet": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M6 20V6l6-2 6 2v14"></path>
+          <path d="M12 4v16"></path>
+        </svg>
+      `,
+      "Secondary Suite": `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="4" y="6" width="7" height="12"></rect>
+          <rect x="13" y="9" width="7" height="9"></rect>
+        </svg>
+      `
     };
 
     document.body.classList.add("page-enter");
@@ -1556,6 +1731,7 @@
 
     function updateHeaderState() {
       if (!header) return;
+
       if (window.scrollY > 16) {
         header.classList.add("scrolled");
       } else {
@@ -1580,6 +1756,7 @@
 
     function updateBackToTop() {
       if (!backToTopBtn) return;
+
       if (window.scrollY > 500) {
         backToTopBtn.classList.add("is-visible");
       } else {
@@ -1628,171 +1805,171 @@
       }
     }
 
-    function getCheckedValue(name) {
+    function getCheckedRadioValue(name) {
       const checked = form.querySelector(`input[name="${name}"]:checked`);
       return checked ? checked.value : "";
     }
 
-    function getCheckedValues(name) {
-      return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map(item => item.value);
+    function getCheckedCheckboxValues(name) {
+      return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((item) => item.value);
     }
 
-    function updateChips(container, values) {
-      container.innerHTML = "";
-
-      if (!values.length) {
-        const chip = document.createElement("span");
-        chip.className = "pb-summary-chip";
-        chip.textContent = "No selected features";
-        container.appendChild(chip);
-        return;
-      }
-
-      values.forEach((value) => {
-        const chip = document.createElement("span");
-        chip.className = "pb-summary-chip";
-        chip.innerHTML = `<span>${featureIconMap[value] || "•"}</span><span>${value}</span>`;
-        container.appendChild(chip);
-      });
-    }
-
-    function parseLeadingNumber(text) {
+    function numericPart(text) {
       const match = String(text).match(/\d+(\.\d+)?/);
       return match ? match[0] : text;
     }
 
     function getProgress(data) {
-      const fields = [
-        data.projectType,
-        data.storeys,
-        data.sizeRange,
-        data.bedrooms,
-        data.bathrooms,
-        data.siteContext,
-        data.siteSlope,
-        data.startingCondition,
-        data.planningZone,
-        data.styleDirection,
-        data.serviceStage
-      ];
+      let score = 0;
 
-      const filled = fields.filter(Boolean).length;
-      return Math.round((filled / fields.length) * 100);
+      if (data.projectType) score += 16;
+      if (data.storeys) score += 12;
+      if (data.sizeRange) score += 12;
+      if (data.siteCondition) score += 12;
+      if (data.orientation) score += 10;
+      if (data.access) score += 10;
+      if (data.styleDirection) score += 16;
+      if (data.features.length) score += 12;
+
+      return Math.min(score, 100);
     }
 
-    function buildSentence(data) {
-      const styleMap = {
-        "Modern": "clean lines, refined materials, and a more seamless indoor-outdoor relationship",
-        "Organic Modern": "warmer materials, calmer contrast, and a softer contemporary character",
-        "Minimal": "reduced detailing, lighter surfaces, and a quieter architectural expression",
-        "Coastal": "lighter tones, breezier massing, and a more open atmospheric quality",
-        "Timeless": "balanced proportions, restrained contrast, and a more enduring visual language"
-      };
+    function getBudgetRange(projectType, sizeRange) {
+      if (projectType === "Commercial Project") {
+        if (sizeRange === "3,500+ sq ft") return "$1.4M – $2.4M";
+        if (sizeRange === "2,400–3,500 sq ft") return "$1.1M – $1.8M";
+        return "$900K – $1.5M";
+      }
 
-      const projectMap = {
-        "Residential New Build": "Contemporary residential direction",
-        "Residential Renovation": "Renovation-focused residential direction",
-        "Extension / Addition": "Addition-led residential direction",
-        "Small Mixed Residential Project": "Compact mixed residential direction",
-        "Commercial Project": "Commercial project direction"
-      };
+      if (projectType === "Residential Renovation") {
+        if (sizeRange === "3,500+ sq ft") return "$700K – $1.4M";
+        if (sizeRange === "2,400–3,500 sq ft") return "$550K – $1.0M";
+        return "$350K – $800K";
+      }
 
-      const lead = projectMap[data.projectType] || "Project direction";
-      const tail = styleMap[data.styleDirection] || "a measured architectural direction";
+      if (projectType === "Extension / Addition") {
+        if (sizeRange === "3,500+ sq ft") return "$650K – $1.2M";
+        if (sizeRange === "2,400–3,500 sq ft") return "$500K – $950K";
+        return "$380K – $820K";
+      }
 
-      return `${lead} with ${tail}.`;
+      if (sizeRange === "3,500+ sq ft") return "$1.2M – $2.0M";
+      if (sizeRange === "2,400–3,500 sq ft") return "$950K – $1.5M";
+      return "$800K – $1.2M";
     }
 
-    function setPreviewClasses(projectType, styleDirection) {
-      previewCanvas.classList.remove(
-        "project-new",
-        "project-renovation",
-        "project-extension",
-        "project-mixed",
-        "project-commercial",
-        "style-modern",
-        "style-organic",
-        "style-minimal",
-        "style-coastal",
-        "style-timeless"
-      );
-
-      previewCanvas.classList.add(projectClassMap[projectType] || "project-new");
-      previewCanvas.classList.add(styleClassMap[styleDirection] || "style-modern");
+    function buildSummarySentence(data) {
+      return `A ${data.projectType.toLowerCase()} with ${data.storeys.toLowerCase()}, approximately ${data.sizeRange.toLowerCase()}, designed with a ${data.styleDirection.toLowerCase()} direction and a ${data.orientation.toLowerCase()} orientation.`;
     }
 
-    function updateBuilderSummary() {
+    function buildFeatureChips(features) {
+      featureChipsSummary.innerHTML = "";
+
+      if (!features.length) {
+        const chip = document.createElement("span");
+        chip.className = "builder-summary-chip";
+        chip.textContent = "No selected features";
+        featureChipsSummary.appendChild(chip);
+        return;
+      }
+
+      features.forEach((feature) => {
+        const chip = document.createElement("span");
+        chip.className = "builder-summary-chip";
+        chip.innerHTML = `${featureIconMap[feature] || ""}<span>${feature}</span>`;
+        featureChipsSummary.appendChild(chip);
+      });
+    }
+
+    function updatePreviewClasses(projectType, styleDirection) {
+      projectPreviewClasses.forEach((className) => {
+        summaryPreview.classList.remove(className);
+      });
+
+      stylePreviewClasses.forEach((className) => {
+        summaryPreview.classList.remove(className);
+      });
+
+      summaryPreview.classList.add(projectClassMap[projectType] || "project-new");
+      summaryPreview.classList.add(styleClassMap[styleDirection] || "style-modern");
+    }
+
+    function updateBuilder() {
       const data = {
-        projectType: getCheckedValue("projectType"),
+        projectType: getCheckedRadioValue("projectType"),
         storeys: form.storeys.value,
         sizeRange: form.sizeRange.value,
-        bedrooms: form.bedrooms.value,
-        bathrooms: form.bathrooms.value,
-        siteContext: form.siteContext.value,
-        siteSlope: form.siteSlope.value,
-        startingCondition: form.startingCondition.value,
-        planningZone: form.planningZone.value,
-        styleDirection: getCheckedValue("styleDirection"),
-        serviceStage: getCheckedValue("serviceStage"),
-        features: getCheckedValues("features")
+        siteCondition: getCheckedRadioValue("siteCondition"),
+        orientation: form.orientation.value,
+        access: form.access.value,
+        styleDirection: getCheckedRadioValue("styleDirection"),
+        features: getCheckedCheckboxValues("features")
       };
 
+      const hasGarage = data.features.includes("Garage");
+      const bedroomFeature = data.features.find((item) => item.includes("Bedroom")) || "Not set";
+      const bathroomFeature = data.features.find((item) => item.includes("Bathroom")) || "Not set";
       const progress = getProgress(data);
 
       progressBar.style.width = `${progress}%`;
       progressText.textContent = `${progress}%`;
 
-      factStoreys.textContent = parseLeadingNumber(data.storeys);
-      factBedrooms.textContent = parseLeadingNumber(data.bedrooms);
-      factBathrooms.textContent = parseLeadingNumber(data.bathrooms);
-      factSize.textContent = data.sizeRange;
+      summarySentence.textContent = buildSummarySentence(data);
+      overviewProjectType.textContent = data.projectType;
+      overviewStoreys.textContent = data.storeys;
+      overviewSize.textContent = data.sizeRange;
+      overviewBedrooms.textContent = numericPart(bedroomFeature);
+      overviewBathrooms.textContent = numericPart(bathroomFeature);
+      overviewGarage.textContent = hasGarage ? "Yes" : "No";
+      overviewSite.textContent = data.siteCondition;
+      overviewOrientation.textContent = data.orientation;
+      overviewAccess.textContent = data.access;
+      budgetRange.textContent = getBudgetRange(data.projectType, data.sizeRange);
+      nextStepText.textContent = `Send your brief and book a consultation when you are ready to move from ${data.styleDirection.toLowerCase()} direction into review and scope confirmation.`;
 
-      summarySentence.textContent = buildSentence(data);
-      updateChips(featureChips, data.features);
-      setPreviewClasses(data.projectType, data.styleDirection);
+      buildFeatureChips(data.features);
+      updatePreviewClasses(data.projectType, data.styleDirection);
     }
 
     if (form) {
-      form.addEventListener("input", updateBuilderSummary);
-      form.addEventListener("change", updateBuilderSummary);
+      form.addEventListener("change", updateBuilder);
+      form.addEventListener("input", updateBuilder);
     }
 
-    if (resetBuilder && form) {
-      resetBuilder.addEventListener("click", () => {
+    if (clearSelections && form) {
+      clearSelections.addEventListener("click", () => {
         form.reset();
 
         document.getElementById("projectTypeNew").checked = true;
+        document.getElementById("siteFlat").checked = true;
         document.getElementById("styleModern").checked = true;
-        document.getElementById("stageConcept").checked = true;
 
         form.storeys.value = "2 Storeys";
-        form.sizeRange.value = "1,500–3,000 sq ft";
-        form.bedrooms.value = "3 Bedrooms";
-        form.bathrooms.value = "2.5 Bathrooms";
-        form.siteContext.value = "Suburban";
-        form.siteSlope.value = "Flat";
-        form.startingCondition.value = "Vacant Site";
-        form.planningZone.value = "R1-a";
+        form.sizeRange.value = "1,800–2,400 sq ft";
+        form.orientation.value = "North-facing";
+        form.access.value = "Vehicle Access, Rear Lane";
 
         [
+          "featureBedrooms",
+          "featureBathrooms",
           "featureGarage",
           "featureOffice",
-          "featureOutdoor",
-          "featureLaundry"
+          "featureLaundry",
+          "featureOutdoor"
         ].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el) el.checked = true;
+          const input = document.getElementById(id);
+          if (input) input.checked = true;
         });
 
         [
           "featureCloset",
           "featureSuite"
         ].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el) el.checked = false;
+          const input = document.getElementById(id);
+          if (input) input.checked = false;
         });
 
-        updateBuilderSummary();
+        updateBuilder();
       });
     }
 
@@ -1895,6 +2072,7 @@
       if (window.innerWidth >= 720) {
         closeNav();
       }
+
       updateRevealStates();
     });
 
@@ -1902,13 +2080,13 @@
       updateHeaderState();
       updateRevealStates();
       updateBackToTop();
-      updateBuilderSummary();
+      updateBuilder();
     });
 
     updateHeaderState();
     updateRevealStates();
     updateBackToTop();
-    updateBuilderSummary();
+    updateBuilder();
   </script>
 </body>
 </html>
