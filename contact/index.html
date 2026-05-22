@@ -149,6 +149,8 @@
           >
             <input type="hidden" name="source" value="website-contact-form" />
             <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+            <input type="hidden" name="form_started_at" id="formStartedAt" value="" />
+            <input type="hidden" name="device_id" id="deviceId" value="" />
 
             <label style="display:grid; gap:8px;">
               <span class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.14em;">Full Name</span>
@@ -400,6 +402,32 @@
       });
     });
 
+    function initEnquirySecurityFields() {
+      if (!enquiryForm) return;
+
+      const startedField = document.getElementById("formStartedAt");
+      const deviceField = document.getElementById("deviceId");
+
+      if (startedField && !startedField.value) {
+        startedField.value = String(Date.now());
+      }
+
+      if (deviceField) {
+        let deviceId = localStorage.getItem("szm_device_id");
+
+        if (!deviceId) {
+          if (window.crypto && crypto.randomUUID) {
+            deviceId = crypto.randomUUID();
+          } else {
+            deviceId = "dev_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+          }
+          localStorage.setItem("szm_device_id", deviceId);
+        }
+
+        deviceField.value = deviceId;
+      }
+    }
+
     function updateHeaderState() {
       if (!header) return;
 
@@ -485,6 +513,8 @@
       fields.forEach((field) => {
         if (!field.name) return;
         if (field.name === "_gotcha") return;
+        if (field.name === "form_started_at") return;
+        if (field.name === "device_id") return;
         if (field.type === "hidden") return;
         if (field.type === "checkbox") return;
 
@@ -527,6 +557,8 @@
       if (enquiryForm) {
         enquiryForm.reset();
       }
+
+      initEnquirySecurityFields();
 
       if (draftNotice) {
         draftNotice.textContent = "Saved draft cleared.";
@@ -598,6 +630,7 @@
     }
 
     if (enquiryForm) {
+      initEnquirySecurityFields();
       restoreEnquiryDraft();
       enquiryForm.addEventListener("input", saveEnquiryDraft);
       enquiryForm.addEventListener("change", saveEnquiryDraft);
@@ -647,6 +680,7 @@
     });
 
     window.addEventListener("load", () => {
+      initEnquirySecurityFields();
       updateHeaderState();
       updateRevealStates();
       updateBackToTop();
