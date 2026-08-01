@@ -687,10 +687,6 @@
                 Security verification
               </p>
 
-              <!--
-                Replace the value below with your PUBLIC Cloudflare
-                Turnstile site key. Do not place the secret key here.
-              -->
               <div
                 class="cf-turnstile"
                 data-sitekey="0x4AAAAAAEDqcusyovrgr-jR"
@@ -879,38 +875,57 @@
     const clearDraftBtn = document.getElementById("clearDraftBtn");
     const draftNotice = document.getElementById("draftNotice");
     const submitEnquiryBtn = document.getElementById("submitEnquiryBtn");
+
     const formSecurityStatus = document.getElementById(
       "formSecurityStatus"
     );
 
-    const formStartedAtField = document.getElementById("formStartedAt");
-    const deviceIdField = document.getElementById("deviceId");
+    const formStartedAtField = document.getElementById(
+      "formStartedAt"
+    );
+
+    const deviceIdField = document.getElementById(
+      "deviceId"
+    );
+
     const submissionNonceField = document.getElementById(
       "submissionNonce"
     );
 
-    const enquiryDraftKey = "szm_project_enquiry_draft_v1";
-    const deviceIdKey = "szm_enquiry_device_id_v1";
-    const submissionLogKey = "szm_enquiry_submission_log_v1";
+    const enquiryDraftKey =
+      "szm_project_enquiry_draft_v1";
 
-    const turnstileSiteKeyPlaceholder =
-      "0x4AAAAAAEDqcusyovrgr-jR";
+    const deviceIdKey =
+      "szm_enquiry_device_id_v1";
 
-    const minimumFormTimeMs = 5000;
-    const localRateWindowMs = 60 * 60 * 1000;
+    const submissionLogKey =
+      "szm_enquiry_submission_log_v1";
 
-    const maximumDeviceSubmissionsPerHour = 3;
-    const maximumSameNameSubmissionsPerHour = 2;
+    const minimumFormTimeMs =
+      5000;
+
+    const localRateWindowMs =
+      60 * 60 * 1000;
+
+    const maximumDeviceSubmissionsPerHour =
+      3;
+
+    const maximumSameNameSubmissionsPerHour =
+      2;
 
     let navSettleTimer;
     let scrollTicking = false;
     let formIsSubmitting = false;
 
-    document.body.classList.add("page-enter");
+    document.body.classList.add(
+      "page-enter"
+    );
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        document.body.classList.remove("page-enter");
+        document.body.classList.remove(
+          "page-enter"
+        );
       });
     });
 
@@ -958,7 +973,8 @@
     }
 
     function normalizeName(value) {
-      const rawValue = String(value || "");
+      const rawValue =
+        String(value || "");
 
       const normalizedValue =
         typeof rawValue.normalize === "function"
@@ -973,7 +989,8 @@
     }
 
     function containsLink(value) {
-      const text = String(value || "");
+      const text =
+        String(value || "");
 
       const linkPattern =
         /(https?:\/\/|www\.|(?:[a-z0-9-]+\.)+(?:com|net|org|info|biz|xyz|top|site|online|io|co|gy|app|me)\b)/i;
@@ -984,36 +1001,48 @@
     function setSecurityStatus(message, type) {
       if (!formSecurityStatus) return;
 
-      formSecurityStatus.textContent = message;
+      formSecurityStatus.textContent =
+        message;
+
       formSecurityStatus.className =
         "form-security-status is-visible";
 
       if (type === "success") {
-        formSecurityStatus.classList.add("is-success");
+        formSecurityStatus.classList.add(
+          "is-success"
+        );
       }
 
       if (type === "error") {
-        formSecurityStatus.classList.add("is-error");
+        formSecurityStatus.classList.add(
+          "is-error"
+        );
       }
 
       if (type === "warning") {
-        formSecurityStatus.classList.add("is-warning");
+        formSecurityStatus.classList.add(
+          "is-warning"
+        );
       }
     }
 
     function clearSecurityStatus() {
       if (!formSecurityStatus) return;
 
-      formSecurityStatus.textContent = "";
+      formSecurityStatus.textContent =
+        "";
+
       formSecurityStatus.className =
         "form-security-status";
     }
 
     function getOrCreateDeviceId() {
-      let deviceId = safeLocalStorageGet(deviceIdKey);
+      let deviceId =
+        safeLocalStorageGet(deviceIdKey);
 
       if (!deviceId) {
-        deviceId = createRandomId("device");
+        deviceId =
+          createRandomId("device");
 
         safeLocalStorageSet(
           deviceIdKey,
@@ -1067,17 +1096,24 @@
     }
 
     function getTurnstileWidget() {
-      return document.querySelector(".cf-turnstile");
+      return document.querySelector(
+        ".cf-turnstile"
+      );
     }
 
     function getTurnstileSiteKey() {
-      const widget = getTurnstileWidget();
+      const widget =
+        getTurnstileWidget();
 
       if (!widget) {
         return "";
       }
 
-      return widget.getAttribute("data-sitekey") || "";
+      return (
+        widget.getAttribute(
+          "data-sitekey"
+        ) || ""
+      );
     }
 
     function getTurnstileToken() {
@@ -1113,20 +1149,23 @@
       }
 
       if (
-        configuredSiteKey ===
-        turnstileSiteKeyPlaceholder
+        configuredSiteKey.includes("PASTE_") ||
+        configuredSiteKey.includes("REPLACE_")
       ) {
         setSecurityStatus(
-          "Turnstile is not configured. Replace the placeholder with the public site key from the Cloudflare Turnstile dashboard.",
+          "Turnstile is not configured. Paste the public site key from the Cloudflare Turnstile dashboard.",
           "error"
         );
 
         return false;
       }
 
-      if (window.location.protocol === "file:") {
+      if (
+        window.location.protocol ===
+        "file:"
+      ) {
         setSecurityStatus(
-          "Turnstile cannot be tested from a file:// page. Upload the page and test it through the approved website hostname.",
+          "Turnstile cannot be tested from a file:// page. Upload the page and test it through your website.",
           "warning"
         );
 
@@ -1136,10 +1175,11 @@
       return true;
     }
 
-    function getTurnstileErrorMessage(errorCode) {
-      const code = String(
-        errorCode || "unknown"
-      );
+    function getTurnstileErrorMessage(
+      errorCode
+    ) {
+      const code =
+        String(errorCode || "unknown");
 
       if (
         code === "110100" ||
@@ -1186,80 +1226,91 @@
       return "The security verification could not be completed.";
     }
 
-    window.handleTurnstileSuccess = function () {
-      setSecurityStatus(
-        "Security verification completed.",
-        "success"
-      );
-    };
+    window.handleTurnstileSuccess =
+      function () {
+        setSecurityStatus(
+          "Security verification completed.",
+          "success"
+        );
+      };
 
-    window.handleTurnstileExpired = function () {
-      setSecurityStatus(
-        "The security verification expired. A new challenge is loading.",
-        "warning"
-      );
-    };
+    window.handleTurnstileExpired =
+      function () {
+        setSecurityStatus(
+          "The security verification expired. A new challenge is loading.",
+          "warning"
+        );
+      };
 
-    window.handleTurnstileTimeout = function () {
-      setSecurityStatus(
-        "The security verification timed out. A new challenge is loading.",
-        "warning"
-      );
-    };
+    window.handleTurnstileTimeout =
+      function () {
+        setSecurityStatus(
+          "The security verification timed out. A new challenge is loading.",
+          "warning"
+        );
+      };
 
-    window.handleTurnstileUnsupported = function () {
-      setSecurityStatus(
-        "This browser is not supported by the security verification. Update the browser or use another current browser.",
-        "error"
-      );
-    };
+    window.handleTurnstileUnsupported =
+      function () {
+        setSecurityStatus(
+          "This browser is not supported by the security verification. Update the browser or use another current browser.",
+          "error"
+        );
+      };
 
-    window.handleTurnstileError = function (errorCode) {
-      const code = String(
-        errorCode || "unknown"
-      );
+    window.handleTurnstileError =
+      function (errorCode) {
+        const code =
+          String(errorCode || "unknown");
 
-      const message =
-        getTurnstileErrorMessage(code);
+        const message =
+          getTurnstileErrorMessage(code);
 
-      console.error(
-        "Cloudflare Turnstile error:",
-        code
-      );
+        console.error(
+          "Cloudflare Turnstile error:",
+          code
+        );
 
-      setSecurityStatus(
-        `${message} Error code: ${code}.`,
-        "error"
-      );
+        setSecurityStatus(
+          `${message} Error code: ${code}.`,
+          "error"
+        );
 
-      return true;
-    };
+        return true;
+      };
 
     function getLocalSubmissionLog() {
       const rawLog =
-        safeLocalStorageGet(submissionLogKey);
+        safeLocalStorageGet(
+          submissionLogKey
+        );
 
       if (!rawLog) {
         return [];
       }
 
       try {
-        const parsed = JSON.parse(rawLog);
+        const parsed =
+          JSON.parse(rawLog);
 
         if (!Array.isArray(parsed)) {
           return [];
         }
 
         const cutoff =
-          Date.now() - localRateWindowMs;
+          Date.now() -
+          localRateWindowMs;
 
-        return parsed.filter((entry) => {
-          return (
-            entry &&
-            typeof entry.timestamp === "number" &&
-            entry.timestamp >= cutoff
-          );
-        });
+        return parsed.filter(
+          (entry) => {
+            return (
+              entry &&
+              typeof entry.timestamp ===
+                "number" &&
+              entry.timestamp >= cutoff
+            );
+          }
+        );
       } catch (error) {
         return [];
       }
@@ -1273,18 +1324,23 @@
     }
 
     function checkLocalRateLimit(name) {
-      const log = getLocalSubmissionLog();
+      const log =
+        getLocalSubmissionLog();
 
       const normalizedName =
         normalizeName(name);
 
-      const deviceId = deviceIdField
-        ? deviceIdField.value
-        : "";
+      const deviceId =
+        deviceIdField
+          ? deviceIdField.value
+          : "";
 
       const deviceSubmissionCount =
         log.filter((entry) => {
-          return entry.deviceId === deviceId;
+          return (
+            entry.deviceId ===
+            deviceId
+          );
         }).length;
 
       const sameNameSubmissionCount =
@@ -1334,7 +1390,8 @@
         deviceId: deviceIdField
           ? deviceIdField.value
           : "",
-        normalizedName: normalizeName(name)
+        normalizedName:
+          normalizeName(name)
       });
 
       saveLocalSubmissionLog(log);
@@ -1352,13 +1409,19 @@
       clearSecurityStatus();
 
       const honeypot =
-        enquiryForm.elements["_gotcha"];
+        enquiryForm.elements[
+          "_gotcha"
+        ];
 
       const nameField =
-        enquiryForm.elements["name"];
+        enquiryForm.elements[
+          "name"
+        ];
 
       const messageField =
-        enquiryForm.elements["message"];
+        enquiryForm.elements[
+          "message"
+        ];
 
       const startedAt = Number(
         formStartedAtField
@@ -1366,21 +1429,30 @@
           : 0
       );
 
-      const elapsedTime = startedAt
-        ? Date.now() - startedAt
-        : 0;
+      const elapsedTime =
+        startedAt
+          ? Date.now() - startedAt
+          : 0;
 
-      const name = nameField
-        ? String(nameField.value || "").trim()
-        : "";
+      const name =
+        nameField
+          ? String(
+              nameField.value || ""
+            ).trim()
+          : "";
 
-      const message = messageField
-        ? String(messageField.value || "").trim()
-        : "";
+      const message =
+        messageField
+          ? String(
+              messageField.value || ""
+            ).trim()
+          : "";
 
       if (
         honeypot &&
-        String(honeypot.value || "").trim()
+        String(
+          honeypot.value || ""
+        ).trim()
       ) {
         event.preventDefault();
 
@@ -1394,7 +1466,8 @@
 
       if (
         !elapsedTime ||
-        elapsedTime < minimumFormTimeMs
+        elapsedTime <
+          minimumFormTimeMs
       ) {
         event.preventDefault();
 
@@ -1435,7 +1508,9 @@
         return;
       }
 
-      if (!validateTurnstileConfiguration()) {
+      if (
+        !validateTurnstileConfiguration()
+      ) {
         event.preventDefault();
         return;
       }
@@ -1455,12 +1530,17 @@
       }
 
       recordLocalSubmission(name);
-      safeLocalStorageRemove(enquiryDraftKey);
+
+      safeLocalStorageRemove(
+        enquiryDraftKey
+      );
 
       formIsSubmitting = true;
 
       if (submitEnquiryBtn) {
-        submitEnquiryBtn.disabled = true;
+        submitEnquiryBtn.disabled =
+          true;
+
         submitEnquiryBtn.textContent =
           "Sending Enquiry...";
       }
@@ -1489,14 +1569,49 @@
       fields.forEach((field) => {
         if (!field.name) return;
         if (field.name === "_gotcha") return;
-        if (field.name === "form_started_at") return;
-        if (field.name === "device_id") return;
-        if (field.name === "submission_nonce") return;
-        if (field.name === "cf-turnstile-response") return;
-        if (field.type === "hidden") return;
-        if (field.type === "checkbox") return;
 
-        draft[field.name] = field.value;
+        if (
+          field.name ===
+          "form_started_at"
+        ) {
+          return;
+        }
+
+        if (
+          field.name ===
+          "device_id"
+        ) {
+          return;
+        }
+
+        if (
+          field.name ===
+          "submission_nonce"
+        ) {
+          return;
+        }
+
+        if (
+          field.name ===
+          "cf-turnstile-response"
+        ) {
+          return;
+        }
+
+        if (
+          field.type === "hidden"
+        ) {
+          return;
+        }
+
+        if (
+          field.type === "checkbox"
+        ) {
+          return;
+        }
+
+        draft[field.name] =
+          field.value;
       });
 
       safeLocalStorageSet(
@@ -1514,21 +1629,29 @@
       if (!enquiryForm) return;
 
       const saved =
-        safeLocalStorageGet(enquiryDraftKey);
+        safeLocalStorageGet(
+          enquiryDraftKey
+        );
 
       if (!saved) return;
 
       try {
-        const draft = JSON.parse(saved);
+        const draft =
+          JSON.parse(saved);
 
-        Object.keys(draft).forEach((name) => {
-          const field =
-            enquiryForm.elements[name];
+        Object.keys(draft).forEach(
+          (name) => {
+            const field =
+              enquiryForm.elements[
+                name
+              ];
 
-          if (!field) return;
+            if (!field) return;
 
-          field.value = draft[name];
-        });
+            field.value =
+              draft[name];
+          }
+        );
 
         if (draftNotice) {
           draftNotice.textContent =
@@ -1545,7 +1668,8 @@
     function resetTurnstileWidget() {
       if (
         window.turnstile &&
-        typeof window.turnstile.reset === "function"
+        typeof window.turnstile
+          .reset === "function"
       ) {
         try {
           window.turnstile.reset();
@@ -1559,7 +1683,9 @@
     }
 
     function clearEnquiryDraft() {
-      safeLocalStorageRemove(enquiryDraftKey);
+      safeLocalStorageRemove(
+        enquiryDraftKey
+      );
 
       if (enquiryForm) {
         enquiryForm.reset();
@@ -1568,7 +1694,9 @@
       formIsSubmitting = false;
 
       if (submitEnquiryBtn) {
-        submitEnquiryBtn.disabled = false;
+        submitEnquiryBtn.disabled =
+          false;
+
         submitEnquiryBtn.textContent =
           "Send Project Enquiry";
       }
@@ -1587,9 +1715,13 @@
       if (!header) return;
 
       if (window.scrollY > 16) {
-        header.classList.add("scrolled");
+        header.classList.add(
+          "scrolled"
+        );
       } else {
-        header.classList.remove("scrolled");
+        header.classList.remove(
+          "scrolled"
+        );
       }
     }
 
@@ -1600,14 +1732,20 @@
 
         const inViewportBand =
           rect.top <
-            window.innerHeight * 0.88 &&
+            window.innerHeight *
+              0.88 &&
           rect.bottom >
-            window.innerHeight * 0.12;
+            window.innerHeight *
+              0.12;
 
         if (inViewportBand) {
-          item.classList.add("is-visible");
+          item.classList.add(
+            "is-visible"
+          );
         } else {
-          item.classList.remove("is-visible");
+          item.classList.remove(
+            "is-visible"
+          );
         }
       });
     }
@@ -1627,12 +1765,24 @@
     }
 
     function openNav() {
-      if (!navToggle || !navOverlay) return;
+      if (
+        !navToggle ||
+        !navOverlay
+      ) {
+        return;
+      }
 
-      clearTimeout(navSettleTimer);
+      clearTimeout(
+        navSettleTimer
+      );
 
-      navOverlay.classList.add("is-open");
-      navToggle.classList.add("is-open");
+      navOverlay.classList.add(
+        "is-open"
+      );
+
+      navToggle.classList.add(
+        "is-open"
+      );
 
       navToggle.setAttribute(
         "aria-expanded",
@@ -1644,19 +1794,29 @@
         "false"
       );
 
-      document.body.classList.add("nav-open");
+      document.body.classList.add(
+        "nav-open"
+      );
 
-      navSettleTimer = setTimeout(() => {
-        navOverlay.classList.add(
-          "is-settled"
-        );
-      }, 80);
+      navSettleTimer =
+        setTimeout(() => {
+          navOverlay.classList.add(
+            "is-settled"
+          );
+        }, 80);
     }
 
     function closeNav() {
-      if (!navToggle || !navOverlay) return;
+      if (
+        !navToggle ||
+        !navOverlay
+      ) {
+        return;
+      }
 
-      clearTimeout(navSettleTimer);
+      clearTimeout(
+        navSettleTimer
+      );
 
       navOverlay.classList.remove(
         "is-settled"
@@ -1708,29 +1868,33 @@
     const observer =
       new IntersectionObserver(
         (entries) => {
-          entries.forEach((entry) => {
-            const rect =
-              entry.boundingClientRect;
+          entries.forEach(
+            (entry) => {
+              const rect =
+                entry.boundingClientRect;
 
-            const inViewportBand =
-              rect.top <
-                window.innerHeight * 0.88 &&
-              rect.bottom >
-                window.innerHeight * 0.12;
+              const inViewportBand =
+                rect.top <
+                  window.innerHeight *
+                    0.88 &&
+                rect.bottom >
+                  window.innerHeight *
+                    0.12;
 
-            if (
-              entry.isIntersecting &&
-              inViewportBand
-            ) {
-              entry.target.classList.add(
-                "is-visible"
-              );
-            } else {
-              entry.target.classList.remove(
-                "is-visible"
-              );
+              if (
+                entry.isIntersecting &&
+                inViewportBand
+              ) {
+                entry.target.classList.add(
+                  "is-visible"
+                );
+              } else {
+                entry.target.classList.remove(
+                  "is-visible"
+                );
+              }
             }
-          });
+          );
         },
         {
           threshold: [
@@ -1758,23 +1922,31 @@
         if (
           href &&
           !href.startsWith("#") &&
-          !href.startsWith("mailto:") &&
-          !href.startsWith("tel:") &&
-          !link.hasAttribute("target")
+          !href.startsWith(
+            "mailto:"
+          ) &&
+          !href.startsWith(
+            "tel:"
+          ) &&
+          !link.hasAttribute(
+            "target"
+          )
         ) {
           link.addEventListener(
             "click",
             (event) => {
-              const url = new URL(
-                link.href,
-                window.location.href
-              );
+              const url =
+                new URL(
+                  link.href,
+                  window.location.href
+                );
 
               if (
                 url.origin ===
                 window.location.origin
               ) {
                 closeNav();
+
                 event.preventDefault();
 
                 document.body.classList.add(
@@ -1855,10 +2027,14 @@
         }
 
         const clickedInsideOverlay =
-          navOverlay.contains(event.target);
+          navOverlay.contains(
+            event.target
+          );
 
         const clickedToggle =
-          navToggle.contains(event.target);
+          navToggle.contains(
+            event.target
+          );
 
         if (
           !clickedInsideOverlay &&
@@ -1872,7 +2048,9 @@
     document.addEventListener(
       "keydown",
       (event) => {
-        if (event.key === "Escape") {
+        if (
+          event.key === "Escape"
+        ) {
           closeNav();
         }
       }
@@ -1903,7 +2081,9 @@
     window.addEventListener(
       "resize",
       () => {
-        if (window.innerWidth >= 720) {
+        if (
+          window.innerWidth >= 720
+        ) {
           closeNav();
         }
 
