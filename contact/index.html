@@ -292,10 +292,19 @@
             Your draft is saved automatically on this device while you type.
           </p>
 
+          <iframe
+            id="szmEnquirySubmitFrame"
+            name="szmEnquirySubmitFrame"
+            title="Project enquiry submission"
+            style="display:none;"
+            aria-hidden="true"
+          ></iframe>
+
           <form
             id="projectEnquiryForm"
             action="https://script.google.com/macros/s/AKfycbzk6-7Wc9yNvS6CmzpU_N5Poepa_otZ6uc7tQRvJzh2WS4gOL8GEorXiBoMCg6dwS-pBw/exec"
             method="POST"
+            target="szmEnquirySubmitFrame"
             style="display:grid; gap:16px; margin-top:18px;"
           >
             <input
@@ -866,15 +875,20 @@
       60 * 60 * 1000;
 
     const maximumDeviceSubmissionsPerHour =
-      3;
+      5;
 
     const maximumSameNameSubmissionsPerHour =
-      2;
+      5;
+
+    const submissionResponseTimeoutMs =
+      30000;
 
     let navSettleTimer;
     let scrollTicking = false;
     let formIsSubmitting = false;
     let submissionSucceeded = false;
+    let pendingSubmissionNonce = "";
+    let submissionResponseTimer = null;
 
     document.body.classList.add(
       "page-enter"
@@ -1388,7 +1402,147 @@
       }
     }
 
-    async function handleEnquirySubmit(event) {
+    function setEnquirySubmittingState(isSubmitting) {
+      formIsSubmitting =
+        Boolean(isSubmitting);
+
+      if (!submitEnquiryBtn) {
+        return;
+      }
+
+      submitEnquiryBtn.disabled =
+        formIsSubmitting;
+
+      if (formIsSubmitting) {
+        submitEnquiryBtn.setAttribute(
+          "aria-busy",
+          "true"
+        );
+
+        submitEnquiryBtn.textContent =
+          "Sending Enquiry...";
+      } else {
+        submitEnquiryBtn.removeAttribute(
+          "aria-busy"
+        );
+
+        submitEnquiryBtn.textContent =
+          "Send Project Enquiry";
+      }
+    }
+
+    function clearSubmissionResponseTimer() {
+      if (!submissionResponseTimer) {
+        return;
+      }
+
+      clearTimeout(
+        submissionResponseTimer
+      );
+
+      submissionResponseTimer =
+        null;
+    }
+
+    function handleEnquiryResponse(event) {
+      const data =
+        event && event.data
+          ? event.data
+          : null;
+
+      if (
+        !data ||
+        data.type !==
+          "SZM_ENQUIRY_RESULT"
+      ) {
+        return;
+      }
+
+      if (
+        !formIsSubmitting ||
+        !pendingSubmissionNonce ||
+        String(data.nonce || "") !==
+          pendingSubmissionNonce
+      ) {
+        return;
+      }
+
+      clearSubmissionResponseTimer();
+
+      const nameField =
+        enquiryForm
+          ? enquiryForm.elements["name"]
+          : null;
+
+      const submittedName =
+        nameField
+          ? String(nameField.value || "").trim()
+          : "";
+
+      if (data.status === "accepted") {
+        recordLocalSubmission(
+          submittedName
+        );
+
+        safeLocalStorageRemove(
+          enquiryDraftKey
+        );
+
+        enquiryForm.reset();
+
+        submissionSucceeded =
+          true;
+
+        pendingSubmissionNonce =
+          "";
+
+        resetSecurityFields();
+        resetTurnstileWidget();
+
+        if (draftNotice) {
+          draftNotice.textContent =
+            "Your enquiry has been received. A new draft will be saved automatically if you begin another enquiry.";
+        }
+
+        const leadReference =
+          data.leadId
+            ? ` Reference: ${data.leadId}.`
+            : "";
+
+        setSecurityStatus(
+          `Thank you. Your project enquiry has been received and will be reviewed.${leadReference}`,
+          "success"
+        );
+      } else {
+        submissionSucceeded =
+          false;
+
+        pendingSubmissionNonce =
+          "";
+
+        resetSecurityFields();
+        resetTurnstileWidget();
+
+        setSecurityStatus(
+          data.message ||
+            "We could not confirm receipt of your enquiry. Please try again or email shemaiah@szmarchitecture.com.",
+          "error"
+        );
+      }
+
+      setEnquirySubmittingState(
+        false
+      );
+
+      if (formSecurityStatus) {
+        formSecurityStatus.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }
+
+    function handleEnquirySubmit(event) {
       event.preventDefault();
 
       if (
@@ -1399,6 +1553,14 @@
       }
 
       clearSecurityStatus();
+
+      if (
+        typeof enquiryForm.reportValidity ===
+          "function" &&
+        !enquiryForm.reportValidity()
+      ) {
+        return;
+      }
 
       const honeypot =
         enquiryForm.elements[
@@ -1510,103 +1672,97 @@
         return;
       }
 
-      formIsSubmitting = true;
-      submissionSucceeded = false;
+      if (
+        !submissionNonceField ||
+        !submissionNonceField.value
+      ) {
+        resetSecurityFields();
+      }
 
-      if (submitEnquiryBtn) {
-        submitEnquiryBtn.disabled =
-          true;
+      pendingSubmissionNonce =
+        submissionNonceField
+          ? String(
+              submissionNonceField.value || ""
+            )
+          : "";
 
-        submitEnquiryBtn.setAttribute(
-          "aria-busy",
-          "true"
+      if (!pendingSubmissionNonce) {
+        setSecurityStatus(
+          "The enquiry form could not create a submission reference. Refresh the page and try again.",
+          "error"
         );
 
-        submitEnquiryBtn.textContent =
-          "Sending Enquiry...";
+        return;
       }
+
+      submissionSucceeded =
+        false;
+
+      setEnquirySubmittingState(
+        true
+      );
 
       setSecurityStatus(
         "Submitting your enquiry securely.",
         "success"
       );
 
-      try {
-        const formData =
-          new FormData(enquiryForm);
+      clearSubmissionResponseTimer();
 
-        await fetch(
-          enquiryForm.action,
-          {
-            method: "POST",
-            body: formData,
-            mode: "no-cors",
-            credentials: "omit",
-            cache: "no-store",
-            redirect: "follow"
+      submissionResponseTimer =
+        setTimeout(() => {
+          if (!formIsSubmitting) {
+            return;
           }
+
+          pendingSubmissionNonce =
+            "";
+
+          submissionSucceeded =
+            false;
+
+          setEnquirySubmittingState(
+            false
+          );
+
+          resetSecurityFields();
+          resetTurnstileWidget();
+
+          setSecurityStatus(
+            "We could not confirm that the enquiry was received. Your form details have been kept on this device. Please try again or email shemaiah@szmarchitecture.com.",
+            "error"
+          );
+        }, submissionResponseTimeoutMs);
+
+      try {
+        HTMLFormElement.prototype.submit.call(
+          enquiryForm
         );
-
-        recordLocalSubmission(name);
-
-        safeLocalStorageRemove(
-          enquiryDraftKey
-        );
-
-        enquiryForm.reset();
-
-        submissionSucceeded =
-          true;
-
-        resetSecurityFields();
-        resetTurnstileWidget();
-
-        if (draftNotice) {
-          draftNotice.textContent =
-            "Your enquiry has been submitted. A new draft will be saved automatically if you begin another enquiry.";
-        }
-
-        setSecurityStatus(
-          "Thank you. Your project enquiry has been received and will be reviewed.",
-          "success"
-        );
-
-        if (formSecurityStatus) {
-          formSecurityStatus.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-        }
       } catch (error) {
         console.error(
           "Enquiry submission failed:",
           error
         );
 
+        clearSubmissionResponseTimer();
+
+        pendingSubmissionNonce =
+          "";
+
         submissionSucceeded =
           false;
 
+        setEnquirySubmittingState(
+          false
+        );
+
+        resetSecurityFields();
         resetTurnstileWidget();
 
         setSecurityStatus(
-          "The enquiry could not be sent. Check your connection and try again.",
+          "The enquiry could not be sent. Your form details have been kept. Please try again or email shemaiah@szmarchitecture.com.",
           "error"
         );
-      } finally {
-        formIsSubmitting =
-          false;
-
-        if (submitEnquiryBtn) {
-          submitEnquiryBtn.disabled =
-            false;
-
-          submitEnquiryBtn.removeAttribute(
-            "aria-busy"
-          );
-
-          submitEnquiryBtn.textContent =
-            "Send Project Enquiry";
-        }
       }
     }
 
@@ -1698,6 +1854,11 @@
     }
 
     function clearEnquiryDraft() {
+      clearSubmissionResponseTimer();
+
+      pendingSubmissionNonce =
+        "";
+
       safeLocalStorageRemove(
         enquiryDraftKey
       );
@@ -2012,6 +2173,11 @@
       );
     }
 
+    window.addEventListener(
+      "message",
+      handleEnquiryResponse
+    );
+
     if (enquiryForm) {
       initEnquirySecurityFields();
       restoreEnquiryDraft();
@@ -2118,6 +2284,11 @@
       "pageshow",
       (event) => {
         if (event.persisted) {
+          clearSubmissionResponseTimer();
+
+          pendingSubmissionNonce =
+            "";
+
           formIsSubmitting =
             false;
 
